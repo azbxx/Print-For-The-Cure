@@ -5,19 +5,43 @@ from django.template import loader
 
 # Create your views here.
 def home(request):
-    return HttpResponse("home view")
+    template = loader.get_template('main/home.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
 
 def catalogue(request):
-    return HttpResponse("catalogue view")
+    template = loader.get_template('main/catalogue.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
 
 def donorLogin(request):
-    return HttpResponse("login view")
+    template = loader.get_template('main/donorLogin.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
 
 def nearbyRequests(request):
-    return HttpResponse("nearby requests view")
+    template = loader.get_template('main/nearbyRequests.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
 
 def confirmClaim(request):
-    return HttpResponse("confirm claim view")
+    template = loader.get_template('main/confirmClaim.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
 
 def thankYou(request):
-    return HttpResponse("thank you for claiming view")
+    template = loader.get_template('main/thankYou.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
