@@ -23,6 +23,13 @@ def catalogue(request):
     }
     return HttpResponse(template.render(context, request))
 
+def donorRegistration(request):
+    template = loader.get_template('main/register.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
+
 def donorLogin(request):
     if request.POST:
         # This tests if the form is the log *in* form
@@ -48,6 +55,13 @@ def donorLogin(request):
         print("login unsuccessful")
     # Find the template
     context = {
+    }
+    return HttpResponse(template.render(context, request))
+
+def doctorRequest(request):
+    template = loader.get_template('main/submitRequest.html')
+    context = {     #all inputs for the html go in these brackets
+
     }
     return HttpResponse(template.render(context, request))
 
