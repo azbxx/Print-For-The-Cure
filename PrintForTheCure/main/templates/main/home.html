@@ -32,13 +32,24 @@
     </style>
   </head>
   <body style="background-color: rgb(255, 200, 200)">
-    <form style="padding-bottom:1em;" method="POST">
-      <!-- Every <form> element needs a csrf_token as a security precaution. -->
-      {% csrf_token %}
-      <!-- I use the hidden input element to send along the information that
-        we are logging out. -->
-      <input type="hidden" name="logout" value="logout"></input>
-      <button type="submit" class="btn btn-danger">Logout</button>
-    </form>
+    {% if authenticated %}
+      <form style="padding-bottom:1em;" method="POST">
+        <!-- Every <form> element needs a csrf_token as a security precaution. -->
+        {% csrf_token %}
+        <!-- I use the hidden input element to send along the information that
+          we are logging out. -->
+        <input type="hidden" name="logout" value="logout"></input>
+        <button type="submit" class="btn btn-danger">Logout</button>
+      </form>
+    {% else %}
+      <form style="padding-bottom:1em;" method="POST">
+        <!-- Every <form> element needs a csrf_token as a security precaution. -->
+        {% csrf_token %}
+        <!-- I use the hidden input element to send along the information that
+          we are logging out. -->
+        <input type="hidden" name="login" value="login"></input>
+        <button type="submit" class="btn btn-danger">Login</button>
+      </form>
+    {% endif %}
   </body>
 </html>

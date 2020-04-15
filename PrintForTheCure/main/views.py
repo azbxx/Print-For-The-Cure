@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse
+from django.http import HttpResponseRedirect
 from django.template import loader
 # Custom imports added
 # Need timezone for date/time published
@@ -10,9 +11,16 @@ from django.contrib.auth import authenticate, login, logout
 
 # Create your views here.
 def home(request):
+    if request.POST:
+        if 'login' in request.POST.keys():
+            return HttpResponseRedirect("/login/")
+        if 'logout' in request.POST.keys():
+            logout(request)
+            return HttpResponseRedirect("/login/")
+
     template = loader.get_template('main/home.html')
     context = {     #all inputs for the html go in these brackets
-
+        'authenticated': request.user.is_authenticated
     }
     return HttpResponse(template.render(context, request))
 
@@ -24,6 +32,7 @@ def catalogue(request):
     return HttpResponse(template.render(context, request))
 
 def donorRegistration(request):
+
     template = loader.get_template('main/register.html')
     context = {     #all inputs for the html go in these brackets
 
@@ -31,7 +40,7 @@ def donorRegistration(request):
     return HttpResponse(template.render(context, request))
 
 def donorLogin(request):
-    if request.POST:
+    if request.method == "POST":
         # This tests if the form is the log *in* form
         if 'username' in request.POST.keys():
             # IF so, try to authentircate
@@ -40,21 +49,19 @@ def donorLogin(request):
             if user is not None:
                 # IF success, then use the login function so the session persists.
                 login(request, user)
+                return HttpResponseRedirect("/")
             else:
                 pass
-        elif 'logout' in request.POST.keys():
-            # If so, don't need to check anything else, just kill the session.
-            logout(request)
-            print("logged out successfully")
     # After we check the forms, set a flag for use in the template.
     if request.user.is_authenticated:
         template = loader.get_template('main/home.html')
-        print("login successful")
+        authenticated = True
     else:
         template = loader.get_template('main/donorLogin.html')
-        print("login unsuccessful")
+        authenticated = False
     # Find the template
     context = {
+        'authenticated': authenticated
     }
     return HttpResponse(template.render(context, request))
 
