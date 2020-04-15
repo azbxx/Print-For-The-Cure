@@ -32,6 +32,11 @@ def catalogue(request):
     return HttpResponse(template.render(context, request))
 
 def donorRegistration(request):
+    newUser = User.objects.create_user('myusername', 'myemail@crazymail.com', 'mypassword')
+    # Update fields and then save again
+    newUser.first_name = 'John'
+    newUser.last_name = 'Citizen'
+    newUser.save()
 
     template = loader.get_template('main/register.html')
     context = {     #all inputs for the html go in these brackets
