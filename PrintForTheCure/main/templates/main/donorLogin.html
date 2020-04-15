@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
+    <meta charset="UTF-8">
+    <meta name="author" content="Michael Zeng">
+    <title>BookFace</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- <script defer type="text/javascript" src="javascriptFileName.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/tether.js"></script>
+    <script src="js/bootstrap.min.js"></script> -->
+
+    <style>
+      .input-element{
+        font-size: 30px;
+        size: 400;
+      }
+      .label {
+        font-size: 24px;
+        margin-left:-13.75%;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body style="background-color: rgb(255, 200, 200)">
+    <div class="container">
+      <form style="padding-bottom:1em; padding-top:3em;" method="POST">
+        {% csrf_token %}
+        <!-- Give the user a place to type in their name and passowrd. -->
+        <div class="form-group">
+          <label for="username">Username</label>
+          <input type="text" class="form-control" name="username" id="username" />
+        </div>
+        <!-- Notice that we use password as the <input> type so that it blocks
+          out the characters as you type; otherwise, it is just a text box. -->
+        <div class="form-group">
+          <label for="password">Password</label>
+          <input type="password" class="form-control" name="password" id="password" />
+        </div>
+        <!-- Bootstrap likes <button> elements with type="submit" instead
+          <input> elements with type="submit" -->
+        <button type="submit" class="btn btn-danger">Login</button>
+      </form>
+    </div>
+  </body>
+</html>
