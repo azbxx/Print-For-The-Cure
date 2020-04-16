@@ -9,9 +9,12 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
+from .models import Donor
+from .models import Request
+
 # Create your views here.
 def home(request):
-    if request.POST:
+    if request.method == 'POST':
         if 'login' in request.POST.keys():
             return HttpResponseRedirect("/login/")
         if 'logout' in request.POST.keys():
@@ -32,11 +35,14 @@ def catalogue(request):
     return HttpResponse(template.render(context, request))
 
 def donorRegistration(request):
-    newUser = User.objects.create_user('myusername', 'myemail@crazymail.com', 'mypassword')
-    # Update fields and then save again
-    newUser.first_name = 'John'
-    newUser.last_name = 'Citizen'
-    newUser.save()
+    if request.method == 'POST':
+        if request.POST['password'] == request.POST['passwordConfirm']:
+            newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
+            newUser.save()
+            newDonor = Donor(user=newUser, address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
+            newDonor.save()
+        else:
+            print("h")
 
     template = loader.get_template('main/register.html')
     context = {     #all inputs for the html go in these brackets
