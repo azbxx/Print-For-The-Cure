@@ -35,19 +35,30 @@ def catalogue(request):
     return HttpResponse(template.render(context, request))
 
 def donorRegistration(request):
+    failMessage = ""
     if request.method == 'POST':
         if request.POST['password'] == request.POST['passwordConfirm']:
             newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
+            newUser.set_password(request.POST['password'])
             newUser.save()
             newDonor = Donor(user=newUser, address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
             newDonor.save()
+            return HttpResponseRedirect("/registrationSuccessful/")
         else:
-            print("h")
-
+            failMessage = "Passwords do not match."
     template = loader.get_template('main/register.html')
     context = {     #all inputs for the html go in these brackets
-
+        'failMessage': failMessage
     }
+    return HttpResponse(template.render(context, request))
+
+def registrationSuccessful(request):
+    if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
+
+    template = loader.get_template('main/registrationSuccessful.html')
+    context = {}
     return HttpResponse(template.render(context, request))
 
 def donorLogin(request):

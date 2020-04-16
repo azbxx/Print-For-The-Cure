@@ -7,6 +7,7 @@ urlpatterns = [
     path('', views.home, name='home'),
     path('catalogue/', views.catalogue, name='catalogue'),
     path('register/', views.donorRegistration, name='donor registration'),
+    path('registrationSuccessful/', views.registrationSuccessful, name='registration sucessful'),
     path('login/', views.donorLogin, name='login'),
     path('request/', views.doctorRequest, name='doctors submit requests'),
     path('nearbyRequests/', views.nearbyRequests, name='nearby requests'),
