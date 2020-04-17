@@ -88,9 +88,12 @@ def donorLogin(request):
     return HttpResponse(template.render(context, request))
 
 def doctorRequest(request):
+    if request.method == 'POST':
+        newRequest = Request(fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=request.POST['deliveryDate'], orderDate=request.POST[timezone.now()], notes=request.POST['otherNotes'])
+        newRequest.save()
+        return HttpResponseRedirect("/requestSubmitSuccessful/")
     template = loader.get_template('main/submitRequest.html')
     context = {     #all inputs for the html go in these brackets
-
     }
     return HttpResponse(template.render(context, request))
 

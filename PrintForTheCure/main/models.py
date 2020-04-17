@@ -23,7 +23,7 @@ class Request(models.Model):
     address = models.CharField(max_length=500)
     state = models.CharField(max_length=2)
     country = models.CharField(max_length=100)
-    zipcode = models.CharField(max_length=10)
+    zipCode = models.CharField(max_length=10)
     delivDate = models.DateTimeField('date for delivery')
     orderDate = models.DateTimeField('date ordered')
     notes = models.CharField(max_length=4000)

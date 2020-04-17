@@ -69,14 +69,14 @@
         </div>
 
         <div class="form-group">
-          <label for="state">State</label>
+          <label for="state">State:</label>
           <select id="state" name="state">
             <option value="ca">CA</option>
           </select>
         </div>
 
         <div class="form-group">
-          <label for="country">Country</label>
+          <label for="country">Country:</label>
           <select id="country" name="country">
             <option value="us">United States</option>
           </select>
@@ -85,52 +85,49 @@
         <div class="form-group">
           <label for="typePPE">Type of Personal Protection Equipment You Need:</label>
           <select id="typePPE" name="typePPE">
-            <option value="us">Face Shields</option>
-            <option value="us">Mask Straps</option>
-            <option value="us">Hand-less Door Handles</option>
-            <option value="us">Personal Hand-less Door Openers</option>
+            <option value="shield">Face Shields</option>
+            <option value="strap">Mask Straps</option>
+            <option value="handle">Hands-free Door Handles</option>
+            <option value="opener">Personal Hands-free Door Openers</option>
           </select>
         </div>
 
         <div class="form-group">
           <label for="numPPE">Amount of Specified Personal Protection Equipment You Need:</label>
           <select id="numPPE" name="numPPE">
-            <option value="us">3</option>
-            <option value="us">3</option>
-            <option value="us">4</option>
-            <option value="us">5</option>
-            <option value="us">6</option>
-            <option value="us">7</option>
-            <option value="us">8</option>
-            <option value="us">9</option>
-            <option value="us">10</option>
-            <option value="us">11</option>
-            <option value="us">12</option>
-            <option value="us">13</option>
-            <option value="us">14</option>
-            <option value="us">15</option>
-            <option value="us">16</option>
-            <option value="us">17</option>
-            <option value="us">18</option>
-            <option value="us">19</option>
-            <option value="us">20</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+            <option value="11">11</option>
+            <option value="12">12</option>
+            <option value="13">13</option>
+            <option value="14">14</option>
+            <option value="15">15</option>
+            <option value="16">16</option>
+            <option value="17">17</option>
+            <option value="18">18</option>
+            <option value="19">19</option>
+            <option value="20">20</option>
           </select>
         </div>
 
         <div>
           <label for="deliveryDate">Delivery Date For Specified Personal Protection Equipment: </label>
           <p>Tip: Give your donor enough time to produce what you need!</p>
-          <input type="date" id="deliveryDate" name="deliveryDate" value="2020-04-16" min="2020-04-16" max="2021-1-1">
+          <input type="date" id="deliveryDate" name="deliveryDate" value="{{ placement.date|date:'Y-m-d' }}" min="2020-04-16" max="2021-1-1">
         </div>
 
         <br />
         <div class="form-group">
-          <label for="otherNotes">Other Notes</label>
-          <input type="text" class="form-control" name="otherNotes" id="otherNotes" />
+          <label for="otherNotes">Other Notes For Donor:</label>
+          <textarea class="form-control" name="otherNotes" id="otherNotes" rows="6"></textarea>
         </div>
 
-        <!-- Bootstrap likes <button> elements with type="submit" instead
-          <input> elements with type="submit" -->
         <button type="submit" class="btn btn-danger">Submit Request For Personal Protection Equipment</button>
       </form>
       <h2>{{ failMessage }}</h2>
