@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!--
+  Necessary Components:
+  1) Pretty self explanatory, just need all of the following text boxes
+  2) User needs to know what they are registering for
+  -->
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
+    <meta charset="UTF-8">
+    <meta name="author" content="Michael Zeng">
+    <title>BookFace</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- <script defer type="text/javascript" src="javascriptFileName.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/tether.js"></script>
+    <script src="js/bootstrap.min.js"></script> -->
+
+    <style>
+      .input-element{
+        font-size: 30px;
+        size: 400;
+      }
+      .label {
+        font-size: 24px;
+        margin-left:-13.75%;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body style="background-color: rgb(255, 200, 200)">
+    <div class="container">
+      <h1 style="padding-top: 45px;">Submit Request For Personal Protection Equipment</h1>
+      <form style="padding-bottom:1em; padding-top:3em;" method="POST">
+        {% csrf_token %}
+        <!-- Give the user a place to type in their name and passowrd. -->
+        <div class="form-group">
+          <label for="fName">First Name</label>
+          <input type="text" class="form-control" name="fName" id="fName" />
+        </div>
+
+        <div class="form-group">
+          <label for="lName">Last Name</label>
+          <input type="text" class="form-control" name="lName" id="lName" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input type="text" class="form-control" name="email" id="email" />
+        </div>
+
+        <div class="form-group">
+          <label for="address">Address</label>
+          <p>Tip: Leave your work address! Not your home. PrintForTheCure is not liable for any misconduct.</p>
+          <input type="text" class="form-control" name="address" id="address" />
+        </div>
+
+        <div class="form-group">
+          <label for="zipCode">Zip Code</label>
+          <input type="text" class="form-control" name="zipCode" id="zipCode" />
+        </div>
+
+        <div class="form-group">
+          <label for="state">State</label>
+          <select id="state" name="state">
+            <option value="ca">CA</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="country">Country</label>
+          <select id="country" name="country">
+            <option value="us">United States</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="typePPE">Type of Personal Protection Equipment You Need:</label>
+          <select id="typePPE" name="typePPE">
+            <option value="us">Face Shields</option>
+            <option value="us">Mask Straps</option>
+            <option value="us">Hand-less Door Handles</option>
+            <option value="us">Personal Hand-less Door Openers</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="numPPE">Amount of Specified Personal Protection Equipment You Need:</label>
+          <select id="numPPE" name="numPPE">
+            <option value="us">3</option>
+            <option value="us">3</option>
+            <option value="us">4</option>
+            <option value="us">5</option>
+            <option value="us">6</option>
+            <option value="us">7</option>
+            <option value="us">8</option>
+            <option value="us">9</option>
+            <option value="us">10</option>
+            <option value="us">11</option>
+            <option value="us">12</option>
+            <option value="us">13</option>
+            <option value="us">14</option>
+            <option value="us">15</option>
+            <option value="us">16</option>
+            <option value="us">17</option>
+            <option value="us">18</option>
+            <option value="us">19</option>
+            <option value="us">20</option>
+          </select>
+        </div>
+
+        <div>
+          <label for="deliveryDate">Delivery Date For Specified Personal Protection Equipment: </label>
+          <p>Tip: Give your donor enough time to produce what you need!</p>
+          <input type="date" id="deliveryDate" name="deliveryDate" value="2020-04-16" min="2020-04-16" max="2021-1-1">
+        </div>
+
+        <br />
+        <div class="form-group">
+          <label for="otherNotes">Other Notes</label>
+          <input type="text" class="form-control" name="otherNotes" id="otherNotes" />
+        </div>
+
+        <!-- Bootstrap likes <button> elements with type="submit" instead
+          <input> elements with type="submit" -->
+        <button type="submit" class="btn btn-danger">Submit Request For Personal Protection Equipment</button>
+      </form>
+      <h2>{{ failMessage }}</h2>
+    </div>
+  </body>
+</html>

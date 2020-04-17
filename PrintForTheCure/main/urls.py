@@ -10,6 +10,7 @@ urlpatterns = [
     path('registrationSuccessful/', views.registrationSuccessful, name='registration sucessful'),
     path('login/', views.donorLogin, name='login'),
     path('request/', views.doctorRequest, name='doctors submit requests'),
+    path('requestSubmitSuccessful/', views.requestSubmitSuccessful, name="request submitted successfully"),
     path('nearbyRequests/', views.nearbyRequests, name='nearby requests'),
     path('confirmation/', views.confirmClaim, name='confirmation'),
     path('thankyou/', views.thankYou, name='thank you page'),

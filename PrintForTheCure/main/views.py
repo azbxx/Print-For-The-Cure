@@ -94,6 +94,15 @@ def doctorRequest(request):
     }
     return HttpResponse(template.render(context, request))
 
+def requestSubmitSuccessful(request):
+    if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
+
+    template = loader.get_template('main/requestSubmitSuccessful.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 def nearbyRequests(request):
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets

@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <!--
+  Necessary Components:
+  1) button to return home
+  2) text to signify that doctor's request was submitted successfully
+  -->
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
+    <meta charset="UTF-8">
+    <meta name="author" content="Michael Zeng">
+    <title>title</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    <!-- jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <!-- Popper JS -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <!-- Latest compiled JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <!-- <script defer type="text/javascript" src="javascriptFileName.js"></script>
+    <script src="js/jquery.min.js"></script>
+    <script src="js/tether.js"></script>
+    <script src="js/bootstrap.min.js"></script> -->
+
+    <style>
+      .input-element{
+        font-size: 30px;
+        size: 400;
+      }
+      .label {
+        font-size: 24px;
+        margin-left:-13.75%;
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body style="background-color: rgb(255, 200, 200)">
+    <h1>Request For PPE Submitted!</h1>
+    <h3>You will be emailed when a donor chooses to fulfill your request.<h3>
+    <form style="padding-bottom:1em;" method="POST">
+      <!-- Every <form> element needs a csrf_token as a security precaution. -->
+      {% csrf_token %}
+      <!-- I use the hidden input element to send along the information that
+        we are logging out. -->
+      <input type="hidden" name="returnHome" value="returnHome"></input>
+      <button type="submit" class="btn btn-danger">Return To Home Page</button>
+    </form>
+  </body>
+</html>
