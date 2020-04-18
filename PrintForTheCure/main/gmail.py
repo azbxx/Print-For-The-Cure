@@ -6,13 +6,16 @@ from google.auth.transport.requests import Request
 from email.mime.text import MIMEText
 import mimetypes
 import base64
+
 SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 def getService():
     creds = None
-    if os.path.exists('token.pickle'):
-        with open('token.pickle', 'rb') as token:
+    if os.path.exists('C:\\Users\\Michael Zeng\\Documents\\Programming\\Project Face Shield mk2\\PrintForTheCure\\main\\token.pickle'):
+        with open('C:\\Users\\Michael Zeng\\Documents\\Programming\\Project Face Shield mk2\\PrintForTheCure\\main\\token.pickle', 'rb') as token:
             creds = pickle.load(token)
+    else:
+        print("pickle failed")
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())

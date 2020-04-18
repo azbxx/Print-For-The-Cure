@@ -11,7 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from .models import Donor
 from .models import Request
-#from .gmail import getService
+from .gmail import *
 
 # Create your views here.
 def home(request):
@@ -133,8 +133,22 @@ def map(request):
 def nearbyRequests(request):
     if request.method == 'POST':
         if 'claim' in request.POST.keys():
-            return HttpResponseRedirect("/confirmation/")
+            if request.user.is_authenticated:
+                return HttpResponseRedirect("/confirmation/")
+            else:
+                return HttpResponseRedirect("/notLoggedIn/")
     template = loader.get_template('main/nearbyRequests.html')
+    context = {     #all inputs for the html go in these brackets
+
+    }
+    return HttpResponse(template.render(context, request))
+
+def notLoggedIn(request):
+    if request.method == 'POST':
+        if 'return' in request.POST.keys():
+            return HttpResponseRedirect("/requestsVisual/")
+            
+    template = loader.get_template('main/notLoggedIn.html')
     context = {     #all inputs for the html go in these brackets
 
     }
