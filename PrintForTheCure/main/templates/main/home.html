@@ -38,6 +38,7 @@
     </style>
   </head>
   <body style="background-color: rgb(255, 200, 200)">
+    <h2>A lot of text and images and stuff</h2>
     {% if authenticated %}
       <form style="padding-bottom:1em;" method="POST">
         <!-- Every <form> element needs a csrf_token as a security precaution. -->
@@ -57,5 +58,19 @@
         <button type="submit" class="btn btn-danger">Login</button>
       </form>
     {% endif %}
+    <form style="padding-bottom:1em;" method="POST">
+      <!-- Every <form> element needs a csrf_token as a security precaution. -->
+      {% csrf_token %}
+      <!-- I use the hidden input element to send along the information that
+        we are logging out. -->
+      <input type="hidden" name="mapView" value="mapView"></input>
+      <button type="submit" class="btn btn-danger">See Local Requests For PPE</button>
+    </form>
+    <form style="padding-bottom:1em;" method="POST">
+      <!-- Every <form> element needs a csrf_token as a security precaution. -->
+      {% csrf_token %}
+      <input type="hidden" name="catalogueView" value="catalogueView"></input>
+      <button type="submit" class="btn btn-danger">See a catalogue of PPE you can print and donate on PrintForTheCure!</button>
+    </form>
   </body>
 </html>

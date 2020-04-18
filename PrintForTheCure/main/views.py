@@ -20,6 +20,11 @@ def home(request):
         if 'logout' in request.POST.keys():
             logout(request)
             return HttpResponseRedirect("/login/")
+        elif 'mapView' in request.POST.keys():
+            return HttpResponseRedirect("/requestsVisual/")
+        elif 'catalogueView' in request.POST.keys():
+            print("hu")
+            return HttpResponseRedirect("/catalogue/")
 
     template = loader.get_template('main/home.html')
     context = {     #all inputs for the html go in these brackets
