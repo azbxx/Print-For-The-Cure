@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <!--
+  This page is for doctors to submit a request for #, type of PPE by certain date etc.
   Necessary Components:
   1) Pretty self explanatory, just need all of the following text boxes
-  2) User needs to know what they are registering for
+  2) User(doctor)
   -->
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
@@ -116,11 +117,11 @@
           </select>
         </div>
 
-        <div>
+        <!-- <div>
           <label for="deliveryDate">Delivery Date For Specified Personal Protection Equipment: </label>
           <p>Tip: Give your donor enough time to produce what you need!</p>
           <input type="date" id="deliveryDate" name="deliveryDate" value="{{ placement.date|date:'Y-m-d' }}" min="2020-04-16" max="2021-1-1">
-        </div>
+        </div> -->
 
         <br />
         <div class="form-group">
@@ -130,7 +131,6 @@
 
         <button type="submit" class="btn btn-danger">Submit Request For Personal Protection Equipment</button>
       </form>
-      <h2>{{ failMessage }}</h2>
     </div>
   </body>
 </html>

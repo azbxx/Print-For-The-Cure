@@ -11,6 +11,7 @@ urlpatterns = [
     path('login/', views.donorLogin, name='login'),
     path('request/', views.doctorRequest, name='doctors submit requests'),
     path('requestSubmitSuccessful/', views.requestSubmitSuccessful, name="request submitted successfully"),
+    path('requestsVisual/', views.map, name="visual map of requests"),
     path('nearbyRequests/', views.nearbyRequests, name='nearby requests'),
     path('confirmation/', views.confirmClaim, name='confirmation'),
     path('thankyou/', views.thankYou, name='thank you page'),
