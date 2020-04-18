@@ -33,10 +33,12 @@ def home(request):
     return HttpResponse(template.render(context, request))
 
 def catalogue(request):
-    template = loader.get_template('main/catalogue.html')
-    context = {     #all inputs for the html go in these brackets
+    if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
 
-    }
+    template = loader.get_template('main/catalogue.html')
+    context = {}
     return HttpResponse(template.render(context, request))
 
 def donorRegistration(request):
@@ -134,8 +136,10 @@ def confirmClaim(request):
     return HttpResponse(template.render(context, request))
 
 def thankYou(request):
-    template = loader.get_template('main/thankYou.html')
-    context = {     #all inputs for the html go in these brackets
+    if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
 
-    }
+    template = loader.get_template('main/thankYou.html')
+    context = {}
     return HttpResponse(template.render(context, request))
