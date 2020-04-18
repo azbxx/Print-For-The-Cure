@@ -58,6 +58,14 @@
         <button type="submit" class="btn btn-danger">Login</button>
       </form>
     {% endif %}
+
+    <form style="padding-bottom:1em;" method="POST">
+      <!-- Every <form> element needs a csrf_token as a security precaution. -->
+      {% csrf_token %}
+      <input type="hidden" name="submitRequest" value="submitRequest"></input>
+      <button type="submit" class="btn btn-danger">Submit a Request For PPE</button>
+    </form>
+
     <form style="padding-bottom:1em;" method="POST">
       <!-- Every <form> element needs a csrf_token as a security precaution. -->
       {% csrf_token %}
@@ -66,11 +74,13 @@
       <input type="hidden" name="mapView" value="mapView"></input>
       <button type="submit" class="btn btn-danger">See Local Requests For PPE</button>
     </form>
+
     <form style="padding-bottom:1em;" method="POST">
       <!-- Every <form> element needs a csrf_token as a security precaution. -->
       {% csrf_token %}
       <input type="hidden" name="catalogueView" value="catalogueView"></input>
       <button type="submit" class="btn btn-danger">See a catalogue of PPE you can print and donate on PrintForTheCure!</button>
     </form>
+
   </body>
 </html>

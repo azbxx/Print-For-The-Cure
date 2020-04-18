@@ -39,6 +39,14 @@
   </head>
   <body style="background-color: rgb(255, 200, 200)">
     <div class="container">
+      <form style="padding-bottom:1em;" method="POST">
+        <!-- Every <form> element needs a csrf_token as a security precaution. -->
+        {% csrf_token %}
+        <!-- I use the hidden input element to send along the information that
+          we are logging out. -->
+        <input type="hidden" name="returnHome" value="returnHome"></input>
+        <button type="submit" class="btn btn-danger">Return To Home Page</button>
+      </form>
       <h1 style="padding-top: 45px;">Submit Request For Personal Protection Equipment</h1>
       <form style="padding-bottom:1em; padding-top:3em;" method="POST">
         {% csrf_token %}

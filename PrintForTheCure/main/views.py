@@ -11,6 +11,7 @@ from django.contrib.auth import authenticate, login, logout
 
 from .models import Donor
 from .models import Request
+#from .gmail import getService
 
 # Create your views here.
 def home(request):
@@ -20,6 +21,8 @@ def home(request):
         if 'logout' in request.POST.keys():
             logout(request)
             return HttpResponseRedirect("/login/")
+        elif 'submitRequest' in request.POST.keys():
+            return HttpResponseRedirect("/request/")
         elif 'mapView' in request.POST.keys():
             return HttpResponseRedirect("/requestsVisual/")
         elif 'catalogueView' in request.POST.keys():
@@ -100,6 +103,8 @@ def donorLogin(request):
 
 def doctorRequest(request):
     if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
         print(vars(request.POST))
         newRequest = Request(fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
         newRequest.save()
@@ -126,6 +131,9 @@ def map(request):
     return HttpResponse(template.render(context, request))
 
 def nearbyRequests(request):
+    if request.method == 'POST':
+        if 'claim' in request.POST.keys():
+            return HttpResponseRedirect("/confirmation/")
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
 
@@ -133,6 +141,12 @@ def nearbyRequests(request):
     return HttpResponse(template.render(context, request))
 
 def confirmClaim(request):
+    if request.method == 'POST':
+        if 'yes' in request.POST.keys():
+            service = getService()
+            return HttpResponseRedirect("/thankyou/")
+        elif 'no' in request.POST.keys():
+            return HttpResponseRedirect("/requestsVisual/")
     template = loader.get_template('main/confirmClaim.html')
     context = {     #all inputs for the html go in these brackets
 
