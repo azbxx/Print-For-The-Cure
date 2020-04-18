@@ -69,10 +69,15 @@
           <li class="nav-item bg-dark" style="margin-top:4px; margin-right:120px; margin-left:5px;">
             <a href="/request">Submit Request For PPE</a>
           </li>
-          <li class="nav-item bg-dark" style="margin-top:4px; margin-right:5px; margin-left:5px;">
-            <a href="/register">Login/Register</a>
-          </li>
         </ul>
+        {% if authenticated %}
+        {% else %}
+          <ul class="nav navbarnav navbar-right" style="padding-bottom:6px;">
+            <li class="nav-item bg-dark" style="margin-top:4px; margin-right:5px; margin-left:5px;">
+              <a href="/login">Login/Register</a>
+            </li>
+          </ul>
+        {% endif %}
       </div>
     </nav>
     <div id="map"></div>

@@ -44,7 +44,9 @@ def catalogue(request):
 def donorRegistration(request):
     failMessage = ""
     if request.method == 'POST':
-        if request.POST['password'] == request.POST['passwordConfirm']:
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
+        elif request.POST['password'] == request.POST['passwordConfirm']:
             newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
             newUser.set_password(request.POST['password'])
             newUser.save()
@@ -81,6 +83,8 @@ def donorLogin(request):
                 return HttpResponseRedirect("/")
             else:
                 pass
+        elif 'register' in request.POST.keys():
+            return HttpResponseRedirect("/register")
     # After we check the forms, set a flag for use in the template.
     if request.user.is_authenticated:
         template = loader.get_template('main/home.html')
@@ -117,7 +121,7 @@ def requestSubmitSuccessful(request):
 def map(request):
     template = loader.get_template('main/mapView.html')
     context = {     #all inputs for the html go in these brackets
-
+        'authenticated': request.user.is_authenticated
     }
     return HttpResponse(template.render(context, request))
 

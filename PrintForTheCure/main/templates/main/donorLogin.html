@@ -36,6 +36,8 @@ Obviously the page for the donor to log in at.
   </head>
   <body style="background-color: rgb(255, 200, 200)">
     <div class="container">
+      <br /><br />
+      <h1>Login</h1>
       <form style="padding-bottom:1em; padding-top:3em;" method="POST">
         {% csrf_token %}
         <!-- Give the user a place to type in their name and passowrd. -->
@@ -52,11 +54,23 @@ Obviously the page for the donor to log in at.
         <!-- Bootstrap likes <button> elements with type="submit" instead
           <input> elements with type="submit" -->
         <button type="submit" class="btn btn-danger">Login</button>
-        <br /><br />
-        {% if authenticated %}
-        {% else %}
-          <p>Username and Password did not match.</p>
-        {% endif %}
+        <br />
+      </form>
+
+      {% if authenticated %}
+      {% else %}
+        <p>Username and Password did not match.</p>
+      {% endif %}
+      <br />
+
+      <h2>Don't have an account yet?</h2>
+      <form style="padding-bottom:1em;" method="POST">
+        <!-- Every <form> element needs a csrf_token as a security precaution. -->
+        {% csrf_token %}
+        <!-- I use the hidden input element to send along the information that
+          we are logging out. -->
+        <input type="hidden" name="register" value="register"></input>
+        <button type="submit" class="btn btn-danger">Register</button>
       </form>
     </div>
   </body>
