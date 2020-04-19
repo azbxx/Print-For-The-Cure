@@ -41,6 +41,8 @@
   <body style="background-color: rgb(255, 200, 200)">
     <h1>Request For PPE Submitted!</h1>
     <h3>You will be emailed when a donor chooses to fulfill your request.<h3>
+
+    <!--You can only change the form style and button class, everything else below has to stay the same-->
     <form style="padding-bottom:1em;" method="POST">
       <!-- Every <form> element needs a csrf_token as a security precaution. -->
       {% csrf_token %}
@@ -49,5 +51,7 @@
       <input type="hidden" name="returnHome" value="returnHome"></input>
       <button type="submit" class="btn btn-danger">Return To Home Page</button>
     </form>
+
+
   </body>
 </html>

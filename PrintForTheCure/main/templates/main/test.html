@@ -1,0 +1,16 @@
+<!--Button Example-->
+<!--You can only change the form style and button class, everything else below has to stay the same-->
+<!--The method has to be POST-->
+<form style="padding-bottom:1em;" method="POST">
+  <!-- Every <form> element needs a csrf_token as a security precaution. -->
+  {% csrf_token %}
+  <!--the name of the input is important to the django framework-->
+  <input type="hidden" name="returnHome"></input>
+  <!--The button class only affects styling-->
+  <button class="btn btn-danger">Return To Home Page</button>
+</form>
+
+<!--<a> Example-->
+<!--The only thing important to django is the href. The href redirects to the url. For all the existing urls see urls.py-->
+<a href="/">Home Page</a>
+<a href="/nearbyRequests">Requests Near You</a>

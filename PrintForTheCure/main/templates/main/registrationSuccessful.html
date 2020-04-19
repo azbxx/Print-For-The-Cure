@@ -39,13 +39,17 @@
   </head>
   <body style="background-color: rgb(255, 200, 200)">
     <h1>Registration Successful!</h1>
+
+    <!--You can only change the form style and button class, everything else below has to stay the same-->
     <form style="padding-bottom:1em;" method="POST">
       <!-- Every <form> element needs a csrf_token as a security precaution. -->
       {% csrf_token %}
       <!-- I use the hidden input element to send along the information that
         we are logging out. -->
-      <input type="hidden" name="returnHome" value="returnHome"></input>
+      <input type="hidden" name="returnHome"></input>
       <button type="submit" class="btn btn-danger">Return To Home Page</button>
     </form>
+
+
   </body>
 </html>

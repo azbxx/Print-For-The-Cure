@@ -14,11 +14,6 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-    <!-- <script defer type="text/javascript" src="javascriptFileName.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/tether.js"></script>
-    <script src="js/bootstrap.min.js"></script> -->
-
     <style>
       .input-element{
         font-size: 30px;
@@ -29,13 +24,9 @@
         margin-left:-13.75%;
         font-weight: bold;
       }
-
-      /* Always set the map height explicitly to define the size of the div
-       * element that contains the map. */
       #map {
         height: 92%;
       }
-      /* Optional: Makes the sample page fill the window. */
       html, body {
         height: 100%;
         margin: 0;
@@ -54,6 +45,7 @@
     </style>
   </head>
   <body>
+    <!--To get a working navbar in django, the only thing you need is the <a> tag with the correct href-->
     <nav class="navbar navbar-dark navbar-expand-md bg-dark" style="height:50px; opacity:0.9;">
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" style="margin-top:-3px">
         <span class="navbar-toggler-icon"></span>
@@ -61,25 +53,36 @@
       <div class="collapse navbar-collapse">
         <ul class="nav navbar-nav mx-auto" style="padding-bottom:6px;">
           <li class="nav-item navbarMargins bg-dark">
+            <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
             <a href="/">Home Page</a>
           </li>
           <li class="nav-item bg-dark" style="margin-top:4px; margin-right:5px; margin-left:5px;">
+            <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
             <a href="/nearbyRequests">Requests Near You</a>
           </li>
           <li class="nav-item bg-dark" style="margin-top:4px; margin-right:120px; margin-left:5px;">
+            <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
             <a href="/request">Submit Request For PPE</a>
           </li>
         </ul>
+
         {% if authenticated %}
+          <!--All code in this area will run if the user is authenticated-->
         {% else %}
+          <!--All code in this area will run if the user is not authenticated-->
           <ul class="nav navbarnav navbar-right" style="padding-bottom:6px;">
             <li class="nav-item bg-dark" style="margin-top:4px; margin-right:5px; margin-left:5px;">
+              <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
               <a href="/login">Login/Register</a>
             </li>
           </ul>
-        {% endif %}
+        {% endif %}   <!--After this point everything will run-->
+
       </div>
     </nav>
+
+
+    <!--DO NOT CHANGE ANYTHING BELOW HERE-->
     <div id="map"></div>
     <script>
       var map;

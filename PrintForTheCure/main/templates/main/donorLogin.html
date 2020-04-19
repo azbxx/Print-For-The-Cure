@@ -41,43 +41,35 @@
         <div class="container-xs clearfix">
           <h2 class="text-uppercase color-dark"><i class="fa fa-sign-in"></i> LOGIN</h2>
           <hr/>
-          <form>
+          <form style="padding-bottom:1em;" method="POST">
+            <!-- Every <form> element needs a csrf_token as a security precaution. -->
+            {% csrf_token %}
             <div class="form-group">
-              <label>Username</label>
-              <input type="text" class="form-control form-flat" name="text">
+              <label for="username">Username</label>
+              <input type="text" class="form-control form-flat" name="username" id="username" />
             </div>
             <div class="form-group">
-              <label>Password</label>
-              <input type="password" class="form-control form-flat" name="text">
+              <label for="password">Password</label>
+              <input type="password" class="form-control form-flat" name="password" id="password" />
             </div>
+            <button type="submit" class="btn-xs btn-default  btn-flat-solid">Login</button>
 
-
-
+            {% if authenticated %}
+            {% else %}
+              <p>Username and Password did not match.</p>
+            {% endif %}
+          </form>
+          <div class="form-group">
             <form style="padding-bottom:1em;" method="POST">
               <!-- Every <form> element needs a csrf_token as a security precaution. -->
               {% csrf_token %}
               <!-- I use the hidden input element to send along the information that
                 we are logging out. -->
-              <input type="hidden" name="returnHome"></input>
-              <a type="button" class="btn  btn-xs btn-default  btn-flat-solid ">Login</a>
+              <input type="hidden" name="register"></input>
+              <!--<button type="submit">Not a Member?</button>-->
+              <a href="/register">Not a Member?</a>
             </form>
-
-
-
-            <!-- <a type="button" class="btn  btn-xs btn-default  btn-flat-solid ">Login</a> -->
-            <div class="form-group">
-              <form style="padding-bottom:1em;" method="POST">
-                <!-- Every <form> element needs a csrf_token as a security precaution. -->
-                {% csrf_token %}
-                <!-- I use the hidden input element to send along the information that
-                  we are logging out. -->
-                <input type="hidden" name="register"></input>
-                <a style="color:#7d7d7d;"> Not a member?</a>
-              </form>
-            </div>
-
-
-          </form>
+          </div>
         </div>
       </div>
     </div>

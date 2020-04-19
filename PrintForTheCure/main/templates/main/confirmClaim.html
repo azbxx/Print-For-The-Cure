@@ -39,21 +39,26 @@
   </head>
   <body style="background-color: rgb(255, 200, 200)">
     <h1>You Would Like to Claim This Request For PPE:</h1>
+
+    <!--You can only change the form style and button class, everything else in the form has to stay the same-->
     <form style="padding-bottom:1em;" method="POST">
       <!-- Every <form> element needs a csrf_token as a security precaution. -->
       {% csrf_token %}
       <!-- I use the hidden input element to send along the information that
         we are logging out. -->
-      <input type="hidden" name="yes" value="yes"></input>
+      <input type="hidden" name="yes"></input>
       <button type="submit" class="btn btn-danger">YES</button>
     </form>
+
+    <!--You can only change the form style and button class, everything else in the form has to stay the same-->
     <form style="padding-bottom:1em;" method="POST">
       <!-- Every <form> element needs a csrf_token as a security precaution. -->
       {% csrf_token %}
       <!-- I use the hidden input element to send along the information that
         we are logging out. -->
-      <input type="hidden" name="no" value="no"></input>
+      <input type="hidden" name="no"></input>
       <button type="submit" class="btn btn-danger">NO</button>
     </form>
+
   </body>
 </html>
