@@ -9,8 +9,9 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
+import random
 from .models import Donor
-from .models import Request
+from .models import RequestModel
 from .gmail import *
 
 # Create your views here.
@@ -106,7 +107,7 @@ def doctorRequest(request):
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
         print(vars(request.POST))
-        newRequest = Request(fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
+        newRequest = RequestModel(idNum=RequestModel.objects.latest('orderDate').idNum + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
         newRequest.save()
         return HttpResponseRedirect("/requestSubmitSuccessful/")
     template = loader.get_template('main/submitRequest.html')
@@ -132,14 +133,17 @@ def map(request):
 
 def nearbyRequests(request):
     if request.method == 'POST':
-        if 'claim' in request.POST.keys():
-            if request.user.is_authenticated:
-                return HttpResponseRedirect("/confirmation/")
-            else:
-                return HttpResponseRedirect("/notLoggedIn/")
+        if request.user.is_authenticated:
+            return HttpResponseRedirect("/confirmation/")
+        else:
+            return HttpResponseRedirect("/notLoggedIn/")
+
+    allRequests = RequestModel.objects.all()
+    print(allRequests)
+
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
-
+        'allRequests': allRequests
     }
     return HttpResponse(template.render(context, request))
 
@@ -147,7 +151,7 @@ def notLoggedIn(request):
     if request.method == 'POST':
         if 'return' in request.POST.keys():
             return HttpResponseRedirect("/requestsVisual/")
-            
+
     template = loader.get_template('main/notLoggedIn.html')
     context = {     #all inputs for the html go in these brackets
 
@@ -158,6 +162,16 @@ def confirmClaim(request):
     if request.method == 'POST':
         if 'yes' in request.POST.keys():
             service = getService()
+            #Donor Email
+            subject = "Claimed Request For PPE"
+            message_text = "Thank You For Claiming a request!"
+            message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text)
+            sendMessage(service, 'me', message)
+            #Doctor Email
+            subject = "Request For PPE Claimed"
+            message_text = "Hello %s,\n \nA gracious donor has claimed your request for %d of type %s PPE!\n \nYour donor is expected to deliver the requested PPE to your address. You may contact your donor here: %s\n Once you have received your PPE, we strongly urge you to leave your donor a monetary donation; they have taken the time, effort, and materials to help you!!!" % ("name", 10, "yes",  request.user.email)
+            message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text)
+
             return HttpResponseRedirect("/thankyou/")
         elif 'no' in request.POST.keys():
             return HttpResponseRedirect("/requestsVisual/")
@@ -173,5 +187,10 @@ def thankYou(request):
             return HttpResponseRedirect("/")
 
     template = loader.get_template('main/thankYou.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def test(request):
+    template = loader.get_template('main/fileName.html')
     context = {}
     return HttpResponse(template.render(context, request))

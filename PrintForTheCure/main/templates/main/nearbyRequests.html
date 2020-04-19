@@ -38,13 +38,20 @@
     </style>
   </head>
   <body style="background-color: rgb(255, 200, 200)">
-    <form style="padding-bottom:1em;" method="POST">
-      <!-- Every <form> element needs a csrf_token as a security precaution. -->
-      {% csrf_token %}
-      <!-- I use the hidden input element to send along the information that
-        we are logging out. -->
-      <input type="hidden" name="claim" value="claim"></input>
-      <button type="submit" class="btn btn-danger">Claim</button>
-    </form>
+    <div class="container">
+      {% for request in allRequests %}
+        <div class="row">
+          <p>{{ request.fName }} {{request.lName}}     {{ request.typePPE }} {{ request.numPPE }}     {{ request }}     {{ request.address }}, {{ request.state }}, {{ request.country }}, {{ request.zipCode }}     Order Date: {{ request.orderDate }}   Delivery Date: {{ request.delivDate }}</p>
+          <form style="padding-bottom:1em;" method="POST">
+            <!-- Every <form> element needs a csrf_token as a security precaution. -->
+            {% csrf_token %}
+            <!-- I use the hidden input element to send along the information that
+              we are logging out. -->
+            <input type="hidden" name="{{ request.idNum }}" value="{{ request.idNum }}"></input>
+            <button type="submit" class="btn btn-danger">Claim</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div>
   </body>
 </html>

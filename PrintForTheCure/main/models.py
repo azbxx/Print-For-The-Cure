@@ -12,7 +12,9 @@ class Donor(models.Model):
     zipCode = models.CharField(max_length=10, default='')
     registrationDate = models.DateTimeField('date registered')
 
-class Request(models.Model):
+class RequestModel(models.Model):
+    idNum = models.IntegerField(default=0)
+    status = models.IntegerField(default=0)     #0 = unclaimed, 1 = claimed
     fName = models.CharField(max_length=100)
     lName = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
@@ -22,6 +24,9 @@ class Request(models.Model):
     state = models.CharField(max_length=2)
     country = models.CharField(max_length=100)
     zipCode = models.CharField(max_length=10)
-    delivDate = models.DateTimeField('date for delivery')
-    orderDate = models.DateTimeField('date ordered')
+    delivDate = models.DateField('date for delivery')
+    orderDate = models.DateField('date ordered')
     notes = models.TextField()
+
+    def __str__(self):
+        return self.email

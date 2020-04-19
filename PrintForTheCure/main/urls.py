@@ -16,4 +16,5 @@ urlpatterns = [
     path('notLoggedIn/', views.notLoggedIn, name='not logged in'),
     path('confirmation/', views.confirmClaim, name='confirmation'),
     path('thankyou/', views.thankYou, name='thank you page'),
+    path('test/', views.test)
 ]
