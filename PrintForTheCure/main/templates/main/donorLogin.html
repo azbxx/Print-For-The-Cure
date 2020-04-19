@@ -1,58 +1,132 @@
 <!DOCTYPE html>
-<html lang="en">
-<!--
-Obviously the page for the donor to log in at.
--->
+<html lang="en" >
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
-    <meta charset="UTF-8">
-    <meta name="author" content="Michael Zeng">
-    <title>BookFace</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-    <!-- <script defer type="text/javascript" src="javascriptFileName.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/tether.js"></script>
-    <script src="js/bootstrap.min.js"></script> -->
+    <title>Website</title>
 
-    <style>
-      .input-element{
-        font-size: 30px;
-        size: 400;
-      }
-      .label {
-        font-size: 24px;
-        margin-left:-13.75%;
-        font-weight: bold;
-      }
-    </style>
+    {% load static %}
+
+    <!--favicon-->
+    <link rel="apple-touch-icon" href="{% static 'assets/theme/images/apple-touch-icon.png' %}">
+    <link rel="icon" href="{% static 'assets/theme/images/favicon.ico' %}">
+
+    <!--pace (page loader) style-->
+    <link href="{% static 'assets/plugins/pace/pace.css' %}" rel="stylesheet">
+    <script src="{% static 'assets/plugins/pace/pace.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'assets/plugins/bootstrap-3.3.1/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Icons -->
+    <link href="{% static 'assets/plugins/font-awesome-4.2.0/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- typed style -->
+    <link href="{% static 'assets/plugins/typed/typed.css' %}" rel="stylesheet">
+    <!-- popup style-->
+    <link href="{% static 'assets/plugins/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+    <!-- simple Captcha-->
+    <link href="{% static 'assets/plugins/simpleCaptcha/jquery.simpleCaptcha.css' %}" rel="stylesheet">
+
+
+
+    <link href="{% static 'assets/theme/css/style.css' %}" rel="stylesheet">
+
   </head>
-  <body style="background-color: rgb(255, 200, 200)">
-    <div class="container">
+
+  <body >
+    <div class="wrapper">
+      <div class="block-page" >
+        <div class="container-xs clearfix">
+          <h2 class="text-uppercase color-dark"><i class="fa fa-sign-in"></i> LOGIN</h2>
+          <hr/>
+          <form>
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" class="form-control form-flat" name="text">
+            </div>
+            <div class="form-group">
+              <label>Password</label>
+              <input type="password" class="form-control form-flat" name="text">
+            </div>
+
+
+
+            <form style="padding-bottom:1em;" method="POST">
+              <!-- Every <form> element needs a csrf_token as a security precaution. -->
+              {% csrf_token %}
+              <!-- I use the hidden input element to send along the information that
+                we are logging out. -->
+              <input type="hidden" name="returnHome"></input>
+              <a type="button" class="btn  btn-xs btn-default  btn-flat-solid ">Login</a>
+            </form>
+
+
+
+            <!-- <a type="button" class="btn  btn-xs btn-default  btn-flat-solid ">Login</a> -->
+            <div class="form-group">
+              <form style="padding-bottom:1em;" method="POST">
+                <!-- Every <form> element needs a csrf_token as a security precaution. -->
+                {% csrf_token %}
+                <!-- I use the hidden input element to send along the information that
+                  we are logging out. -->
+                <input type="hidden" name="register"></input>
+                <a style="color:#7d7d7d;"> Not a member?</a>
+              </form>
+            </div>
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'assets/plugins/jquery.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap-3.3.1/js/bootstrap.min.js' %}"></script>
+
+    <!-- maps js -->
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="{% static 'assets/plugins/jquery.ui.map.js' %}"></script>
+
+    <!-- advanced easing options -->
+    <script src="{% static 'assets/plugins/jquery.easing-1.3.pack.js' %}"></script>
+
+    <!-- parallax bg js -->
+    <script src="{% static 'assets/plugins/jquery.parallax-1.1.3.js' %}"></script>
+    <!-- lightbox js -->
+    <script src="{% static 'assets/plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+    <!-- typed animation-->
+    <script src="{% static 'assets/plugins/typed/typed.js' %}"></script>
+    <!-- easy chart-->
+    <script src="{% static 'assets/plugins/easypiechart/jquery.easypiechart.min.js' %}"></script>
+    <!-- simple Captcha -->
+    <script src="{% static 'assets/plugins/simpleCaptcha/jquery.simpleCaptcha.js' %}"></script>
+    <!-- simple Ajax Uploader -->
+    <script src="{% static 'assets/plugins/Simple-Ajax-Uploader/SimpleAjaxUploader.min.js' %}"></script>
+    <!-- validate jquery-->
+    <script src="{% static 'assets/plugins/validator/jquery.validate.min.js' %}"></script>
+
+    <!--=====================================================-->
+    <!--configuration template-->
+    <script src="{% static 'assets/theme/js/theme.js' %}"></script>
+
+
+
+    <!-- <div class="container">
       <br /><br />
       <h1>Login</h1>
       <form style="padding-bottom:1em; padding-top:3em;" method="POST">
         {% csrf_token %}
-        <!-- Give the user a place to type in their name and passowrd. -->
         <div class="form-group">
           <label for="username">Username</label>
           <input type="text" class="form-control" name="username" id="username" />
         </div>
-        <!-- Notice that we use password as the <input> type so that it blocks
-          out the characters as you type; otherwise, it is just a text box. -->
         <div class="form-group">
           <label for="password">Password</label>
           <input type="password" class="form-control" name="password" id="password" />
         </div>
-        <!-- Bootstrap likes <button> elements with type="submit" instead
-          <input> elements with type="submit" -->
         <button type="submit" class="btn btn-danger">Login</button>
         <br />
       </form>
@@ -65,13 +139,13 @@ Obviously the page for the donor to log in at.
 
       <h2>Don't have an account yet?</h2>
       <form style="padding-bottom:1em;" method="POST">
-        <!-- Every <form> element needs a csrf_token as a security precaution. -->
         {% csrf_token %}
-        <!-- I use the hidden input element to send along the information that
-          we are logging out. -->
         <input type="hidden" name="register" value="register"></input>
         <button type="submit" class="btn btn-danger">Register</button>
       </form>
-    </div>
+    </div> -->
+
+
+
   </body>
 </html>
