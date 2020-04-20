@@ -93,8 +93,16 @@ def donorRegistration(request):
             newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
             newUser.set_password(request.POST['password'])
             newUser.save()
-            newDonor = Donor(user=newUser, address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
+            newDonor = Donor(user=newUser, address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
             newDonor.save()
+
+            service = getService()
+            #Donor Email
+            subject = "PrintForTheCure Registration Details"
+            message_text = "Thank you for registing with PrintForTheCure! Now you can get started fulfilling PPE requests!\n\nYour Username: %s\n\nYour Password: %s" % (request.POST['username'], request.POST['password'])
+            message = makeMessage("printforthecure@gmail.com", request.POST['email'], subject, message_text)
+            sendMessage(service, 'me', message)
+
             return HttpResponseRedirect("/registrationSuccessful/")
         else:
             failMessage = "Passwords do not match."
@@ -180,17 +188,19 @@ def nearbyRequests(request):
         else:
             return HttpResponseRedirect("/notLoggedIn/")
 
-    addressList = request.user.address.split()
+    donor = Donor.objects.get(user = request.user)
+
+    addressList = donor.address.split()
     addressFormatted = ""
     for word in addressList:
         addressFormatted += word
 
-    cityList = request.user.city.split()
+    cityList = donor.city.split()
     cityFormatted = ""
     for word in cityList:
         addressFormatted += word
 
-    origin = addressFormatted + "+" + cityFormatted + "+" + request.user.state + "+" + request.user.zipCode
+    origin = addressFormatted + "+" + cityFormatted + "+" + donor.state + "+" + donor.zipCode
 
     allRequests = RequestModel.objects.all()
     print(allRequests)
