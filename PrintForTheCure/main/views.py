@@ -9,6 +9,11 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 
+# Google Distance Matrix API Imports
+import googlemaps
+import json
+import urllib.request
+
 import random
 from .models import Donor
 from .models import RequestModel
@@ -16,19 +21,26 @@ from .gmail import *
 
 # Create your views here.
 def home(request):
+    print(request.user.is_authenticated)
     if request.method == 'POST':
         if 'login' in request.POST.keys():
             return HttpResponseRedirect("/login/")
         if 'logout' in request.POST.keys():
+            print(request.user.is_authenticated)
             logout(request)
             return HttpResponseRedirect("/login/")
         elif 'submitRequest' in request.POST.keys():
             return HttpResponseRedirect("/request/")
         elif 'mapView' in request.POST.keys():
             return HttpResponseRedirect("/requestsVisual/")
-        elif 'catalogueView' in request.POST.keys():
-            print("hu")
-            return HttpResponseRedirect("/catalogue/")
+        elif 'shield' in request.POST.keys():
+            return HttpResponseRedirect("/catalogue-shield/")
+        elif 'hook' in request.POST.keys():
+            return HttpResponseRedirect("/catalogue-maskstrap/")
+        elif 'opener' in request.POST.keys():
+            return HttpResponseRedirect("/catalogue-dooropener/")
+        elif 'handle' in request.POST.keys():
+            return HttpResponseRedirect("/catalogue-handle/")
 
     template = loader.get_template('main/home.html')
     context = {     #all inputs for the html go in these brackets
@@ -36,12 +48,39 @@ def home(request):
     }
     return HttpResponse(template.render(context, request))
 
-def catalogue(request):
+def catalogueShield(request):
     if request.method == 'POST':
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
 
-    template = loader.get_template('main/catalogue.html')
+    template = loader.get_template('main/shield.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def catalogueMaskStrap(request):
+    if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
+
+    template = loader.get_template('main/hook.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def catalogueDoorOpener(request):
+    if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
+
+    template = loader.get_template('main/opener.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
+def catalogueHandle(request):
+    if request.method == 'POST':
+        if 'returnHome' in request.POST.keys():
+            return HttpResponseRedirect("/")
+
+    template = loader.get_template('main/handle.html')
     context = {}
     return HttpResponse(template.render(context, request))
 
@@ -132,11 +171,26 @@ def map(request):
     return HttpResponse(template.render(context, request))
 
 def nearbyRequests(request):
+    print(request.user.is_authenticated)
+    if not request.user.is_authenticated:
+        return HttpResponseRedirect("/notLoggedIn/")
     if request.method == 'POST':
         if request.user.is_authenticated:
             return HttpResponseRedirect("/confirmation/")
         else:
             return HttpResponseRedirect("/notLoggedIn/")
+
+    addressList = request.user.address.split()
+    addressFormatted = ""
+    for word in addressList:
+        addressFormatted += word
+
+    cityList = request.user.city.split()
+    cityFormatted = ""
+    for word in cityList:
+        addressFormatted += word
+
+    origin = addressFormatted + "+" + cityFormatted + "+" + request.user.state + "+" + request.user.zipCode
 
     allRequests = RequestModel.objects.all()
     print(allRequests)

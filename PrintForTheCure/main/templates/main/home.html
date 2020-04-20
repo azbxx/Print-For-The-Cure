@@ -1,18 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
-  <!--
-  Necessary Components:
-  0) check out the flow chart in the google drive folder for details
-  1) BIG button to redirect to the map view
-  2) Button to see online catalogue
-  -->
+<html lang="en" >
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <meta name="author" content="Michael Zeng">
-    <title>Home</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+    {% load static %}
+
     <!-- jQuery library -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <!-- Popper JS -->
@@ -20,67 +13,397 @@
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
 
-    <!-- <script defer type="text/javascript" src="javascriptFileName.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/tether.js"></script>
-    <script src="js/bootstrap.min.js"></script> -->
+    <!--favicon-->
+    <!-- <link rel="apple-touch-icon" href="assets/theme/images/vc_icon.png">
+    <link rel="icon" href="assets/theme/images/favicon.ico"> -->
+    <link rel="shortcut icon" href="{% static 'assets/theme/images/vc_icon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'assets/theme/images/vc_icon.png' %}" type="image/x-icon">
 
-    <style>
-      .input-element{
-        font-size: 30px;
-        size: 400;
-      }
-      .label {
-        font-size: 24px;
-        margin-left:-13.75%;
-        font-weight: bold;
-      }
-    </style>
+    <!--pace (page loader) style-->
+    <link href="{% static 'assets/plugins/pace/pace.css' %}" rel="stylesheet">
+    <script src="{% static 'assets/plugins/pace/pace.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'assets/plugins/bootstrap-3.3.1/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Icons -->
+    <link href="{% static 'assets/plugins/font-awesome-4.2.0/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- typed style -->
+    <link href="{% static 'assets/plugins/typed/typed.css' %}" rel="stylesheet">
+    <!-- popup style-->
+    <link href="{% static 'assets/plugins/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+
+
+    <!-- Themes styles-->
+    <link href="{% static 'assets/theme/css/style.css' %}" rel="stylesheet">
+    <!-- black skin-->
+    <!-- <link href="{% static 'assets/theme/css/skin-black.css' %}" rel="stylesheet"> -->
   </head>
-  <body style="background-color: rgb(255, 200, 200)">
-    <h2>A lot of text and images and stuff</h2>
-    {% if authenticated %}
-      <form style="padding-bottom:1em;" method="POST">
-        <!-- Every <form> element needs a csrf_token as a security precaution. -->
-        {% csrf_token %}
-        <!-- I use the hidden input element to send along the information that
-          we are logging out. -->
-        <input type="hidden" name="logout" value="logout"></input>
-        <button type="submit" class="btn btn-danger">Logout</button>
-      </form>
-    {% else %}
-      <form style="padding-bottom:1em;" method="POST">
-        <!-- Every <form> element needs a csrf_token as a security precaution. -->
-        {% csrf_token %}
-        <!-- I use the hidden input element to send along the information that
-          we are logging out. -->
-        <input type="hidden" name="login" value="login"></input>
-        <button type="submit" class="btn btn-danger">Login</button>
-      </form>
-    {% endif %}
 
-    <form style="padding-bottom:1em;" method="POST">
-      <!-- Every <form> element needs a csrf_token as a security precaution. -->
-      {% csrf_token %}
-      <input type="hidden" name="submitRequest" value="submitRequest"></input>
-      <button type="submit" class="btn btn-danger">Submit a Request For PPE</button>
-    </form>
 
-    <form style="padding-bottom:1em;" method="POST">
-      <!-- Every <form> element needs a csrf_token as a security precaution. -->
-      {% csrf_token %}
-      <!-- I use the hidden input element to send along the information that
-        we are logging out. -->
-      <input type="hidden" name="mapView" value="mapView"></input>
-      <button type="submit" class="btn btn-danger">See Local Requests For PPE</button>
-    </form>
+  <body  data-spy="scroll" data-target=".menu-area" data-offset="200">
+    <!--wrapper page-->
+    <div class="wrapper">
 
-    <form style="padding-bottom:1em;" method="POST">
-      <!-- Every <form> element needs a csrf_token as a security precaution. -->
-      {% csrf_token %}
-      <input type="hidden" name="catalogueView" value="catalogueView"></input>
-      <button type="submit" class="btn btn-danger">See a catalogue of PPE you can print and donate on PrintForTheCure!</button>
-    </form>
+      <!-- Main Header -->
+      <header class="main-header" id="home">
+        <div class="content-table header-content-fixed ">
 
+          <div class="v-content">
+            <div class="container">
+              <h1 class=" color-dark name">Print For The Cure</h1>
+              <div class="padding30 text-center">
+                {% if authenticated %}
+                  <form style="padding-bottom:1em;" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="logout"></input>
+                    <button type="submit" class="btn  btn-default  btn-flat-solid btn-pill"><i class="fa fa-sign-in"></i> Log Out</button>
+                  </form>
+                {% else %}
+                  <form style="padding-bottom:1em;" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="login"></input>
+                    <button type="submit" class="btn btn-default btn-flat-solid btn-pill"><i class="fa fa-sign-in"></i> Login/Regsiter</button>
+                  </form>
+                {% endif %}
+              </div>
+              <a href="#catalog" class="move-to-next link-inpage"><i class="fa fa-4x fa-angle-double-down" ></i></a>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Main navbar -->
+        <div class="menu-area">
+          <div class="toogle-bars">
+            <a href="#menu-collapse" data-toggle="collapse" class="collapsed"><i class="fa fa-bars ic-open"></i> <i class="fa fa-remove ic-close"></i> MENU</a>
+          </div>
+          <div class="menu-collapse collapse" id="menu-collapse">
+            <div class="container">
+              <div class="row">
+                <div class="col-md-3">
+                  <ul class="breadcrumb main-nav no-space">
+                    <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li>
+                  </ul>
+                </div>
+                <div class="col-md-6">
+                  <ul class="breadcrumb main-nav nav">
+                    <li class="active"><a href="#home" class="link-inpage">Home</a></li>
+                    <li ><a href="#about" class="link-inpage">About</a></li>
+                    <li ><a href="#catalog" class="link-inpage">Catalog</a></li>
+                    <li ><a href="#request" class="link-inpage">Request PPE</a></li>
+                    <li ><a href="/requestsVisual" class="link-inpage">PPE Requests Map</a></li>
+                    <li ><a href="#contact" id="contact-tab" class="link-inpage">Contact</a></li>
+                  </ul>
+                </div>
+                {% if authenticated %}
+                {% else %}
+                  <div class="col-md-3">
+                    <ul class="breadcrumb main-nav no-space">
+                      <li>
+                        <a href="/login/"  ><i class="fa fa-sign-in"></i>  Login/Register</a>
+                      </li>
+                    </ul>
+                  </div>
+                {% endif %}
+              </div>
+            </div>
+          </div>
+        </div><!-- End Main navbar -->
+      </header><!-- End Main Header -->
+
+      <section id="about" class="block-section">
+        <div class="clearfix my-profile">
+          <div class="my-pict" >
+            <div class="overfly">
+              <div class="text-botttom">
+
+              </div>
+            </div>
+          </div>
+          <div class="my-desc">
+            <div class="bg-secondary clearfix">
+              <div class="inner-text">
+                <h3 class="color-dark no-margin-top">About Us</h3>
+                <p >This is a <b>platform</b> that connects doctors in need of PPE (Personal Protection Equipment) with donors who can create it. PPE ranges from face shields, to face masks, to mask comfort straps, to hand-less door openers. </p>
+
+                <b class="no-margin">Doctors can benefit by receiving PPE.</b> <br />
+                <b class="no-margin">Donors can help save lives, and often receive monetary donations.</b> <br /><br />
+
+                <p class="no-margin">Be a part of the movement!</p>
+              </div>
+            </div>
+            <div class="bg-dark clearfix">
+              <div class="inner-text">
+                <p class="no-margin color-light ">
+
+                  <strong class="fix-width-100"><i class="fa fa-phone margin-right-5"></i> Phone</strong> : 123-456-7891<br/>
+                  <strong class="fix-width-100"><i class="fa fa-envelope margin-right-5"></i> Email</strong> : blah@gmail.com<br/>
+
+                 <strong class="fix-width-100"><i class="fa fa-globe margin-right-5"></i> Website</strong> : blah.com<br/>
+                  <strong class="fix-width-100"><i class="fa fa-location-arrow margin-right-5"></i> Adresse</strong> : 1234 Blah Ct, Blah City, CA<br/>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </section>
+
+
+      <section id="request" class="block-section">
+        <div class=" shape-bottom">
+          <div class="bg-secondary block-title">
+            <div class="container">
+              <h2 class="text-uppercase color-dark text-bold no-margin">See a Map of Global PPE Requests</h2>
+              <div class="title-icon"> <i class="fa fa-map-marker"></i> </div>
+              <div class="text-center" style="padding-top: 20px;">
+                <form style="padding-bottom:1em;" method="POST">
+                  <!-- Every <form> element needs a csrf_token as a security precaution. -->
+                  {% csrf_token %}
+                  <!-- I use the hidden input element to send along the information that
+                    we are logging out. -->
+                  <input type="hidden" name="mapView"></input>
+                  <button class="btn btn-default btn-flat-solid btn-pill">Redirect To PPE Requests Map</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class=" shape-bottom">
+          <div class="bg-secondary block-title">
+            <div class="container">
+              <h2 class="text-uppercase color-dark text-bold no-margin">Are you an Essential Worker? Request For PPE!</h2>
+              <div class="title-icon"> <i class="fa fa-map-marker"></i> </div>
+              <div class="text-center" style="padding-top: 20px;">
+                <form style="padding-bottom:1em;" method="POST">
+                  <!-- Every <form> element needs a csrf_token as a security precaution. -->
+                  {% csrf_token %}
+                  <!-- I use the hidden input element to send along the information that
+                    we are logging out. -->
+                  <input type="hidden" name="submitRequest"></input>
+                  <button class="btn btn-default btn-flat-solid btn-pill">Fill out a Form to Request PPE</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-medium "></div>
+
+        <div class="block-title">
+          <h2 class="text-uppercase color-dark text-bold no-margin">PPE Catalog</h2>
+
+          <div class="title-icon"> <i class="fa fa-book"></i> </div>
+        </div>
+
+      </section>
+
+
+
+      <section id="catalog" class="block-section">
+        <div class="block-page" >
+          <div class="container-medium clearfix">
+          <div class="col-md-4 col-sm-6">
+            <div class="box-work">
+              <div class="work-preview">
+                <img src="{% static 'assets/theme/images/handle1.PNG' %}" alt="">
+                <div class="hover">
+                  <div class="link-btns">
+
+                  </div>
+                  <a href="/catalogue-handle" class="project-title">Hands-free Door Handle</a>
+                </div>
+              </div>
+            </div>
+          </div>
+
+              <div class="col-md-4 col-sm-6">
+                <div class="box-work">
+                  <div class="work-preview">
+                    <img src="{% static 'assets/theme/images/strap.PNG' %}" alt="">
+                    <div class="hover">
+                      <div class="link-btns">
+
+                      </div>
+                      <a href="/catalogue-maskstrap" class="project-title">Mask Hook</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row list-work">
+                <div class="col-md-4 col-sm-6">
+                  <div class="box-work">
+                    <div class="work-preview">
+                      <img src="https://budmen.com/wp-content/uploads/2020/04/rbw-faceshield-scaled.jpeg" alt="">
+                      <div class="hover">
+                        <div class="link-btns">
+
+                        </div>
+                        <a href="/catalogue-shield" class="project-title">Face Shields</a>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+              <div class="col-md-4 col-sm-6">
+                <div class="box-work">
+                  <div class="work-preview">
+                    <img src="{% static 'assets/theme/images/key1.PNG' %}" alt="">
+                    <div class="hover">
+                      <div class="link-btns">
+
+                      </div>
+                      <a href="/catalogue-dooropener" class="project-title">Personal Hands-free Door Opener</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+          <div class="white-space-50"></div>
+      </section><!-- END SERVICES-->
+
+      <!--CONTACT-->
+      <section id="contact" class="block-section">
+        <!--CONTACT TITLE-->
+        <div class=" shape-bottom">
+          <div class="bg-secondary block-title">
+            <div class="container">
+              <h2 class="text-uppercase color-dark text-bold no-margin">Contact</h2>
+              <div class="title-icon"> <i class="fa fa-envelope-o"></i> </div>
+            </div>
+          </div>
+        </div><!--END CONTACT TITLE-->
+
+        <!-- DOWNLOAD & PRVIEW BTN -->
+        <div class="parallax-bg bg2" >
+          <div class="container">
+            <div class="padding30 text-center">
+              <a href="mailto:blah@gmail.com" class="btn btn-lg btn-primary btn-flat-solid btn-pill margin-top-25"><i class="fa fa-envelope"></i>  Email </a>
+
+            </div>
+          </div>
+        </div><!-- END DOWNLOAD & PRVIEW BTN -->
+
+      </section><!--END CONTACT-->
+
+
+      <!--FOOTER-->
+      <footer class="main-footer">
+        <div class="container">
+          <div class="folow-me">
+            Follow Us On
+          </div>
+          <ul class="list-inline social-links text-center">
+            <li>
+              <a href="#"  data-toggle="tooltip"  data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a>
+            </li>
+
+
+            <li>
+              <a href=""  data-toggle="tooltip"  data-placement="top" title="Instagram"><i class="fa fa-instagram"></i></a>
+            </li>
+
+          </ul>
+          <p class="text-center no-margin">
+
+          </p>
+          <a href="#home" class="back-to-top"><i class="fa fa-angle-double-up" ></i></a>
+        </div>
+      </footer><!--END FOOTER-->
+    </div><!--End wrapper page-->
+
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-81886809-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-81886809-3');
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'assets/plugins/jquery.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap-3.3.1/js/bootstrap.min.js' %}"></script>
+
+    <!-- maps js -->
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="{% static 'assets/plugins/jquery.ui.map.js' %}"></script>
+    <!-- advanced easing options -->
+    <script src="{% static 'assets/plugins/jquery.easing-1.3.pack.js' %}"></script>
+    <!-- parallax bg js -->
+    <script src="{% static 'assets/plugins/jquery.parallax-1.1.3.js' %}"></script>
+    <!-- lightbox js -->
+    <script src="{% static 'assets/plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+    <!-- typed animation-->
+    <script src="{% static 'assets/plugins/typed/typed.js' %}"></script>
+    <!-- easy chart-->
+    <script src="{% static 'assets/plugins/easypiechart/jquery.easypiechart.min.js' %}"></script>
+    <!-- simple Ajax Uploader -->
+    <script src="{% static 'assets/plugins/Simple-Ajax-Uploader/SimpleAjaxUploader.min.js' %}"></script>
+    <!-- validate jquery-->
+    <script src="{% static 'assets/plugins/validator/jquery.validate.min.js' %}"></script>
+
+    <!--=====================================================-->
+    <!--configuration template-->
+    <script src="{% static 'assets/theme/js/theme.js' %}"></script>
   </body>
+  <!--Non styled home page-->
+  <!--
+  {% if authenticated %}
+    <form style="padding-bottom:1em;" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="logout" value="logout"></input>
+      <button type="submit" class="btn btn-danger">Logout</button>
+    </form>
+  {% else %}
+    <form style="padding-bottom:1em;" method="POST">
+      {% csrf_token %}
+      <input type="hidden" name="login" value="login"></input>
+      <button type="submit" class="btn btn-danger">Login</button>
+    </form>
+  {% endif %}
+
+  <form style="padding-bottom:1em;" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="submitRequest" value="submitRequest"></input>
+    <button type="submit" class="btn btn-danger">Submit a Request For PPE</button>
+  </form>
+
+  <form style="padding-bottom:1em;" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="mapView" value="mapView"></input>
+    <button type="submit" class="btn btn-danger">See Local Requests For PPE</button>
+  </form>
+
+  <form style="padding-bottom:1em;" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="shield"></input>
+    <button type="submit" class="btn btn-danger">shield</button>
+  </form>
+
+  <form style="padding-bottom:1em;" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="opener"></input>
+    <button type="submit" class="btn btn-danger">opener</button>
+  </form>
+
+  <form style="padding-bottom:1em;" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="hook"></input>
+    <button type="submit" class="btn btn-danger">hook</button>
+  </form>
+
+  <form style="padding-bottom:1em;" method="POST">
+    {% csrf_token %}
+    <input type="hidden" name="handle"></input>
+    <button type="submit" class="btn btn-danger">handle</button>
+  </form> -->
 </html>

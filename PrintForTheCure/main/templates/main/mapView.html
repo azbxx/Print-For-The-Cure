@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+    {% load static %}
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
     <meta charset="UTF-8">
     <meta name="author" content="Michael Zeng">
@@ -13,6 +14,26 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
     <!-- Latest compiled JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+    <link rel="shortcut icon" href="{% static 'assets/theme/images/vc_icon.png' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'assets/theme/images/vc_icon.png' %}" type="image/x-icon">
+
+    <!--pace (page loader) style-->
+    <link href="{% static 'assets/plugins/pace/pace.css' %}" rel="stylesheet">
+    <script src="{% static 'assets/plugins/pace/pace.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'assets/plugins/bootstrap-3.3.1/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Icons -->
+    <link href="{% static 'assets/plugins/font-awesome-4.2.0/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- typed style -->
+    <link href="{% static 'assets/plugins/typed/typed.css' %}" rel="stylesheet">
+    <!-- popup style-->
+    <link href="{% static 'assets/plugins/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+
+
+    <!-- Themes styles-->
+    <link href="{% static 'assets/theme/css/style.css' %}" rel="stylesheet">
 
     <style>
       .input-element{
@@ -45,41 +66,41 @@
     </style>
   </head>
   <body>
-    <!--To get a working navbar in django, the only thing you need is the <a> tag with the correct href-->
-    <nav class="navbar navbar-dark navbar-expand-md bg-dark" style="height:50px; opacity:0.9;">
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar" style="margin-top:-3px">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse">
-        <ul class="nav navbar-nav mx-auto" style="padding-bottom:6px;">
-          <li class="nav-item navbarMargins bg-dark">
-            <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
-            <a href="/">Home Page</a>
-          </li>
-          <li class="nav-item bg-dark" style="margin-top:4px; margin-right:5px; margin-left:5px;">
-            <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
-            <a href="/nearbyRequests">Requests Near You</a>
-          </li>
-          <li class="nav-item bg-dark" style="margin-top:4px; margin-right:120px; margin-left:5px;">
-            <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
-            <a href="/request">Submit Request For PPE</a>
-          </li>
-        </ul>
-
-        {% if authenticated %}
-          <!--All code in this area will run if the user is authenticated-->
-        {% else %}
-          <!--All code in this area will run if the user is not authenticated-->
-          <ul class="nav navbarnav navbar-right" style="padding-bottom:6px;">
-            <li class="nav-item bg-dark" style="margin-top:4px; margin-right:5px; margin-left:5px;">
-              <!--THE <a> TAG NEEDS TO HAVE THE SAME HREF AS BELOW-->
-              <a href="/login">Login/Register</a>
-            </li>
-          </ul>
-        {% endif %}   <!--After this point everything will run-->
-
+    <div class="menu-area">
+      <div class="toogle-bars">
+        <a href="#menu-collapse" data-toggle="collapse" class="collapsed"><i class="fa fa-bars ic-open"></i> <i class="fa fa-remove ic-close"></i> MENU</a>
       </div>
-    </nav>
+      <div class="menu-collapse collapse" id="menu-collapse">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3">
+              <ul class="breadcrumb main-nav no-space">
+                <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li>
+              </ul>
+            </div>
+            <div class="col-md-6">
+              <ul class="breadcrumb main-nav nav">
+                <li class="active"><a href="/" class="link-inpage">Home</a></li>
+                <li ><a href="/request" class="link-inpage">Request PPE</a></li>
+                <li ><a href="/nearbyRequests" class="link-inpage">Nearby PPE Requests</a></li>
+                <li ><a href="/requestsVisual" class="link-inpage">PPE Requests Map</a></li>
+              </ul>
+            </div>
+            {% if authenticated %}
+            {% else %}
+              <div class="col-md-3">
+                <ul class="breadcrumb main-nav no-space">
+                  <li>
+                    <a href="/login/"  ><i class="fa fa-sign-in"></i>  Login/Register</a>
+                  </li>
+                </ul>
+              </div>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div><!-- End Main navbar -->
+
 
 
     <!--DO NOT CHANGE ANYTHING BELOW HERE-->
@@ -115,5 +136,40 @@
         async defer></script>
       </div>
     </div> -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-81886809-3"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'UA-81886809-3');
+    </script>
+
+
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'assets/plugins/jquery.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap-3.3.1/js/bootstrap.min.js' %}"></script>
+
+    <!-- maps js -->
+    <script src="https://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="{% static 'assets/plugins/jquery.ui.map.js' %}"></script>
+    <!-- advanced easing options -->
+    <script src="{% static 'assets/plugins/jquery.easing-1.3.pack.js' %}"></script>
+    <!-- parallax bg js -->
+    <script src="{% static 'assets/plugins/jquery.parallax-1.1.3.js' %}"></script>
+    <!-- lightbox js -->
+    <script src="{% static 'assets/plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+    <!-- typed animation-->
+    <script src="{% static 'assets/plugins/typed/typed.js' %}"></script>
+    <!-- easy chart-->
+    <script src="{% static 'assets/plugins/easypiechart/jquery.easypiechart.min.js' %}"></script>
+    <!-- simple Ajax Uploader -->
+    <script src="{% static 'assets/plugins/Simple-Ajax-Uploader/SimpleAjaxUploader.min.js' %}"></script>
+    <!-- validate jquery-->
+    <script src="{% static 'assets/plugins/validator/jquery.validate.min.js' %}"></script>
+
+    <!--=====================================================-->
+    <!--configuration template-->
+    <script src="{% static 'assets/theme/js/theme.js' %}"></script>
   </body>
 </html>
