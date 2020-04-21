@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
   <!--
-  Page to tell donor thank you for claiming a request. Yes I know this could be a popup but for simplicity's sake
+  Page to tell donor thank you for claiming a requestModel. Yes I know this could be a popup but for simplicity's sake
   Necessary Components:
   1) button to return home
-  2) tell user/donor thank you for claiming a request
+  2) tell user/donor thank you for claiming a requestModel
   -->
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
@@ -39,15 +39,15 @@
   </head>
   <body style="background-color: rgb(255, 200, 200)">
     <div class="container">
-      {% for request in allRequests %}
+      {% for requestModel in allRequests %}
         <div class="row">
-          <p>{{ request.fName }} {{request.lName}}     {{ request.typePPE }} {{ request.numPPE }}     {{ request }}     {{ request.address }}, {{ request.state }}, {{ request.country }}, {{ request.zipCode }}     Order Date: {{ request.orderDate }}   Delivery Date: {{ request.delivDate }}</p>
-          <form style="padding-bottom:1em;" method="POST">
+          <p>{{ requestModel.fName }} {{requestModel.lName}}     {{ requestModel.typePPE }} {{ requestModel.numPPE }}     {{ requestModel }}     {{ requestModel.address }}, {{ requestModel.state }}, {{ requestModel.country }}, {{ requestModel.zipCode }}     Order Date: {{ requestModel.orderDate }}   Delivery Date: {{ requestModel.delivDate }}</p>
+          <form action"confirmation" style="padding-bottom:1em;" method="POST">
             <!-- Every <form> element needs a csrf_token as a security precaution. -->
             {% csrf_token %}
             <!-- I use the hidden input element to send along the information that
               we are logging out. -->
-            <input type="hidden" name="{{ request.idNum }}" value="{{ request.idNum }}"></input>
+            <input type="hidden" name="requestModelId" value="{{ requestModel.id }}"></input>
             <button type="submit" class="btn btn-danger">Claim</button>
           </form>
         </div>

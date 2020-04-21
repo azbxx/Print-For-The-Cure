@@ -1,6 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
+from django.urls import reverse
+from urllib.parse import urlencode
 from django.template import loader
 # Custom imports added
 # Need timezone for date/time published
@@ -154,7 +156,7 @@ def doctorRequest(request):
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
         print(vars(request.POST))
-        newRequest = RequestModel(idNum=RequestModel.objects.latest('orderDate').idNum + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
+        newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
         newRequest.save()
         return HttpResponseRedirect("/requestSubmitSuccessful/")
     template = loader.get_template('main/submitRequest.html')
@@ -179,28 +181,23 @@ def map(request):
     return HttpResponse(template.render(context, request))
 
 def nearbyRequests(request):
-    print(request.user.is_authenticated)
+    # print(request.user.is_authenticated)
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/notLoggedIn/")
     if request.method == 'POST':
         if request.user.is_authenticated:
-            return HttpResponseRedirect("/confirmation/")
+            # print("Request ID: " + request.POST['requestModelId'])
+            requestObj = RequestModel.objects.get(id=request.POST['requestModelId'])
+            # print("Request Object: " + str(vars(requestObj)))
+            #return HttpResponseRedirect('/confirmation/' + '?' + "requestId=" + )
+
+            base_url = '/confirmation/'  # 1 /products/
+            query_string =  urlencode({'requestModelId': request.POST['requestModelId']})  # 2 category=42
+            url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
+            return HttpResponseRedirect(url)  # 4
         else:
+            print("not authorized")
             return HttpResponseRedirect("/notLoggedIn/")
-
-    donor = Donor.objects.get(user = request.user)
-
-    addressList = donor.address.split()
-    addressFormatted = ""
-    for word in addressList:
-        addressFormatted += word
-
-    cityList = donor.city.split()
-    cityFormatted = ""
-    for word in cityList:
-        addressFormatted += word
-
-    origin = addressFormatted + "+" + cityFormatted + "+" + donor.state + "+" + donor.zipCode
 
     allRequests = RequestModel.objects.all()
     print(allRequests)
@@ -223,8 +220,28 @@ def notLoggedIn(request):
     return HttpResponse(template.render(context, request))
 
 def confirmClaim(request):
+    requestModelId = request.GET.get('requestModelId')  # 5
+    print(requestModelId)
+
     if request.method == 'POST':
         if 'yes' in request.POST.keys():
+
+            requestObj.status = 1
+            donor = Donor.objects.get(user = request.user)
+            print(vars(donor))
+
+            addressList = donor.address.split()
+            addressFormatted = ""
+            for word in addressList:
+                addressFormatted += word
+
+            cityList = donor.city.split()
+            cityFormatted = ""
+            for word in cityList:
+                addressFormatted += word
+
+            origin = addressFormatted + "+" + cityFormatted + "+" + donor.state + "+" + donor.zipCode
+
             service = getService()
             #Donor Email
             subject = "Claimed Request For PPE"

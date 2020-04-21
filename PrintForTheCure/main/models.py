@@ -14,7 +14,6 @@ class Donor(models.Model):
     registrationDate = models.DateTimeField('date registered')
 
 class RequestModel(models.Model):
-    idNum = models.IntegerField(default=0)
     status = models.IntegerField(default=0)     #0 = unclaimed, 1 = claimed
     fName = models.CharField(max_length=100)
     lName = models.CharField(max_length=100)

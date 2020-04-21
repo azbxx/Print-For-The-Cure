@@ -46,7 +46,7 @@
       {% csrf_token %}
       <!-- I use the hidden input element to send along the information that
         we are logging out. -->
-      <input type="hidden" name="yes"></input>
+      <input type="hidden" name="yes" value="{{ requestObj }}"></input>
       <button type="submit" class="btn btn-danger">YES</button>
     </form>
 
