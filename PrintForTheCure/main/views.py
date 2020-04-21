@@ -187,7 +187,7 @@ def nearbyRequests(request):
     if request.method == 'POST':
         if request.user.is_authenticated:
             # print("Request ID: " + request.POST['requestModelId'])
-            requestObj = RequestModel.objects.get(id=request.POST['requestModelId'])
+
             # print("Request Object: " + str(vars(requestObj)))
             #return HttpResponseRedirect('/confirmation/' + '?' + "requestId=" + )
 
@@ -199,8 +199,13 @@ def nearbyRequests(request):
             print("not authorized")
             return HttpResponseRedirect("/notLoggedIn/")
 
-    allRequests = RequestModel.objects.all()
-    print(allRequests)
+    allRequests = []
+    for requestModel in RequestModel.objects.all():
+        if requestModel.status == 0:
+            allRequests.append(requestModel)
+
+    # allRequests = RequestModel.objects.all()
+    # print("All Requests: " + str(vars(allRequests)))
 
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
@@ -222,6 +227,7 @@ def notLoggedIn(request):
 def confirmClaim(request):
     requestModelId = request.GET.get('requestModelId')  # 5
     print(requestModelId)
+    requestObj = RequestModel.objects.get(id=requestModelId)
 
     if request.method == 'POST':
         if 'yes' in request.POST.keys():
