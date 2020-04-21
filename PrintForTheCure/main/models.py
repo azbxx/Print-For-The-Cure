@@ -21,6 +21,7 @@ class RequestModel(models.Model):
     numPPE = models.IntegerField(default=0)
     typePPE = models.CharField(max_length=255)
     address = models.TextField()
+    city = models.CharField(max_length=255)
     state = models.CharField(max_length=2)
     country = models.CharField(max_length=100)
     zipCode = models.CharField(max_length=10)

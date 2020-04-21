@@ -199,17 +199,14 @@ def nearbyRequests(request):
             print("not authorized")
             return HttpResponseRedirect("/notLoggedIn/")
 
-    allRequests = []
+    allUnclaimedRequests = []
     for requestModel in RequestModel.objects.all():
         if requestModel.status == 0:
-            allRequests.append(requestModel)
-
-    # allRequests = RequestModel.objects.all()
-    # print("All Requests: " + str(vars(allRequests)))
+            allUnclaimedRequests.append(requestModel)
 
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
-        'allRequests': allRequests
+        'allRequests': allUnclaimedRequests
     }
     return HttpResponse(template.render(context, request))
 
@@ -233,6 +230,7 @@ def confirmClaim(request):
         if 'yes' in request.POST.keys():
 
             requestObj.status = 1
+            requestObj.save()
             donor = Donor.objects.get(user = request.user)
             print(vars(donor))
 
@@ -247,19 +245,35 @@ def confirmClaim(request):
                 addressFormatted += word
 
             origin = addressFormatted + "+" + cityFormatted + "+" + donor.state + "+" + donor.zipCode
+            print(origin)
 
             service = getService()
             #Donor Email
             subject = "Claimed Request For PPE"
-            message_text = "Thank You For Claiming a request!"
+            ppeType = ""
+            if "shield" in requestObj.typePPE:
+                ppeType = "3D Printed Face Shields (link: https://budmen.com/)"
+            elif "strap" in requestObj.typePPE:
+                ppeType = "Face Mask Comfort Strap (link: https://www.thingiverse.com/thing:4267730/files)"
+            elif "handle" in requestObj.typePPE:
+                ppeType = "Touch-less Door Handle (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"
+            elif "opener" in requestObj.typePPE:
+                ppeType = "Personal Touchless Door Opener (Link: https://www.thingiverse.com/thing:4269560)"
+            message_text = "Thank You For Claiming a request for PPE!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for your to Deliver the requested PPE: %s\n\nOther Notes From the Requester: %s\n\nThank you for contributing to the Covid-19 Situation! We hope you continue donating on our platform! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes)
             message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text)
             sendMessage(service, 'me', message)
-            #Doctor Email
-            subject = "Request For PPE Claimed"
-            message_text = "Hello %s,\n \nA gracious donor has claimed your request for %d of type %s PPE!\n \nYour donor is expected to deliver the requested PPE to your address. You may contact your donor here: %s\n Once you have received your PPE, we strongly urge you to leave your donor a monetary donation; they have taken the time, effort, and materials to help you!!!" % ("name", 10, "yes",  request.user.email)
-            message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text)
 
-            return HttpResponseRedirect("/thankyou/")
+            #Doctor Email
+            donor = Donor.objects.get(user = request.user)
+            subject = "Request For PPE Claimed"
+            message_text1 = "Your Request for PPE has been claimed by a patron!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Patron: %s\n\nYour Patron's Name: %s\nPatron's Email: %s\nPatron's Address: %s %s %s %s %s\n\nThank you for reaching out to donors during these harsh times! We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email, donor.address, donor.city, donor.state, donor.zipCode, donor.country)
+            message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text1)
+            sendMessage(service, 'me', message)
+
+            base_url = '/thankyou/'  # 1 /products/
+            query_string =  urlencode({'requestDetails': message_text})  # 2 category=42
+            url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
+            return HttpResponseRedirect(url)  # 4
         elif 'no' in request.POST.keys():
             return HttpResponseRedirect("/requestsVisual/")
     template = loader.get_template('main/confirmClaim.html')
@@ -269,12 +283,15 @@ def confirmClaim(request):
     return HttpResponse(template.render(context, request))
 
 def thankYou(request):
+    requestDetails = request.GET.get('requestDetail')
     if request.method == 'POST':
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
 
     template = loader.get_template('main/thankYou.html')
-    context = {}
+    context = {
+        'requestDetails': requestDetails
+    }
     return HttpResponse(template.render(context, request))
 
 def test(request):
