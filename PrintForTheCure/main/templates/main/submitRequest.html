@@ -7,51 +7,194 @@
   2) User(doctor)
   -->
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
-    <meta charset="UTF-8">
-    <meta name="author" content="Michael Zeng">
-    <title>BookFace</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Website</title>
 
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
-    <!-- jQuery library -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <!-- Popper JS -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <!-- Latest compiled JavaScript -->
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    {% load static %}
 
-    <!-- <script defer type="text/javascript" src="javascriptFileName.js"></script>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/tether.js"></script>
-    <script src="js/bootstrap.min.js"></script> -->
+    <!--favicon-->
+    <link rel="apple-touch-icon" href="{% static 'assets/theme/images/apple-touch-icon.png' %}">
+    <link rel="icon" href="{% static 'assets/theme/images/favicon.ico' %}">
 
-    <style>
-      .input-element{
-        font-size: 30px;
-        size: 400;
-      }
-      .label {
-        font-size: 24px;
-        margin-left:-13.75%;
-        font-weight: bold;
-      }
-    </style>
+    <!--pace (page loader) style-->
+    <link href="{% static 'assets/plugins/pace/pace.css' %}" rel="stylesheet">
+    <script src="{% static 'assets/plugins/pace/pace.min.js' %}"></script>
+
+    <!-- Bootstrap -->
+    <link href="{% static 'assets/plugins/bootstrap-3.3.1/css/bootstrap.min.css' %}" rel="stylesheet">
+    <!-- Icons -->
+    <link href="{% static 'assets/plugins/font-awesome-4.2.0/css/font-awesome.min.css' %}" rel="stylesheet">
+    <!-- typed style -->
+    <link href="{% static 'assets/plugins/typed/typed.css' %}" rel="stylesheet">
+    <!-- popup style-->
+    <link href="{% static 'assets/plugins/magnific-popup/magnific-popup.css' %}" rel="stylesheet">
+    <!-- simple Captcha-->
+    <link href="{% static 'assets/plugins/simpleCaptcha/jquery.simpleCaptcha.css' %}" rel="stylesheet">
+
+
+
+    <link href="{% static 'assets/theme/css/style.css' %}" rel="stylesheet">
+
+
   </head>
-  <body style="background-color: rgb(255, 200, 200)">
-    <div class="container">
+  <body>
+    <div class="wrapper">
+      <div class="block-page" >
+        <div class="container-xs clearfix">
+          <h2 class="text-uppercase color-dark"><i class="fa fa-user"></i>Submit Request For PPE</h2>
+          <form style="padding-bottom:1em;" method="POST">
+            <!-- Every <form> element needs a csrf_token as a security precaution. -->
+            {% csrf_token %}
+            <!-- I use the hidden input element to send along the information that
+              we are logging out. -->
+            <input type="hidden" name="returnHome" value="returnHome"></input>
+            <a type="submit" href="/">Return To Home Page</a>
+            </form>
+          <form style="padding-bottom:1em; padding-top:3em;" method="POST">
+            {% csrf_token %}
+            <!-- Give the user a place to type in their name and passowrd. -->
+            <div class="form-group">
+              <label for="fName">First Name</label>
+              <input type="text" class="form-control" name="fName" />
+            </div>
+
+            <div class="form-group">
+              <label for="lName">Last Name</label>
+              <input type="text" class="form-control" name="lName" />
+            </div>
+
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="text" class="form-control" name="email" />
+            </div>
+
+            <div class="form-group">
+              <label for="address">Address</label>
+              <p>Tip: Leave your work address! Not your home. PrintForTheCure is not liable for any misconduct.</p>
+              <input type="text" class="form-control" name="address" />
+            </div>
+
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" class="form-control" name="city" />
+            </div>
+
+            <div class="form-group">
+              <label for="zipCode">Zip Code</label>
+              <input type="text" class="form-control" name="zipCode" />
+            </div>
+
+            <div class="form-group">
+              <label for="state">State:</label>
+              <select name="state">
+                <option value="ca">CA</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="country">Country:</label>
+              <select name="country">
+                <option value="us">United States</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="typePPE">Type of Personal Protection Equipment You Need:</label>
+              <select name="typePPE">
+                <option value="shield">Face Shields</option>
+                <option value="strap">Mask Straps</option>
+                <option value="handle">Hands-free Door Handles</option>
+                <option value="opener">Personal Hands-free Door Openers</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="numPPE">Amount of Specified Personal Protection Equipment You Need:</label>
+              <select name="numPPE">
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <option value="11">11</option>
+                <option value="12">12</option>
+                <option value="13">13</option>
+                <option value="14">14</option>
+                <option value="15">15</option>
+                <option value="16">16</option>
+                <option value="17">17</option>
+                <option value="18">18</option>
+                <option value="19">19</option>
+                <option value="20">20</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="deliveryDate">Delivery Date For Specified Personal Protection Equipment: </label>
+              <p>Tip: Give your donor enough time to produce what you need!</p>
+              <input type="date" name="deliveryDate" value="{{ placement.date|date:'Y-m-d' }}" min="2020-04-16" max="2021-1-1">
+            </div>
+
+            <br />
+            <div class="form-group">
+              <label for="otherNotes">Other Notes For Donor:</label>
+              <textarea class="form-control" name="otherNotes" rows="6"></textarea>
+            </div>
+
+            <button type="submit" class="btn-xs btn-default  btn-flat-solid">Submit Request For PPE</button>
+          </form>
+          </div>
+        </div>
+    </div>
+
+
+          <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="{% static 'assets/plugins/jquery.js' %}"></script>
+    <script src="{% static 'assets/plugins/bootstrap-3.3.1/js/bootstrap.min.js' %}"></script>
+
+    <!-- maps js -->
+    <script src="http://maps.googleapis.com/maps/api/js?sensor=false" type="text/javascript"></script>
+    <script src="{% static 'assets/plugins/jquery.ui.map.js' %}"></script>
+
+    <!-- advanced easing options -->
+    <script src="{% static 'assets/plugins/jquery.easing-1.3.pack.js' %}"></script>
+
+    <!-- parallax bg js -->
+    <script src="{% static 'assets/plugins/jquery.parallax-1.1.3.js' %}"></script>
+    <!-- lightbox js -->
+    <script src="{% static 'assets/plugins/magnific-popup/jquery.magnific-popup.min.js' %}"></script>
+    <!-- typed animation-->
+    <script src="{% static 'assets/plugins/typed/typed.js' %}"></script>
+    <!-- easy chart-->
+    <script src="{% static 'assets/plugins/easypiechart/jquery.easypiechart.min.js' %}"></script>
+    <!-- simple Captcha -->
+    <script src="{% static 'assets/plugins/simpleCaptcha/jquery.simpleCaptcha.js' %}"></script>
+    <!-- simple Ajax Uploader -->
+    <script src="{% static 'assets/plugins/Simple-Ajax-Uploader/SimpleAjaxUploader.min.js' %}"></script>
+    <!-- validate jquery-->
+    <script src="{% static 'assets/plugins/validator/jquery.validate.min.js' %}"></script>
+
+    <!--=====================================================-->
+    <!--configuration template-->
+    <script src="{% static 'assets/theme/js/theme.js' %}"></script>
+
+
+    <!-- <div class="container">
       <form style="padding-bottom:1em;" method="POST">
-        <!-- Every <form> element needs a csrf_token as a security precaution. -->
         {% csrf_token %}
-        <!-- I use the hidden input element to send along the information that
-          we are logging out. -->
         <input type="hidden" name="returnHome" value="returnHome"></input>
         <button type="submit" class="btn btn-danger">Return To Home Page</button>
       </form>
-      <p>{{ validationStatus }}</p>
+      <p style="color:red">{{ validationStatus }}</p>
       <h1 style="padding-top: 45px;">Submit Request For Personal Protection Equipment</h1>
       <form style="padding-bottom:1em; padding-top:3em;" method="POST">
         {% csrf_token %}
-        <!-- Give the user a place to type in their name and passowrd. -->
+
         <div class="form-group">
           <label for="fName">First Name</label>
           <input type="text" class="form-control" name="fName" />
@@ -145,6 +288,9 @@
 
         <button type="submit" class="btn btn-danger">Submit Request For Personal Protection Equipment</button>
       </form>
-    </div>
+    </div> -->
+
+
+
   </body>
 </html>
