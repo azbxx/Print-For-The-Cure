@@ -21,6 +21,9 @@ from .models import Donor
 from .models import RequestModel
 from .gmail import *
 
+#DELETE THIS CODE WHEN PUSHING TO GITHUB
+key = 'AIzaSyADv70Q-VIP_u5Glxceyl0BcFMvwGv9qpk'
+
 # Create your views here.
 def home(request):
     print(request.user.is_authenticated)
@@ -32,7 +35,7 @@ def home(request):
             logout(request)
             return HttpResponseRedirect("/login/")
         elif 'submitRequest' in request.POST.keys():
-            return HttpResponseRedirect("/request/")
+            return HttpResponseRedirect("/requestPPE/")
         elif 'mapView' in request.POST.keys():
             return HttpResponseRedirect("/requestsVisual/")
         elif 'shield' in request.POST.keys():
@@ -156,7 +159,7 @@ def doctorRequest(request):
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
         print(vars(request.POST))
-        newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
+        newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
         newRequest.save()
         return HttpResponseRedirect("/requestSubmitSuccessful/")
     template = loader.get_template('main/submitRequest.html')
@@ -174,9 +177,23 @@ def requestSubmitSuccessful(request):
     return HttpResponse(template.render(context, request))
 
 def map(request):
+    allUnclaimedRequests = []
+    addresses = []
+    counter = 0
+    for requestModel in RequestModel.objects.all():
+        if requestModel.status == 0:
+            address = requestModel.address + " " + requestModel.city + " " + requestModel.state + " " + requestModel.zipCode
+            addressId = "address" + str(counter)
+            addresses.append({'addressId': addressId, 'address': address})
+            allUnclaimedRequests.append(requestModel)
+            counter += 1
+    # print(addresses)
+
     template = loader.get_template('main/mapView.html')
     context = {     #all inputs for the html go in these brackets
-        'authenticated': request.user.is_authenticated
+        'authenticated': request.user.is_authenticated,
+        'allRequests': allUnclaimedRequests,
+        'addresses': addresses,
     }
     return HttpResponse(template.render(context, request))
 
@@ -199,10 +216,67 @@ def nearbyRequests(request):
             print("not authorized")
             return HttpResponseRedirect("/notLoggedIn/")
 
+    #Below uses Google's Distance Matrix API to sort the list of requests from nearest to furthest
+    donor = Donor.objects.get(user = request.user)
+    print(vars(donor))
+
+    addressList = donor.address.split()
+    addressFormatted = ""
+    for word in addressList:
+        addressFormatted += word
+        addressFormatted += "+"
+
+    cityList = donor.city.split()
+    cityFormatted = ""
+    for word in cityList:
+        addressFormatted += word
+        addressFormatted += "+"
+
+    origin = addressFormatted + cityFormatted + donor.state + "+" + donor.zipCode
+    print(origin)
+
+    destination = ""
+    for requestModel in RequestModel.objects.all():
+        if requestModel.status == 0:
+
+            addressList = requestModel.address.split()
+            addressFormatted = ""
+            for word in addressList:
+                addressFormatted += word
+                addressFormatted += "+"
+
+            cityList = requestModel.city.split()
+            cityFormatted = ""
+            for word in cityList:
+                addressFormatted += word
+                addressFormatted += "+"
+
+            destination += addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode + "|"
+
+    url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations=' + destination + '&key=' + key).format(origin, destination, key)
+
+    response = urllib.request.urlopen(url)
+    responseJSON = json.loads(response.read())
+
+    allDistances = []
+    for item in (responseJSON.get("rows", "none")[0].get("elements", "none")):
+        if (item.get("status", "none") != 'NOT_FOUND'):
+            allDistances.append(item.get("distance", "none").get("text", "none"))
+            print(item.get("distance", "none").get("text", "none"))
+
     allUnclaimedRequests = []
     for requestModel in RequestModel.objects.all():
         if requestModel.status == 0:
             allUnclaimedRequests.append(requestModel)
+
+    #Insertion Sorting
+    #Sort the distances, then rearrange allUnclaimedRequests
+    for i in range(1, len(allDistances)):
+        j = i
+        while j>=1 and allDistances[j] < allDistances[j-1]:
+            allDistances[j], allDistances[j-1] = allDistances[j-1], allDistances[j]
+            allUnclaimedRequests[j], allUnclaimedRequests[j-1] = allUnclaimedRequests[j-1], allUnclaimedRequests[j]
+            j -= 1
 
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
@@ -231,21 +305,6 @@ def confirmClaim(request):
 
             requestObj.status = 1
             requestObj.save()
-            donor = Donor.objects.get(user = request.user)
-            print(vars(donor))
-
-            addressList = donor.address.split()
-            addressFormatted = ""
-            for word in addressList:
-                addressFormatted += word
-
-            cityList = donor.city.split()
-            cityFormatted = ""
-            for word in cityList:
-                addressFormatted += word
-
-            origin = addressFormatted + "+" + cityFormatted + "+" + donor.state + "+" + donor.zipCode
-            print(origin)
 
             service = getService()
             #Donor Email
@@ -275,10 +334,10 @@ def confirmClaim(request):
             url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
             return HttpResponseRedirect(url)  # 4
         elif 'no' in request.POST.keys():
-            return HttpResponseRedirect("/requestsVisual/")
+            return HttpResponseRedirect("/nearbyRequests/")
     template = loader.get_template('main/confirmClaim.html')
     context = {     #all inputs for the html go in these brackets
-
+        'requestObj': requestObj,
     }
     return HttpResponse(template.render(context, request))
 

@@ -38,7 +38,28 @@
     </style>
   </head>
   <body style="background-color: rgb(255, 200, 200)">
-    <h1>You Would Like to Claim This Request For PPE:</h1>
+    <h1>You Would Like to Claim THIS REQUEST For PPE?</h1>
+
+    {% if "shield" in requestObj.typePPE %}
+      {{ ppeType }} = "3D Printed Face Shields (link: https://budmen.com/)"
+    {% elif "strap" in requestObj.typePPE %}
+      {{ ppeType }} = "Face Mask Comfort Strap (link: https://www.thingiverse.com/thing:4267730/files)"
+    {% elif "handle" in requestObj.typePPE %}
+      {{ ppeType }} = "Touch-less Door Handle (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"
+    {% elif "opener" in requestObj.typePPE %}
+      {{ ppeType }} = "Personal Touchless Door Opener (Link: https://www.thingiverse.com/thing:4269560)"
+    {% endif %}
+
+    <p>Request Details:</p>
+    <p>Requester's Name: {{ requestObj.fName }} {{ requestObj.lName }}</p>
+    <p>Requester's Email: {{ requestObj.email }}</p>
+    <p>Requester's Address: {{ requestObj.address }} {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
+    <br />
+    <p>Type of PPE Requested: {{ ppeType }}</p>
+    <p>Amount of PPE Requested: {{ requestObj.numPPE }}</p>
+    <p>Latest Date for Delivery of requested PPE: {{ requestObj.delivDate }}</p>
+    <br />
+    <p>Other Notes For the Patron: {{ requestObj.notes }}</p>
 
     <!--You can only change the form style and button class, everything else in the form has to stay the same-->
     <form style="padding-bottom:1em;" method="POST">

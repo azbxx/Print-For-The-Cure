@@ -41,7 +41,7 @@
     <div class="container">
       {% for requestModel in allRequests %}
         <div class="row">
-          <p>{{ requestModel.fName }} {{requestModel.lName}}     {{ requestModel.typePPE }} {{ requestModel.numPPE }}     {{ requestModel }}     {{ requestModel.address }}, {{ requestModel.state }}, {{ requestModel.country }}, {{ requestModel.zipCode }}     Order Date: {{ requestModel.orderDate }}   Delivery Date: {{ requestModel.delivDate }}</p>
+          <p>{{ requestModel.fName }} {{requestModel.lName}}     {{ requestModel.typePPE }} {{ requestModel.numPPE }}     {{ requestModel }}     {{ requestModel.address }}, {{ requestModel.city }}, {{ requestModel.state }}, {{ requestModel.country }}, {{ requestModel.zipCode }}     Order Date: {{ requestModel.orderDate }}   Delivery Date: {{ requestModel.delivDate }}</p>
           <form action"confirmation" style="padding-bottom:1em;" method="POST">
             <!-- Every <form> element needs a csrf_token as a security precaution. -->
             {% csrf_token %}
