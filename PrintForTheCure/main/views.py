@@ -10,6 +10,8 @@ from django.utils import timezone
 # These are needed for user authentication and persistence
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
+# Google library for address validations (used in doctorRequest)
+from i18naddress import InvalidAddress, normalize_address
 
 # Google Distance Matrix API Imports
 import googlemaps
@@ -155,15 +157,35 @@ def donorLogin(request):
     return HttpResponse(template.render(context, request))
 
 def doctorRequest(request):
+    validationStatus = ""
     if request.method == 'POST':
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
         print(vars(request.POST))
-        newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
-        newRequest.save()
-        return HttpResponseRedirect("/requestSubmitSuccessful/")
+
+        validated = True
+        try:
+            address = normalize_address({
+            'country_code': request.POST['country'],
+            'country_area': request.POST['state'],
+            'city': request.POST['city'],
+            'postal_code': request.POST['zipCode'],
+            'street_address': request.POST['address']})
+        except InvalidAddress as e:
+            print("failed")
+            print(e.errors)
+            validated = False
+        if validated:
+            print("Address Validation Succeeded")
+            newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
+            newRequest.save()
+            return HttpResponseRedirect("/requestSubmitSuccessful/")
+        else:
+            validationStatus = "Sorry, Address Validation failed. Please enter a valid address for delivery."
+
     template = loader.get_template('main/submitRequest.html')
     context = {     #all inputs for the html go in these brackets
+        'validationStatus': validationStatus
     }
     return HttpResponse(template.render(context, request))
 

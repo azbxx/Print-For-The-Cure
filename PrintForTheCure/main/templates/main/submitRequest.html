@@ -47,6 +47,7 @@
         <input type="hidden" name="returnHome" value="returnHome"></input>
         <button type="submit" class="btn btn-danger">Return To Home Page</button>
       </form>
+      <p>{{ validationStatus }}</p>
       <h1 style="padding-top: 45px;">Submit Request For Personal Protection Equipment</h1>
       <form style="padding-bottom:1em; padding-top:3em;" method="POST">
         {% csrf_token %}
