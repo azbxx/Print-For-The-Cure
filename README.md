@@ -4,3 +4,4 @@ Web platform to connect good-hearted people and doctors to distribute necessary 
  - you also need to change the 2 absolute paths in gmail.py to work on your machine
  - run pip install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
  - run pip install googlemaps
+ - run pip install google-i18n-address
