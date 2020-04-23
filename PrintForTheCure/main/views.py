@@ -7,6 +7,7 @@ from django.template import loader
 # Custom imports added
 # Need timezone for date/time published
 from django.utils import timezone
+import datetime
 # These are needed for user authentication and persistence
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
@@ -22,9 +23,7 @@ import random
 from .models import Donor
 from .models import RequestModel
 from .gmail import *
-
-#DELETE THIS CODE WHEN PUSHING TO GITHUB
-key = 'AIzaSyADv70Q-VIP_u5Glxceyl0BcFMvwGv9qpk'
+from .GoogleAPIKey import *
 
 # Create your views here.
 def home(request):
@@ -177,7 +176,7 @@ def doctorRequest(request):
             validated = False
         if validated:
             print("Address Validation Succeeded")
-            newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=timezone.now(), orderDate=timezone.now(), notes=request.POST['otherNotes'])
+            newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=datetime.date(int(request.POST['year']), int(request.POST['month']), int(request.POST['day'])) , orderDate=timezone.now(), notes=request.POST['otherNotes'])
             newRequest.save()
             return HttpResponseRedirect("/requestSubmitSuccessful/")
         else:
@@ -203,6 +202,9 @@ def map(request):
     addresses = []
     counter = 0
     for requestModel in RequestModel.objects.all():
+        if timezone.now().date() > requestModel.delivDate + datetime.timedelta(days=1):
+            print("Deleting RequestModel (date passed): " + str(requestModel.delivDate))
+            requestModel.delete()
         if requestModel.status == 0:
             address = requestModel.address + " " + requestModel.city + " " + requestModel.state + " " + requestModel.zipCode
             addressId = "address" + str(counter)
