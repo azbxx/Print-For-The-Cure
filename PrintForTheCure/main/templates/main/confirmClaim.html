@@ -66,10 +66,9 @@
 
     <div class="wrapper">
       <div class="block-page" >
-        <div style = " padding-left: 50px; padding-right: 50px; padding-top:20px; padding-bottom: 20px; background-color: white;" class="container-xs clearfix">
+        <div style = " padding-left: 50px; padding-right: 50px; padding-top:20px; padding-bottom: 20px; background-color: white;" class="container-sm clearfix">
           <h2 class="color-dark"><i style="color: seagreen;"class="fa fa-check"></i> Claim Request For PPE?</h2>
           <p style="padding-top:20px;">Would you like to claim and fulfill this request for PPE?</p>
-          <p>Request Details:</p>
 <hr>
 
    <!--You can only change the form style and button class, everything else in the form has to stay the same-->
@@ -79,7 +78,7 @@
     <!-- I use the hidden input element to send along the information that
       we are logging out. -->
     <input type="hidden" name="yes"></input>
-    <button type="submit" class="btn-xs btn-default  btn-flat-solid">Yes</button>
+    <button type="submit" class="btn-md btn-default  btn-flat-solid" style="width: 25%; font-size : 200%;">Yes</button>
   </form>
 
   <!--You can only change the form style and button class, everything else in the form has to stay the same-->
@@ -89,8 +88,33 @@
     <!-- I use the hidden input element to send along the information that
       we are logging out. -->
     <input type="hidden" name="no"></input>
-    <button type="submit" class="btn-xs btn-default  btn-flat-solid">No</button>
+    <button type="submit" class="btn-md btn-default  btn-flat-solid" style="width: 25%; font-size : 200%;">No</button>
   </form>
+
+<h3 style="margin-top:40px;" class="color-dark">Request Details:</h3>
+<p><span class="color-dark">Requester's Name:</span> {{ requestObj.fName }} {{ requestObj.lName }}</p>
+<p><span class="color-dark">Requester's Email:</span> {{ requestObj.email }}</p>
+<p><span class="color-dark">Requester's Address:</span> {{ requestObj.address }} {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
+<br />
+<p><span class="color-dark">Type of PPE Requested:</span> <span id="type"></span></p>
+<p><span class="color-dark">Amount of PPE Requested:</span> {{ requestObj.numPPE }}</p>
+<p><span class="color-dark">Latest Date for Delivery of requested PPE:</span> {{ requestObj.delivDate }}</p>
+<br />
+<p><span class="color-dark">Other Notes For the Patron:</span> {{ requestObj.notes }}</p>
+
+<script>
+ var typeShort = '{{ requestObj.typePPE }}'
+ console.log(typeShort)
+ var typeLong = ""
+ switch(typeShort) {
+   case "shield": typeLong="3D Printed Face Shields (link: https://budmen.com/)"; break;
+   case "strap": typeLong="Face Mask Comfort Strap (link: https://www.thingiverse.com/thing:4267730/files)"; break;
+   case "handle": typeLong="Touch-less Door Handle (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"; break;
+   case "opener": typeLong="Personal Touchless Door Opener (Link: https://www.thingiverse.com/thing:4269560)"; break;
+   default: typeLong="PPE type not found"; break;
+ }
+ document.getElementById("type").innerText = typeLong;
+</script>
 
 </div>
 </div>
@@ -125,43 +149,6 @@
        <!--=====================================================-->
        <!--configuration template-->
        <script src="{% static 'assets/theme/js/theme.js' %}"></script>
-
-       <p>Requester's Name: {{ requestObj.fName }} {{ requestObj.lName }}</p>
-       <p>Requester's Email: {{ requestObj.email }}</p>
-       <p>Requester's Address: {{ requestObj.address }} {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
-       <br />
-       <p>Type of PPE Requested: <span id="type"></span></p>
-       <p>Amount of PPE Requested: {{ requestObj.numPPE }}</p>
-       <p>Latest Date for Delivery of requested PPE: {{ requestObj.delivDate }}</p>
-       <br />
-       <p>Other Notes For the Patron: {{ requestObj.notes }}</p>
-
-       <script>
-        var typeShort = '{{ requestObj.typePPE }}'
-        console.log(typeShort)
-        var typeLong = ""
-        switch(typeShort) {
-          case "shield": typeLong="3D Printed Face Shields (link: https://budmen.com/)"; break;
-          case "strap": typeLong="Face Mask Comfort Strap (link: https://www.thingiverse.com/thing:4267730/files)"; break;
-          case "handle": typeLong="Touch-less Door Handle (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"; break;
-          case "opener": typeLong="Personal Touchless Door Opener (Link: https://www.thingiverse.com/thing:4269560)"; break;
-          default: typeLong="PPE type not found"; break;
-        }
-        document.getElementById("type").innerText = typeLong;
-       </script>
-
-        <form style="padding-bottom:1em;" method="POST">
-         {% csrf_token %}
-         <input type="hidden" name="yes" value="{{ requestObj }}"></input>
-         <button type="submit" class="btn btn-danger">YES</button>
-       </form>
-
-       <form style="padding-bottom:1em;" method="POST">
-         {% csrf_token %}
-         <input type="hidden" name="no"></input>
-         <button type="submit" class="btn btn-danger">NO</button>
-       </form>
-
 
   </body>
 </html>
