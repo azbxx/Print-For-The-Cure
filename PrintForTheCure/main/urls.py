@@ -22,5 +22,9 @@ urlpatterns = [
     path('confirmation/', views.confirmClaim, name='confirmation'),
     path('thankyou/', views.thankYou, name='thank you page'),
 
+    path('requestDetails/', views.requestDetails, name='details page for request from nearbyRequests.html'),
+
+    #url(r'^django_popup_view_field/', include('django_popup_view_field.urls', namespace="django_popup_view_field")),
+
     path('test/', views.test)
 ]

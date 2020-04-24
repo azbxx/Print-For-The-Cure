@@ -59,7 +59,9 @@
   </head>
   <body>
     <div class="container">
-      <button href="/" type="submit" class=" btn-xs btn-default  btn-flat-solid">Return to Home Page</button>
+      <h1>Requests Nearest To You</h1>
+      <p>(Sorted By Distance)</p>
+      <a href="/" type="submit" class=" link-inpage buttonBlue btn btn-default btn-flat-solid btn-pill">Return to Home Page</a>
       {% for requestModel in allRequests %}
         <div class="row">
           <p>{{ requestModel.fName }} {{requestModel.lName}}     {{ requestModel.typePPE }} {{ requestModel.numPPE }}     {{ requestModel }}     {{ requestModel.address }}, {{ requestModel.city }}, {{ requestModel.state }}, {{ requestModel.country }}, {{ requestModel.zipCode }}     Order Date: {{ requestModel.orderDate }}   Delivery Date: {{ requestModel.delivDate }}</p>

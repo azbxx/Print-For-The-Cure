@@ -96,22 +96,28 @@ def donorRegistration(request):
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
         elif request.POST['password'] == request.POST['passwordConfirm']:
-            newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
-            newUser.set_password(request.POST['password'])
-            newUser.save()
-            newDonor = Donor(user=newUser, address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
-            newDonor.save()
+            if User.objects.filter(username=request.POST['username']).exists():
+                failMessage += "Sorry, username is already taken! Please choose another one. "
+            else:
+                newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
+                newUser.set_password(request.POST['password'])
+                newUser.save()
+                newDonor = Donor(user=newUser, address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
+                newDonor.save()
 
-            service = getService()
-            #Donor Email
-            subject = "PrintForTheCure Registration Details"
-            message_text = "Thank you for registing with PrintForTheCure! Now you can get started fulfilling PPE requests!\n\nYour Username: %s\n\nYour Password: %s" % (request.POST['username'], request.POST['password'])
-            message = makeMessage("printforthecure@gmail.com", request.POST['email'], subject, message_text)
-            sendMessage(service, 'me', message)
+                user = authenticate(username=request.POST['username'], password=request.POST['password'])
+                login(request, user)
 
-            return HttpResponseRedirect("/registrationSuccessful/")
+                service = getService()
+                #Donor Email
+                subject = "PrintForTheCure Registration Details"
+                message_text = "Thank you for registing with PrintForTheCure! Now you can get started fulfilling PPE requests!\n\nYour Username: %s\n\nYour Password: %s" % (request.POST['username'], request.POST['password'])
+                message = makeMessage("printforthecure@gmail.com", request.POST['email'], subject, message_text)
+                sendMessage(service, 'me', message)
+
+                return HttpResponseRedirect("/registrationSuccessful/")
         else:
-            failMessage = "Passwords do not match."
+            failMessage += "Passwords do not match. "
     template = loader.get_template('main/register.html')
     context = {     #all inputs for the html go in these brackets
         'failMessage': failMessage
@@ -132,8 +138,7 @@ def donorLogin(request):
         # This tests if the form is the log *in* form
         if 'username' in request.POST.keys():
             # IF so, try to authentircate
-            user = authenticate(username=request.POST['username'],
-                password=request.POST['password'])
+            user = authenticate(username=request.POST['username'], password=request.POST['password'])
             if user is not None:
                 # IF success, then use the login function so the session persists.
                 login(request, user)
@@ -308,6 +313,11 @@ def nearbyRequests(request):
     }
     return HttpResponse(template.render(context, request))
 
+def requestDetails(request):
+    template = loader.get_template('main/requestDetails.html')
+    context = {}
+    return HttpResponse(template.render(context, request))
+
 def notLoggedIn(request):
     if request.method == 'POST':
         if 'return' in request.POST.keys():
@@ -342,14 +352,14 @@ def confirmClaim(request):
                 ppeType = "Touch-less Door Handle (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"
             elif "opener" in requestObj.typePPE:
                 ppeType = "Personal Touchless Door Opener (Link: https://www.thingiverse.com/thing:4269560)"
-            message_text = "Thank You For Claiming a request for PPE!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for your to Deliver the requested PPE: %s\n\nOther Notes From the Requester: %s\n\nThank you for contributing to the Covid-19 Situation! We hope you continue donating on our platform! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes)
+            message_text = "Thank You For Claiming a request for PPE!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for your to Deliver the requested PPE: %s\n\nOther Notes From the Requester: %s\n\nThank you for contributing to the battle against Covid-19! We hope you continue donating on our platform! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes)
             message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text)
             sendMessage(service, 'me', message)
 
             #Doctor Email
             donor = Donor.objects.get(user = request.user)
             subject = "Request For PPE Claimed"
-            message_text1 = "Your Request for PPE has been claimed by a patron!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Patron: %s\n\nYour Patron's Name: %s\nPatron's Email: %s\nPatron's Address: %s %s %s %s %s\n\nThank you for reaching out to donors during these harsh times! We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email, donor.address, donor.city, donor.state, donor.zipCode, donor.country)
+            message_text1 = "Your Request for PPE has been claimed by a donor!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nYour Donor's Name: %s\nDonor's Email: %s\n\nThank you for reaching out to donors during these harsh times! We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email)
             message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text1)
             sendMessage(service, 'me', message)
 

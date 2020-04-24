@@ -46,7 +46,8 @@
           <h2 class="text-uppercase color-dark"><i class="fa fa-user"></i> Register</h2>
           <a href="/">Register Later</a>
           <hr/>
-          <form style="padding-bottom:1em; padding-top:3em;" method="POST">
+          <p style="color:red; font-size:120%;">{{ failMessage }}<p>
+          <form style="padding-bottom:1em; padding-top:2em;" method="POST">
             {% csrf_token %}
 
             <div class="form-group">

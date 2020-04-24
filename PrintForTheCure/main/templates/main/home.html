@@ -37,6 +37,7 @@
     <link href="{% static 'assets/theme/css/style.css' %}" rel="stylesheet">
     <!-- black skin-->
     <!-- <link href="{% static 'assets/theme/css/skin-black.css' %}" rel="stylesheet"> -->
+
   </head>
 
 
@@ -62,9 +63,10 @@
                   <form style="padding-bottom:1em;" method="POST">
                     {% csrf_token %}
                     <input type="hidden" name="login"></input>
-                    <button type="submit" class="btn btn-default btn-flat-solid btn-pill"><i class="fa fa-sign-in"></i> Login/Regsiter</button>
+                    <button type="submit" class="btn btn-default btn-flat-solid btn-pill"><i class="fa fa-sign-in"></i> Donor Login/Registration</button>
                   </form>
                 {% endif %}
+                <a href="#request" class="link-inpage buttonBlue btn btn-default btn-flat-solid btn-pill" style="margin-top:3em;">Request PPE</a>
               </div>
               <a href="#catalog" class="move-to-next link-inpage"><i class="fa fa-4x fa-angle-double-down" ></i></a>
             </div>
@@ -80,27 +82,28 @@
           <div class="menu-collapse collapse" id="menu-collapse">
             <div class="container">
               <div class="row">
-                <div class="col-md-3">
+                <div class="col-md-2">
                   <ul class="breadcrumb main-nav no-space">
                     <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li>
                   </ul>
                 </div>
-                <div class="col-md-6">
+                <div class="col-md-8">
                   <ul class="breadcrumb main-nav nav">
                     <li class="active"><a href="#home" class="link-inpage">Home</a></li>
                     <li ><a href="#about" class="link-inpage">About</a></li>
                     <li ><a href="#catalog" class="link-inpage">Catalog</a></li>
                     <li ><a href="#request" class="link-inpage">Request PPE</a></li>
-                    <li ><a href="/requestsVisual" class="link-inpage">PPE Requests Map</a></li>
+                    <li ><a href="#map" class="link-inpage">Requests Map</a></li>
+                    <li ><a href="/nearbyRequests/" class="link-inpage">Nearest Requests</a></li>
                     <li ><a href="#contact" id="contact-tab" class="link-inpage">Contact</a></li>
                   </ul>
                 </div>
                 {% if authenticated %}
                 {% else %}
-                  <div class="col-md-3">
+                  <div class="col-md-2">
                     <ul class="breadcrumb main-nav no-space">
                       <li>
-                        <a href="/login/"  ><i class="fa fa-sign-in"></i>  Login/Register</a>
+                        <a href="/login/"  ><i class="fa fa-sign-in"></i>  Donor Login</a>
                       </li>
                     </ul>
                   </div>
@@ -121,19 +124,26 @@
             </div>
           </div>
           <div class="block-title">
-            <h2 class="text-uppercase color-dark text-bold no-margin">About</h2>
+            <h1 class="text-uppercase color-dark text-bold no-margin">The Movement</h1>
 
             <div class="title-icon"> <i class="fa fa-book"></i> </div>
           </div>
           <div class="my-desc">
             <div class="bg-secondary clearfix">
               <div class="inner-text">
-                <p><b style="font-size: 150%">The Problem: </b>PPE (Personal Protection Equipment) is critical to essential workers for safety, yet it is in critically low supply. PPE includes face shields, face masks, mask comfort straps, hand-less door openers, and more.</p>
-                <p><b style="font-size: 150%">PrintForTheCure</b> is a <b>platform</b> that connects essential workers in need of PPE with patrons who can create it. Essential workers can request an amount, type, and delivery date for PPE, then patrons can view requests around the globe or near them, and claim one. Once claimed, they are expected to fulfill the request. When the PPE transaction is finished, the recipient of the PPE may also leave a donation.</p>
+                <p><b style="font-size: 150%">The Problem: </b>PPE (Personal Protection Equipment) is critical to essential workers for safety, yet it is in critically low supply. Some PPE, such as face shields, face masks, mask comfort straps, and hand-less door openers can be easily produced at home.</p>
+                <p><b style="font-size: 150%">How It Works in 5 Easy Steps: </b>
+                <ol>
+                  <li>Doctors <a href="#request" class="link-inpage">submit requests</a> for PPE.</li>
+                  <li>Donors <a href="/register/" class="link-inpage">register</a> through the website.</li>
+                  <li>Anyone can browse PPE requests on a <a href="#map" class="link-inpage">map</a>, and registered donors can view <a href="/nearbyRequests/" class="link-inpage">requests nearest to them</a>.</li>
+                  <li>Donors can claim requests, after which they are connected with their requester.</li>
+                  <li>The donor then should fulfill the request for PPE.</li>
+                </ol>
                 <br />
                 <p>By using this platform, </p>
                 <b class="no-margin">Doctors can benefit by receiving PPE.</b> <br />
-                <b class="no-margin">Patrons can help save the lives of their doctors and essential workers, and may receive monetary donations.</b> <br /><br />
+                <b class="no-margin">Donors can help save the lives of their doctors and essential workers, and may receive monetary donations.</b> <br /><br />
 
                 <p class="no-margin">Be a part of the movement!</p>
               </div>
@@ -157,7 +167,7 @@
       </section>
 
 
-      <section id="request" class="block-section">
+      <section id="map" class="block-section">
         <div class=" shape-bottom">
           <div class="bg-secondary block-title">
             <div class="container">
@@ -176,7 +186,9 @@
             </div>
           </div>
         </div>
+      </section>
 
+      <section id="request" class="block-section">
         <div class=" shape-bottom">
           <div class="bg-secondary block-title">
             <div class="container">
@@ -189,7 +201,7 @@
                   <!-- I use the hidden input element to send along the information that
                     we are logging out. -->
                   <input type="hidden" name="submitRequest"></input>
-                  <button class="btn btn-default btn-flat-solid btn-pill">Fill out a Form to Request PPE</button>
+                  <button class="btn btn-default btn-flat-solid btn-pill">Fill out a Form For PPE</button>
                 </form>
               </div>
             </div>
