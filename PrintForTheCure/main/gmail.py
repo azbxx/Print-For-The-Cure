@@ -11,8 +11,8 @@ SCOPES = ['https://www.googleapis.com/auth/gmail.send']
 
 def getService():
     creds = None
-    if os.path.exists('C:\\Users\\Michael Zeng\\Documents\\Programming\\Project Face Shield mk2\\PrintForTheCure\\main\\token.pickle'):
-        with open('C:\\Users\\Michael Zeng\\Documents\\Programming\\Project Face Shield mk2\\PrintForTheCure\\main\\token.pickle', 'rb') as token:
+    if os.path.exists('C:\\Users\\⁨nicholasliu⁩\\Documents\\GitHub\\Print-For-The-Cure\\PrintForTheCure\\main\\token.pickle'):
+        with open('C:\\Users\\⁨nicholasliu⁩\\Documents\\GitHub\\Print-For-The-Cure\\PrintForTheCure\\main\\token.pickle', 'rb') as token:
             creds = pickle.load(token)
     else:
         print("pickle failed")
@@ -21,7 +21,7 @@ def getService():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
+                'C:\\Users\\⁨nicholasliu⁩\\Documents\\GitHub\\Print-For-The-Cure\\PrintForTheCure\\main\\credentials.json', SCOPES)
             creds = flow.run_local_server(port=0)
         # Save the credentials for the next run
         with open('token.pickle', 'wb') as token:
