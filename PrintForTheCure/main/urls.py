@@ -21,6 +21,8 @@ urlpatterns = [
     path('notLoggedIn/', views.notLoggedIn, name='not logged in'),
     path('confirmation/', views.confirmClaim, name='confirmation'),
     path('thankyou/', views.thankYou, name='thank you page'),
+    path('register/terms', views.terms, name='terms page'),
+    path('requestPPE/terms', views.terms, name='terms page'),
 
     path('test/', views.test)
 ]
