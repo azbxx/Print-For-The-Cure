@@ -37,9 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'bootstrap3',    # If you use django-bootstrap3
-    'crispy_forms',  # If you user django-crispy-forms
-    'django_popup_view_field',
+    # 'bootstrap3',    # If you use django-bootstrap3
+    # 'crispy_forms',  # If you user django-crispy-forms
+    # 'django_popup_view_field',
     'main.apps.MainConfig',
 ]
 

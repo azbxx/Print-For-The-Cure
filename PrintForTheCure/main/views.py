@@ -399,6 +399,10 @@ def terms(request):
     template = loader.get_template('main/terms.html')
     return HttpResponse(template.render({}, request))
 
+def pp(request):
+    template = loader.get_template('main/pp.html')
+    return HttpResponse(template.render({}, request))
+
 def test(request):
     template = loader.get_template('main/fileName.html')
     context = {}

@@ -22,6 +22,7 @@ urlpatterns = [
     path('confirmation/', views.confirmClaim, name='confirmation'),
     path('thankyou/', views.thankYou, name='thank you page'),
     path('register/terms', views.terms, name='terms page'),
+    path('pp', views.pp, name='privacy policy'),
     path('requestPPE/terms', views.terms, name='terms page'),
 
     path('requestDetails/', views.requestDetails, name='details page for request from nearbyRequests.html'),
