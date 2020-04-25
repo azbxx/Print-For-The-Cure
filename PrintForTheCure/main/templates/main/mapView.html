@@ -50,22 +50,37 @@
         font-weight: bold;
       }
       #map {
-        height: 92%;
+        height: 100%;
       }
       html, body {
         height: 100%;
         margin: 0;
         padding: 0;
       }
-      #navbarHome {
-        margin-top:4px;
-        margin-right:5px;
-        margin-left:5px;
+
+      /* The popup form - hidden by default */
+      .form-popup {
+        position: fixed;
+        bottom: 27%;
+        right: 18%;
+        top: 10%;
+        left: 10%;
       }
-      .navbarMargins {
-        margin-top:4px;
-        margin-right:5px;
-        margin-left:5px;
+      /* Add styles to the form container */
+      .form-container {
+        padding: 40px;
+        background-color: white;
+      }
+      /* Add some hover effects to buttons */
+      .form-container .btn:hover, .open-button:hover {
+        opacity: 1;
+      }
+      .closeButton {
+        position:absolute;
+        margin-right: 1%;
+        margin-top: 1%;
+        top: 1.2%;
+        right: 1%;
       }
     </style>
   </head>
@@ -77,12 +92,12 @@
       <div class="menu-collapse collapse" id="menu-collapse">
         <div class="container">
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
               <ul class="breadcrumb main-nav no-space">
                 <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li>
               </ul>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-8">
               <ul class="breadcrumb main-nav nav">
                 <li class="active"><a href="/" class="link-inpage">Home</a></li>
                 <li ><a href="/requestPPE" class="link-inpage">Request PPE</a></li>
@@ -92,7 +107,7 @@
             </div>
             {% if authenticated %}
             {% else %}
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <ul class="breadcrumb main-nav no-space">
                   <li>
                     <a href="/login/"  ><i class="fa fa-sign-in"></i>  Login/Register</a>
@@ -122,14 +137,65 @@
     </script>
     <script id="url" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdxXmm4kivKpUv9pOoZihNfk4GqmpWWA0&callback=initMap"></script>
 
-    {% for address in addresses %}
+    {% for requestObj in allRequests %}
+      <script>
+        var requestObjId = {{ requestObj.id }}
+        console.log("id var declare: " + requestObjId)
+      </script>
       <form style="padding-bottom:1em;" method="POST">
         <!-- Every <form> element needs a csrf_token as a security precaution. -->
         {% csrf_token %}
-        <input type="hidden" id="{{ address.addressId }}" name="requestAddress" value="{{ address.address }}"></input>
+        <input type="hidden" id="{{ requestObj.id }}" name="requestAddress" value="{{ requestObj.address }}"></input>
       </form>
+
+      <div class="form-popup" id="divID{{ requestObj.id }}">
+        <form class="form-container">
+          <h2 class="color-dark" style="margin-top:-0.75%;"><i style="color: seagreen;"class="fa fa-check"></i> Request Details</h2>
+          <button type="button" class="btn-lg cancel closeButton" onclick="closeFormButton({{ requestObj.id }})"><i class="fa fa-close"></i></button>
+          <hr />
+          <p><span class="color-dark">Requester's Name:</span> {{ requestObj.fName }} {{ requestObj.lName }}</p>
+          <p><span class="color-dark">Requester's Email:</span> {{ requestObj.email }}</p>
+          <p><span class="color-dark">Requester's Address:</span> {{ requestObj.address }} {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
+          <br />
+          <p><span class="color-dark">Type of PPE Requested:</span> <span id="type{{ requestObj.id }}"></span></p>
+          <p><span class="color-dark">Amount of PPE Requested:</span> {{ requestObj.numPPE }}</p>
+          <p><span class="color-dark">Latest Date for Delivery of requested PPE:</span> {{ requestObj.delivDate }}</p>
+          <br />
+          <p><span class="color-dark">Other Notes For the Patron:</span> {{ requestObj.notes }}</p>
+
+          <script>
+            function openForm(requestObjId) {
+              console.log("opening form for " + requestObjId)
+              document.getElementById("divID" + requestObjId).style.display = "block";
+            }
+            function closeForm() {
+              console.log("closing form for " + requestObjId)
+              document.getElementById("divID" + requestObjId).style.display = "none";
+            }
+            function closeFormButton(requestObjId) {
+              document.getElementById("divID" + requestObjId).style.display = "none";
+            }
+
+            var typeShort = '{{ requestObj.typePPE }}'
+            console.log("typeShort: " + typeShort)
+            var typeLong = ""
+            switch(typeShort) {
+              case "shield": typeLong="3D Printed Face Shields (link: https://budmen.com/)"; break;
+              case "strap": typeLong="Face Mask Comfort Straps (link: https://www.thingiverse.com/thing:4267730/files)"; break;
+              case "handle": typeLong="Touch-less Door Handles (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"; break;
+              case "opener": typeLong="Personal Touchless Door Openers (Link: https://www.thingiverse.com/thing:4269560)"; break;
+              default: typeLong="PPE type not found"; break;
+            }
+           document.getElementById("type{{ requestObj.id }}").innerText = typeLong;
+          </script>
+        </form>
+        <script>
+          closeForm()
+        </script>
+      </div>
+
       <script>
-        var inputBox = document.getElementById("{{ address.addressId }}");
+        var inputBox = document.getElementById("{{ requestObj.id }}");
         console.log(inputBox.value)
 
         geocoder.geocode( { 'address': inputBox.value}, function(results, status) {
@@ -141,9 +207,10 @@
                 title: 'Click to See Request Details',
             });
             marker.addListener('click', function() {
-              map.setZoom(6);
+              map.setZoom(10);
               map.setCenter(marker.getPosition());
-
+              openForm('{{ requestObj.id }}')
+              // document.getElementById("markerClick").value = marker.getPosition();
             });
           } else {
               alert('Geocode was not successful for the following reason: ' + status);
@@ -151,6 +218,10 @@
         });
       </script>
     {% endfor %}
+    <!-- <form id="markerForm" style="padding-bottom:1em;" method="POST">
+      {% csrf_token %}
+      <input type="hidden" id="markerClick" name="markerClick" value=""></input>
+    </form> -->
 
 
 

@@ -111,7 +111,7 @@ def donorRegistration(request):
                 service = getService()
                 #Donor Email
                 subject = "PrintForTheCure Registration Details"
-                message_text = "Thank you for registing with PrintForTheCure! Now you can get started fulfilling PPE requests!\n\nYour Username: %s\n\nYour Password: %s" % (request.POST['username'], request.POST['password'])
+                message_text = "Thank you for registing with PrintForTheCure! Now you can get started claiming and fulfilling PPE requests on printforthecure.com!\n\nYour Username: %s\n\nYour Password: %s" % (request.POST['username'], request.POST['password'])
                 message = makeMessage("printforthecure@gmail.com", request.POST['email'], subject, message_text)
                 sendMessage(service, 'me', message)
 
@@ -223,6 +223,13 @@ def map(request):
         'authenticated': request.user.is_authenticated,
         'allRequests': allUnclaimedRequests,
         'addresses': addresses,
+    }
+    return HttpResponse(template.render(context, request))
+
+def requestPopup(request):
+    template = loader.get_template('main/requestPopup.html')
+    context = {     #all inputs for the html go in these brackets
+
     }
     return HttpResponse(template.render(context, request))
 

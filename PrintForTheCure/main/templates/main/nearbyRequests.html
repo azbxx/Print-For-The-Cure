@@ -1,11 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-  <!--
-  Page to tell donor thank you for claiming a requestModel. Yes I know this could be a popup but for simplicity's sake
-  Necessary Components:
-  1) button to return home
-  2) tell user/donor thank you for claiming a requestModel
-  -->
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">    <!-- makes the webpage respond to resizing -->
     <meta charset="UTF-8">
@@ -55,27 +49,84 @@
         margin-left:-13.75%;
         font-weight: bold;
       }
+
+      hr{
+        color:brown !important;
+      }
+      a {
+        font-size: 120%;
+      }
+      .bg {
+        background: rgba(76, 175, 80, 0.12) /* Green background with 30% opacity */
+      }
     </style>
   </head>
   <body>
-    <div class="container">
-      <h1>Requests Nearest To You</h1>
-      <p>(Sorted By Distance)</p>
-      <a href="/" type="submit" class=" link-inpage buttonBlue btn btn-default btn-flat-solid btn-pill">Return to Home Page</a>
-      {% for requestModel in allRequests %}
-        <div class="row">
-          <p>{{ requestModel.fName }} {{requestModel.lName}}     {{ requestModel.typePPE }} {{ requestModel.numPPE }}     {{ requestModel }}     {{ requestModel.address }}, {{ requestModel.city }}, {{ requestModel.state }}, {{ requestModel.country }}, {{ requestModel.zipCode }}     Order Date: {{ requestModel.orderDate }}   Delivery Date: {{ requestModel.delivDate }}</p>
-          <form action"confirmation" style="padding-bottom:1em;" method="POST">
-            <!-- Every <form> element needs a csrf_token as a security precaution. -->
-            {% csrf_token %}
-            <!-- I use the hidden input element to send along the information that
-              we are logging out. -->
-            <input type="hidden" name="requestModelId" value="{{ requestModel.id }}"></input>
-            <button type="submit" class="btn-xs btn-default  btn-flat-solid">Claim</button>
-          </form>
+
+
+    <div class="wrapper bg">
+      <div class="block-page" >
+        <div class="container-sm clearfix">
+          <h2 class="text-uppercase color-dark"> Requests Nearest To You</h2>
+            <div class="row">
+              <div class="col-md-6">
+                <a href="/" type="submit" >Return to Home Page</a>
+              </div>
+              <div class="col-md-6" style="text-align: right;">
+                <a href="/requestsVisual" type="submit" >PPE Requests Map</a>
+              </div>
+            </div>
+                {% for requestObj in allRequests %}
+               <hr style="border-top: 1px solid rgb(206, 202, 202) !important;">
+                <form style="padding-bottom:1em;" method="POST">
+
+          <h3 class=" color-dark">Request For {{ requestObj.numPPE }} <span id="type{{ requestObj.id }}"></span> </h3>
+
+          <div class="col-md-6">
+            <p><span class="color-dark">Requester's Name: </span>{{ requestObj.fName }} {{ requestObj.lName }}</p>
+            <p><span class="color-dark">Requester's Email: </span>{{ requestObj }}</p>
+            <p><span class="color-dark">Request Posted On: </span>{{ requestObj.orderDate }}</p>
+          </div>
+          <div class="col-md-6">
+            <p><span class="color-dark">Request Details: </span>{{ requestObj.numPPE }}x <span id="type{{ requestObj.id }}"></span></p>
+            <p><span class="color-dark">PPE Latest Delivery Date:</span> {{ requestObj.delivDate }}</p>
+            <p><span class="color-dark"></span></p>
+          </div>
+
+          <script>
+           var typeShort = '{{ requestObj.typePPE }}'
+           console.log(typeShort)
+           var typeLong = ""
+           switch(typeShort) {
+             case "shield": typeLong="3D Printed Face Shields (link: https://budmen.com/)"; break;
+             case "strap": typeLong="Face Mask Comfort Straps (link: https://www.thingiverse.com/thing:4267730/files)"; break;
+             case "handle": typeLong="Touch-less Door Handles (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"; break;
+             case "opener": typeLong="Personal Touchless Door Openers (Link: https://www.thingiverse.com/thing:4269560)"; break;
+             default: typeLong="*PPE type not found"; break;
+           }
+           document.getElementById("type{{ requestObj.id }}").innerText = typeLong;
+          </script>
+
+
+                    <p>{{ requestObj.fName }} {{ requestObj.lName }}      {{ requestObj }}     {{ requestObj.address }}, {{ requestObj.city }}, {{ requestObj.state }}, {{ requestObj.country }}, {{ requestObj.zipCode }}     Order Date: {{ requestObj.orderDate }}   Delivery Date: {{ requestObj.delivDate }}</p>
+                    <form action"confirmation" style="padding-bottom:1em;" method="POST">
+
+                      <!-- Every <form> element needs a csrf_token as a security precaution. -->
+                      {% csrf_token %}
+                      <!-- I use the hidden input element to send along the information that
+                        we are logging out. -->
+                      <input type="hidden" name="requestObjId" value="{{ requestObj.id }}"></input>
+                      <button type="submit" class="btn-xs btn-default  btn-flat-solid">Claim AND/OR More Details</button>
+                    </form>
+
+                {% endfor %}
+                  </form>
+
+          </div>
+          </div>
         </div>
-      {% endfor %}
-    </div>
+
+
 
     <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="{% static 'assets/plugins/jquery.js' %}"></script>
@@ -106,6 +157,25 @@
     <!--=====================================================-->
     <!--configuration template-->
     <script src="{% static 'assets/theme/js/theme.js' %}"></script>
+
+
+
+    <!-- <div class="container">
+      <h1>Requests Nearest To You</h1>
+      <p>(Sorted By Distance)</p>
+      <a href="/" type="submit" class=" link-inpage buttonBlue btn btn-default btn-flat-solid btn-pill">Return to Home Page</a>
+      {% for requestObj in allRequests %}
+        <div class="row">
+          <p>{{ requestObj.fName }} {{requestObj.lName}}     {{ requestObj.typePPE }} {{ requestObj.numPPE }}     {{ requestObj }}     {{ requestObj.address }}, {{ requestObj.city }}, {{ requestObj.state }}, {{ requestObj.country }}, {{ requestObj.zipCode }}     Order Date: {{ requestObj.orderDate }}   Delivery Date: {{ requestObj.delivDate }}</p>
+          <form action"confirmation" style="padding-bottom:1em;" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="requestObjId" value="{{ requestObj.id }}"></input>
+            <button type="submit" class="btn-xs btn-default  btn-flat-solid">Claim</button>
+          </form>
+        </div>
+      {% endfor %}
+    </div> -->
+
 
   </body>
 </html>
