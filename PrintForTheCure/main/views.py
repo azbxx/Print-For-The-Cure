@@ -316,7 +316,8 @@ def nearbyRequests(request):
 
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
-        'allRequests': allUnclaimedRequests
+        'allRequests': allUnclaimedRequests,
+        'authenticated': request.user.is_authenticated,
     }
     return HttpResponse(template.render(context, request))
 

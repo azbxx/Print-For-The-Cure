@@ -40,6 +40,145 @@
     </script>
 
     <style>
+      /*== NAVBAR ==*/
+    .subash {
+
+      transition: background 0.8s ease 0s;
+      -webkit-transition: background 0.8s ease 0s;
+      -moz-transition: background 0.8s ease 0s;
+      -o-transition: background 0.8s ease 0s;
+      -ms-transition: background 0.8s ease 0s;
+      bottom: 0;
+      padding: 10px 0;
+      background: #ffffff;
+
+      left: 0;
+      border-bottom: 1px solid #ebebeb;
+      text-align: center;
+      width: 100%;
+      z-index: 100;
+    }
+    .subash .toogle-bars {
+      display: none;
+    }
+    .subash .toogle-bars a {
+      text-decoration: none;
+      color: #000000;
+    }
+    .subash .toogle-bars a .ic-open {
+      display: none;
+      visibility: hidden;
+    }
+    .subash .toogle-bars a .ic-close {
+      display: inline;
+      visibility: visible;
+    }
+    .subash .toogle-bars a.collapsed .ic-open {
+      display: inline;
+      visibility: visible;
+    }
+    .subash .toogle-bars a.collapsed .ic-close {
+      display: none;
+      visibility: hidden;
+    }
+    .subash .main-nav {
+      visibility: visible !important;
+      margin: 0;
+      background: transparent;
+    }
+    .subash .main-nav > li {
+      display: inline;
+    }
+    .subash .main-nav > li > a {
+      font-weight: 700;
+      color: #323232;
+      outline: none;
+      font-size: 12px;
+      transition: all 0.3s ease 0s;
+      -webkit-transition: all 0.3s ease 0s;
+      -moz-transition: all 0.3s ease 0s;
+      -o-transition: all 0.3s ease 0s;
+      -ms-transition: all 0.3s ease 0s;
+      text-decoration: none;
+      text-transform: uppercase;
+    }
+    .subash .main-nav > li > a:hover {
+      color: #000000;
+      outline: none;
+    }
+    .subash .main-nav > li + li:before {
+      color: #323232;
+    }
+    .subash .main-nav > li.active > a {
+      color: #000000;
+    }
+    .subash .main-nav.nav > li > a {
+      padding: 0;
+      display: inline-block;
+    }
+    .subash .main-nav.nav > li > a:hover,
+    .subash .main-nav.nav > li > a:focus {
+      background: transparent;
+    }
+    .subash .main-nav.no-space > li + li:before {
+      content: "";
+    }
+    .subash.nav-white-bg {
+      border-bottom: 1px solid #ebebeb;
+      background: #ffffff;
+    }
+    .subash.nav-white-bg .main-nav > li > a {
+      color: #7d7d7d;
+    }
+    .subash.nav-white-bg .main-nav > li > a:hover {
+      color: #000000;
+    }
+    .subash.nav-white-bg .main-nav > li.active > a {
+      color: #000000;
+    }
+    .subash.nav-white-bg .main-nav > li + li:before {
+      color: #ebebeb;
+    }
+    .subash.nav-fixed {
+      position: fixed;
+      top: 0;
+      background: #ffffff;
+      z-index: 100;
+      bottom: inherit;
+      border-bottom: 1px solid #ebebeb;
+    }
+    @media (min-width: 1030px) {
+      .subash .menu-collapse.collapse {
+        display: block;
+        height: auto !important;
+      }
+    }
+    @media (max-width: 1030px) {
+      .subash {
+        border-bottom: 1px solid #ebebeb;
+        background: #ffffff;
+      }
+      .subash .main-nav > li > a {
+        color: #7d7d7d;
+      }
+      .subash .main-nav > li > a:hover {
+        color: #000000;
+      }
+      .subash .main-nav > li.active > a {
+        color: #000000;
+      }
+      .subash .main-nav > li + li:before {
+        color: #ebebeb;
+      }
+      .subash .toogle-bars {
+        display: block;
+      }
+      .subash .menu-collapse.collapse.in {
+        border-top: 1px solid #ebebeb;
+        margin-top: 10px;
+        display: block;
+      }
+    }
       .input-element{
         font-size: 30px;
         size: 400;
@@ -85,19 +224,19 @@
     </style>
   </head>
   <body>
-    <div class="menu-area">
+    <div class="subash">
       <div class="toogle-bars">
         <a href="#menu-collapse" data-toggle="collapse" class="collapsed"><i class="fa fa-bars ic-open"></i> <i class="fa fa-remove ic-close"></i> MENU</a>
       </div>
       <div class="menu-collapse collapse" id="menu-collapse">
         <div class="container">
           <div class="row">
-            <div class="col-md-2">
+            <div class="col-md-3">
               <ul class="breadcrumb main-nav no-space">
                 <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li>
               </ul>
             </div>
-            <div class="col-md-8">
+            <div class="col-md-6">
               <ul class="breadcrumb main-nav nav">
                 <li class="active"><a href="/" class="link-inpage">Home</a></li>
                 <li ><a href="/requestPPE" class="link-inpage">Request PPE</a></li>
@@ -107,10 +246,10 @@
             </div>
             {% if authenticated %}
             {% else %}
-              <div class="col-md-2">
+              <div class="col-md-3">
                 <ul class="breadcrumb main-nav no-space">
                   <li>
-                    <a href="/login/"  ><i class="fa fa-sign-in"></i>  Login/Register</a>
+                    <a href="/login/"  ><i class="fa fa-sign-in"></i>  Donor Login/Registration</a>
                   </li>
                 </ul>
               </div>
@@ -119,8 +258,6 @@
         </div>
       </div>
     </div><!-- End Main navbar -->
-
-
 
 
     <!--DO NOT CHANGE ANYTHING BELOW HERE-->
