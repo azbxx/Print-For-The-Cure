@@ -239,15 +239,16 @@ def nearbyRequests(request):
         return HttpResponseRedirect("/notLoggedIn/")
     if request.method == 'POST':
         if request.user.is_authenticated:
-            # print("Request ID: " + request.POST['requestModelId'])
+            if 'requestObjId' in request.POST.keys():
+                # print("Request ID: " + request.POST['requestModelId'])
 
-            # print("Request Object: " + str(vars(requestObj)))
-            #return HttpResponseRedirect('/confirmation/' + '?' + "requestId=" + )
+                # print("Request Object: " + str(vars(requestObj)))
+                #return HttpResponseRedirect('/confirmation/' + '?' + "requestId=" + )
 
-            base_url = '/confirmation/'  # 1 /products/
-            query_string =  urlencode({'requestModelId': request.POST['requestModelId']})  # 2 category=42
-            url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
-            return HttpResponseRedirect(url)  # 4
+                base_url = '/confirmation/'  # 1 /products/
+                query_string =  urlencode({'requestObjId': request.POST['requestObjId']})  # 2 category=42
+                url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
+                return HttpResponseRedirect(url)  # 4
         else:
             print("not authorized")
             return HttpResponseRedirect("/notLoggedIn/")
@@ -338,7 +339,7 @@ def notLoggedIn(request):
     return HttpResponse(template.render(context, request))
 
 def confirmClaim(request):
-    requestModelId = request.GET.get('requestModelId')  # 5
+    requestModelId = request.GET.get('requestObjId')  # 5
     print(requestModelId)
     requestObj = RequestModel.objects.get(id=requestModelId)
 
