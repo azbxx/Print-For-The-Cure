@@ -82,12 +82,12 @@
           <div class="menu-collapse collapse" id="menu-collapse">
             <div class="container">
               <div class="row">
-                <div class="col-md-1">
+                <div class="col-md-2">
                   <ul class="breadcrumb main-nav no-space">
                     <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li>
                   </ul>
                 </div>
-                <div class="col-md-9">
+                <div class="col-md-8">
                   <ul class="breadcrumb main-nav nav">
                     <li class="active"><a href="#home" class="link-inpage">Home</a></li>
                     <li ><a href="#about" class="link-inpage">About</a></li>
@@ -95,8 +95,6 @@
                     <li ><a href="#request" class="link-inpage">Request PPE</a></li>
                     <li ><a href="#map" class="link-inpage">Requests Map</a></li>
                     <li ><a href="/nearbyRequests/" class="link-inpage">Nearest Requests</a></li>
-                    <li ><a href="#contact" id="contact-tab" class="link-inpage">Contact</a></li>
-                    <li ><a href="pp" class="link-inpage">Privacy Policy</a></li>
                   </ul>
                 </div>
                 {% if authenticated %}
@@ -112,8 +110,9 @@
               </div>
             </div>
           </div>
-        </div><!-- End Main navbar -->
-      </header><!-- End Main Header -->
+        </div>
+      </header>
+      <!-- End Main Header -->
 
       <section id="about" class="block-section">
         <div class="clearfix my-profile">
@@ -145,7 +144,6 @@
                 <p>By using this platform, </p>
                 <b class="no-margin">Doctors can benefit by receiving PPE.</b> <br />
                 <b class="no-margin">Donors can help save the lives of their doctors and essential workers, and may receive monetary donations.</b> <br /><br />
-
                 <p class="no-margin">Be a part of the movement!</p>
               </div>
             </div>
@@ -224,19 +222,21 @@
       <section id="catalog" class="block-section">
         <div class="block-page" >
           <div class="container-medium clearfix">
-          <div class="col-md-4 col-sm-6">
-            <div class="box-work">
-              <div class="work-preview">
-                <img src="{% static 'assets/theme/images/handle1.PNG' %}" alt="">
-                <div class="hover">
-                  <div class="link-btns">
 
+            <div class="row list-work">
+              <div class="col-md-4 col-sm-6">
+                <div class="box-work">
+                  <div class="work-preview">
+                    <img src="https://budmen.com/wp-content/uploads/2020/04/rbw-faceshield-scaled.jpeg" alt="">
+                    <div class="hover">
+                      <div class="link-btns">
+
+                      </div>
+                      <a href="/catalogue-shield" class="project-title">Face Shield</a>
+                    </div>
                   </div>
-                  <a href="/catalogue-handle" class="project-title">Hands-free Door Handle</a>
                 </div>
               </div>
-            </div>
-          </div>
 
               <div class="col-md-4 col-sm-6">
                 <div class="box-work">
@@ -246,26 +246,11 @@
                       <div class="link-btns">
 
                       </div>
-                      <a href="/catalogue-maskstrap" class="project-title">Mask Hook</a>
+                      <a href="/catalogue-maskstrap" class="project-title">Face Mask Strap</a>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <div class="row list-work">
-                <div class="col-md-4 col-sm-6">
-                  <div class="box-work">
-                    <div class="work-preview">
-                      <img src="https://budmen.com/wp-content/uploads/2020/04/rbw-faceshield-scaled.jpeg" alt="">
-                      <div class="hover">
-                        <div class="link-btns">
-
-                        </div>
-                        <a href="/catalogue-shield" class="project-title">Face Shields</a>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
               <div class="col-md-4 col-sm-6">
                 <div class="box-work">
@@ -275,11 +260,26 @@
                       <div class="link-btns">
 
                       </div>
-                      <a href="/catalogue-dooropener" class="project-title">Personal Hands-free Door Opener</a>
+                      <a href="/catalogue-dooropener" class="project-title">Hands-free Door Opener</a>
                     </div>
                   </div>
                 </div>
               </div>
+
+              <div class="col-md-4 col-sm-6">
+                <div class="box-work">
+                  <div class="work-preview">
+                    <img src="{% static 'assets/theme/images/handle1.PNG' %}" alt="">
+                    <div class="hover">
+                      <div class="link-btns">
+
+                      </div>
+                      <a href="/catalogue-handle" class="project-title">Hands-free Door Handle</a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>

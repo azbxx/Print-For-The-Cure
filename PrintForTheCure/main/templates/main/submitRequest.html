@@ -72,6 +72,7 @@
 
             <div class="form-group">
               <label for="email">Email</label>
+              <p style="margin-top: -12px; margin-bottom: -2px">You will receive emails relevant to your request, and your email may be visible to all users.</p>
               <input type="text" class="form-control form-flat" name="email" />
             </div>
 
@@ -107,10 +108,11 @@
               </select>
             </div>
 
+            <div class="white-space-20"></div>
             <div class="form-group">
               <label for="typePPE">Type of Personal Protection Equipment You Need:</label><br />
-              <a style="margin-top: -12px; margin-bottom: -2px" type="submit" href="/#catalog">Catalog of 3D Printable PPE</a>
-              <select class="form-control form-flat" name="typePPE">
+              <a style="padding-top: -12px; margin-bottom: -2px" type="submit" href="/#catalog">Catalog of 3D Printable PPE</a>
+              <select onchange="checkHandle()" id="typeOfPPE" class="form-control form-flat" name="typePPE">
                 <option value="shield">Face Shields</option>
                 <option value="strap">Mask Straps</option>
                 <option value="handle">Hands-free Door Handles</option>
@@ -118,9 +120,39 @@
               </select>
             </div>
 
+            <div class="white-space-20"></div>
+            <div id="typeHandle" class="form-group">
+              <label for="typePPE">Door Handle Type <a style="font-size:70%; padding-top: -12px; margin-bottom: -2px" type="submit" href="/catalogue-handle/">(Which Type Do You Need?)</a>:</label><br />
+              <a style="padding-top: -12px; margin-bottom: -2px" type="submit" href="/catalogue-handle/">More Info About Hands-free Door Handles</a>
+              <select class="form-control form-flat" name="typeHandle">
+                <option value="">----select----</option>
+                <option value="shield">Cylindrical, Narrow</option>
+                <option value="strap">Cylindrical, Wide</option>
+                <option value="handle">Rectangular, Narrow, Horizontal</option>
+                <option value="opener">Rectangular, Wide, Horizontal</option>
+              </select>
+            </div>
+
+            <script>
+              document.getElementById("typeHandle").style.display = "none";
+            </script>
+
+            <script>
+              function checkHandle() {
+                console.log("check handle")
+                var type = document.getElementById("typeOfPPE").value;
+                if (type == "handle") {
+                  document.getElementById("typeHandle").style.display = "block";
+                }
+                else {
+                  document.getElementById("typeHandle").style.display = "none";
+                }
+              }
+            </script>
+
             <div class="form-group">
               <label for="numPPE">Amount of Specified Personal Protection Equipment You Need:</label>
-              <p style="padding-top: -12px; margin-bottom: -2px;">Quantity is limited to ensure donors are able to fulfill. To request more, please submit multiple requests.</p>
+              <p style="font-size:90%; margin-top: -12px; margin-bottom: -2px;">Quantity is limited to ensure donors are able to fulfill. To request more, please submit multiple requests.</p>
               <select class="form-control form-flat" name="numPPE">
                 <option value="3">3</option>
                 <option value="4">4</option>
@@ -235,7 +267,7 @@
             </div>
 
             <input type="checkbox" id="agreeTermsCheck" name="agreeTermsCheck" value="Agreed" required>
-            <label for="agreeTermsCheck">I agree with <a href="terms">the terms</a></label><br>
+            <label for="agreeTermsCheck">I agree with <a href="terms">the terms</a> and <a href="/pp">privacy policy</a></label><br>
 
             <button type="submit" class="btn-xs btn-default  btn-flat-solid">Submit Request For PPE</button>
           </form>

@@ -181,7 +181,7 @@ def doctorRequest(request):
             validated = False
         if validated:
             print("Address Validation Succeeded")
-            newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=datetime.date(int(request.POST['year']), int(request.POST['month']), int(request.POST['day'])) , orderDate=timezone.now(), notes=request.POST['otherNotes'])
+            newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], typeHandle=request.POST['typeHandle'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=datetime.date(int(request.POST['year']), int(request.POST['month']), int(request.POST['day'])) , orderDate=timezone.now(), notes=request.POST['otherNotes'])
             newRequest.save()
             return HttpResponseRedirect("/requestSubmitSuccessful/")
         else:
@@ -353,13 +353,13 @@ def confirmClaim(request):
             subject = "Claimed Request For PPE"
             ppeType = ""
             if "shield" in requestObj.typePPE:
-                ppeType = "3D Printed Face Shields (link: https://budmen.com/)"
+                ppeType = "3D Printed Face Shields"
             elif "strap" in requestObj.typePPE:
-                ppeType = "Face Mask Comfort Strap (link: https://www.thingiverse.com/thing:4267730/files)"
+                ppeType = "Face Mask Comfort Strap"
             elif "handle" in requestObj.typePPE:
-                ppeType = "Touch-less Door Handle (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"
+                ppeType = "Touch-less Door Handle; %s (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)" % requestObj.typeHandle
             elif "opener" in requestObj.typePPE:
-                ppeType = "Personal Touchless Door Opener (Link: https://www.thingiverse.com/thing:4269560)"
+                ppeType = "Personal Touchless Door Opener"
             message_text = "Thank You For Claiming a request for PPE!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for your to Deliver the requested PPE: %s\n\nOther Notes From the Requester: %s\n\nThank you for contributing to the battle against Covid-19! We hope you continue donating on our platform! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes)
             message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text)
             sendMessage(service, 'me', message)

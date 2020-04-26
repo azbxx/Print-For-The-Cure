@@ -251,9 +251,9 @@
                 <a href="/requestsVisual" type="submit" >PPE Requests Map</a>
               </div>
             </div>
+            
                 {% for requestObj in allRequests %}
                <hr style="border-top: 1px solid rgb(206, 202, 202) !important;">
-                <form style="padding-bottom:1em;" method="POST">
 
           <h3 class=" color-dark" style="margin-bottom:15px;">Request For {{ requestObj.numPPE }} <span id="type{{ requestObj.id }}"></span> </h3>
 
@@ -268,34 +268,28 @@
             <p><span class="color-dark">Delivery Location: </span>{{ requestObj.address }}, {{ requestObj.city }}, {{ requestObj.state }}, {{ requestObj.zipCode }}, {{ requestObj.country }}</p>
           </div>
 
+          <form action"confirmation" style="padding-bottom:1em;" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="requestObjId" value="{{ requestObj.id }}"></input>
+            <button style="margin-top:12px;" type="submit" class="btn-xs btn-default  btn-flat-solid">Claim AND/OR More Details</button>
+          </form>
+
+          {% endfor %}
+
           <script>
            var typeShort = '{{ requestObj.typePPE }}'
            console.log(typeShort)
            var typeLong = ""
            switch(typeShort) {
-             case "shield": typeLong="3D Printed Face Shields (link: https://budmen.com/)"; break;
-             case "strap": typeLong="Face Mask Comfort Straps (link: https://www.thingiverse.com/thing:4267730/files)"; break;
-             case "handle": typeLong="Touch-less Door Handles (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"; break;
-             case "opener": typeLong="Personal Touchless Door Openers (Link: https://www.thingiverse.com/thing:4269560)"; break;
-             default: typeLong="*PPE type not found"; break;
+             case "shield": typeLong="3D Printed Face Shields"; break;
+             case "strap": typeLong="Face Mask Comfort Straps"; break;
+             case "handle": typeLong="Touch-less Door Handles; " + '{{ requestObj.typeHandle }}' + " (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"; break;
+             case "opener": typeLong="Personal Touchless Door Openers"; break;
+             default: typeLong="PPE type not found"; break;
            }
            document.getElementById("type{{ requestObj.id }}").innerText = typeLong;
            document.getElementById("type2{{ requestObj.id }}").innerText = typeLong;
           </script>
-
-
-                <form action"confirmation" style="padding-bottom:1em;" method="POST">
-
-                      <!-- Every <form> element needs a csrf_token as a security precaution. -->
-                      {% csrf_token %}
-                      <!-- I use the hidden input element to send along the information that
-                        we are logging out. -->
-                      <input type="hidden" name="requestObjId" value="{{ requestObj.id }}"></input>
-                      <button style="margin-top:12px;" type="submit" class="btn-xs btn-default  btn-flat-solid">Claim AND/OR More Details</button>
-                    </form>
-
-                {% endfor %}
-                  </form>
 
           </div>
           </div>

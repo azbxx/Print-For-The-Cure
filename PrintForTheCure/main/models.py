@@ -20,6 +20,7 @@ class RequestModel(models.Model):
     email = models.CharField(max_length=255)
     numPPE = models.IntegerField(default=0)
     typePPE = models.CharField(max_length=255)
+    typeHandle = models.CharField(max_length=255)
     address = models.TextField()
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=2)
