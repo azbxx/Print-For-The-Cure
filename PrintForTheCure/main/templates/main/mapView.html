@@ -192,7 +192,7 @@
         height: 100%;
       }
       html, body {
-        height: 100%;
+        height: 95%;
         margin: 0;
         padding: 0;
       }
@@ -279,7 +279,7 @@
         var requestObjId = {{ requestObj.id }}
         console.log("id var declare: " + requestObjId)
       </script>
-      <form style="padding-bottom:1em;" method="POST">
+      <form method="POST">
         <!-- Every <form> element needs a csrf_token as a security precaution. -->
         {% csrf_token %}
         <input type="hidden" id="{{ requestObj.id }}" name="requestAddress" value="{{ requestObj.address }}"></input>
@@ -317,10 +317,10 @@
             console.log("typeShort: " + typeShort)
             var typeLong = ""
             switch(typeShort) {
-              case "shield": typeLong="3D Printed Face Shields"; break;
-              case "strap": typeLong="Face Mask Comfort Straps"; break;
-              case "handle": typeLong="Touch-less Door Handles; " + '{{ requestObj.typeHandle }}' + " (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)"; break;
-              case "opener": typeLong="Personal Touchless Door Openers"; break;
+              case "shield": typeLong="3D Printed Face Shields (printforthecure.com/catalogue-shield)"; break;
+              case "strap": typeLong="Face Mask Comfort Straps (printforthecure.com/catalogue-maskstrap)"; break;
+              case "handle": typeLong="Touch-less Door Handles; " + '{{ requestObj.typeHandle }}' + " (printforthecure.com/catalogue-handle)"; break;
+              case "opener": typeLong="Personal Touchless Door Openers (printforthecure.com/catalogue-dooropener)"; break;
               default: typeLong="PPE type not found"; break;
             }
            document.getElementById("type{{ requestObj.id }}").innerText = typeLong;

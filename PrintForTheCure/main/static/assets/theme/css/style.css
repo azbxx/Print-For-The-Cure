@@ -1,8 +1,8 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans:400italic,400,700, 800');
 /*
 This files contents are outlined below.
-01. BODY 
-02. TYPOGRAPGY 
+01. BODY
+02. TYPOGRAPGY
 03. HELPER
 04. COMPONENTS
   - NAVBAR
@@ -11,19 +11,19 @@ This files contents are outlined below.
   - PAGINATION
   - TABS
   - CAROUSEL
-05. MAIN-HEADER 
-06. CONTENT 
+05. MAIN-HEADER
+06. CONTENT
   - ABOUT
   - SERVICES
   - RESUME
-  - SKILLS 
+  - SKILLS
   - PORTFOLIO
   - BLOG
   - CONTACT
   - TESTIMONIAL
   - PARALLAX
   - CAPTCHA
-07. MAIN-FOOTER 
+07. MAIN-FOOTER
 */
 /*============================
      01. BODY
@@ -209,7 +209,7 @@ h6 {
   color: #e74c3c;
 }
 .color-light {
-  color: aliceblue; 
+  color: aliceblue;
 }
 .bg-primary {
   background-color: #e74c3c;
@@ -265,7 +265,7 @@ blockquote {
   left: 0;
 }
 .box-line {
- 
+
   color: white !important;
   background: #2E8B57;
   background: #2E8B57);
@@ -1130,7 +1130,7 @@ textArea.form-flat {
 }
 
 .login {
- 
+
   margin-bottom: 20px;
   font-weight: 700;
   position: relative;
@@ -1164,7 +1164,7 @@ textArea.form-flat {
   line-height: 30px;
   text-align: center;
   /*color: #7d7d7d;*/
-  animation: arrowmove cubic-bezier(0.65, 0.05, 0.36, 1) infinite 2s; 
+  animation: arrowmove cubic-bezier(0.65, 0.05, 0.36, 1) infinite 2s;
   -webkit-animation: arrowmove cubic-bezier(0.65, 0.05, 0.36, 1) infinite 2s;
 }
 .move-to-next:hover,
@@ -1861,7 +1861,7 @@ textArea.form-flat {
   margin-right: 0;
 }
 /*============================
-     06. MAIN-FOOTER 
+     06. MAIN-FOOTER
 ============================*/
 .main-footer {
   padding-bottom: 40px;
