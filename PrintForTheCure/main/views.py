@@ -107,11 +107,11 @@ def donorRegistration(request):
                 print("failed")
                 print(e.errors)
                 failMessage += "Sorry, Address Validation failed. Please enter a valid address for delivery.\n"
-            try:
-                print("hi1")
-                user = User.objects.get(username=request.POST['username'])
-            except user.DoesNotExist:
-                print("hi")
+            users = User.objects.all()
+            usernames = []
+            for user in users:
+                usernames.append(user.username)
+            if request.POST['username'] in usernames:
                 failMessage += "Sorry, username is already taken! Please choose another one. "
             if (len(request.POST['username']) < 1) or (len(request.POST['password']) < 1) or (len(request.POST['email']) < 1) or (len(request.POST['fName']) < 1) or (len(request.POST['lName']) < 1):
                 failMessage += "Please ensure all fields are filled out."
@@ -457,11 +457,11 @@ def confirmClaim1(request):
             sendMessage(service, 'me', message)
 
             #Doctor Email
-            donor = Donor.objects.get(user = request.user)
+            service = getService()
             subject = "Request For PPE Claimed"
             message_text1 = "Your Request for PPE has been claimed by a donor!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nYour Donor's Name: %s\nDonor's Email: %s\n\nThank you for reaching out to donors during these harsh times! We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email)
-            message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text1)
-            sendMessage(service, 'me', message)
+            messageDoctor = makeMessage("printforthecure@gmail.com", requestObj.email, subject, message_text1)
+            sendMessage(service, 'me', messageDoctor)
 
             base_url = '/thankyou/'  # 1 /products/
             query_string =  urlencode({'requestDetails': message_text})  # 2 category=42
