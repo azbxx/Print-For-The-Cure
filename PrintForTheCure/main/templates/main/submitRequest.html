@@ -57,6 +57,8 @@
             <input type="hidden" name="returnHome" value="returnHome"></input>
             <a type="submit" href="/">Return To Home Page</a>
             </form>
+            <hr />
+            <p style="color:red">{{ validationStatus }}</p>
           <form style="padding-bottom:1em; padding-top:3em;" method="POST">
             {% csrf_token %}
             <!-- Give the user a place to type in their name and passowrd. -->
@@ -217,7 +219,8 @@
 
             <div>
               <label for="deliveryDate">Delivery Date For Specified Personal Protection Equipment: </label>
-              <p style="margin-top: -12px; margin-bottom: -2px">Tip: Give your donor enough time to produce what you need!</p>
+              <p style="margin-top: -12px; margin-bottom: -2px">Please give your donor enough time to produce what you need!</p>
+              <p style="margin-top: -8px; margin-bottom: -2px">After a donor claims your request, we suggest communicating to adjust the delivery time.</p>
               <select name="month">
                 <option value="1">01</option>
                 <option value="2">02</option>

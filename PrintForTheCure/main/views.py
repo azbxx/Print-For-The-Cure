@@ -96,9 +96,26 @@ def donorRegistration(request):
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
         elif request.POST['password'] == request.POST['passwordConfirm']:
-            if User.objects.filter(username=request.POST['username']).exists():
+            try:
+                address = normalize_address({
+                'country_code': request.POST['country'],
+                'country_area': request.POST['state'],
+                'city': request.POST['city'],
+                'postal_code': request.POST['zipCode'],
+                'street_address': request.POST['address']})
+            except InvalidAddress as e:
+                print("failed")
+                print(e.errors)
+                failMessage += "Sorry, Address Validation failed. Please enter a valid address for delivery.\n"
+            try:
+                print("hi1")
+                user = User.objects.get(username=request.POST['username'])
+            except user.DoesNotExist:
+                print("hi")
                 failMessage += "Sorry, username is already taken! Please choose another one. "
-            else:
+            if (len(request.POST['username']) < 1) or (len(request.POST['password']) < 1) or (len(request.POST['email']) < 1) or (len(request.POST['fName']) < 1) or (len(request.POST['lName']) < 1):
+                failMessage += "Please ensure all fields are filled out."
+            elif (len(failMessage) == 0):
                 newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
                 newUser.set_password(request.POST['password'])
                 newUser.save()
@@ -179,13 +196,33 @@ def doctorRequest(request):
             print("failed")
             print(e.errors)
             validated = False
+            validationStatus += "Sorry, Address Validation failed. Please enter a valid address for delivery.\n"
+        if (len(request.POST['fName']) < 1) or (len(request.POST['lName']) < 1) or (len(request.POST['email']) < 1):
+            validated = False
+            validationStatus += "Please ensure all fields are filled out."
         if validated:
             print("Address Validation Succeeded")
             newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], typeHandle=request.POST['typeHandle'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=datetime.date(int(request.POST['year']), int(request.POST['month']), int(request.POST['day'])) , orderDate=timezone.now(), notes=request.POST['otherNotes'])
             newRequest.save()
+
+            requestObj = RequestModel.objects.get(id=newRequest.id)
+            service = getService()
+            #Donor Email
+            subject = "Request For PPE Submitted!"
+            ppeType = ""
+            if "shield" in requestObj.typePPE:
+                ppeType = "3D Printed Face Shields"
+            elif "strap" in requestObj.typePPE:
+                ppeType = "Face Mask Comfort Strap"
+            elif "handle" in requestObj.typePPE:
+                ppeType = "Touch-less Door Handle; %s (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)" % requestObj.typeHandle
+            elif "opener" in requestObj.typePPE:
+                ppeType = "Personal Touchless Door Opener"
+            message_text = "Thank You For Submitting a Request For PPE!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %s\nLatest Date for your to Deliver the requested PPE: %s\n\nOther Notes From the Requester: %s\n\nYou will be emailed again either when a donor chooses to claim and fulfill your request, or if your request expires before any donors get the chance. We hope you you stay protected during these time!" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes)
+            message = makeMessage("printforthecure@gmail.com", requestObj.email, subject, message_text)
+            sendMessage(service, 'me', message)
+
             return HttpResponseRedirect("/requestSubmitSuccessful/")
-        else:
-            validationStatus = "Sorry, Address Validation failed. Please enter a valid address for delivery."
 
     template = loader.get_template('main/submitRequest.html')
     context = {     #all inputs for the html go in these brackets
@@ -369,14 +406,14 @@ def confirmClaim(request):
                 ppeType = "Touch-less Door Handle; %s (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)" % requestObj.typeHandle
             elif "opener" in requestObj.typePPE:
                 ppeType = "Personal Touchless Door Opener"
-            message_text = "Thank You For Claiming a request for PPE!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for your to Deliver the requested PPE: %s\n\nOther Notes From the Requester: %s\n\nThank you for contributing to the battle against Covid-19! We hope you continue donating on our platform! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes)
+            message_text = "Thank You For Claiming a request for PPE!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for your to Deliver the requested PPE: %s\n\nOther Notes From the Requester: %s\n\nDelivery Instructions: We suggest that you connect with your requester directly. Donors are expected to ship the PPE directly to the requester, however you may use an alternate method of delivery *if you come to an agreement with your requester*. \n\nThank you for contributing to the battle against Covid-19! We hope you continue donating on our platform! : )\nIf you are interested in receiving a donation to cover the cost of fulfilling the request, we suggest that you communicate to your requester directly." % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes)
             message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text)
             sendMessage(service, 'me', message)
 
             #Doctor Email
             donor = Donor.objects.get(user = request.user)
             subject = "Request For PPE Claimed"
-            message_text1 = "Your Request for PPE has been claimed by a donor!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nYour Donor's Name: %s\nDonor's Email: %s\n\nThank you for reaching out to donors during these harsh times! We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email)
+            message_text1 = "Your Request for PPE has been claimed by a donor!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nYour Donor's Name: %s\nDonor's Email: %s\n\nWe suggest contacting your donor directly regarding method of delivery for your request PPE. Donors typically ship directly to your given address, however alternate methods can be used if an agreement is reached with the donor.\n\nThank you for reaching out to donors during these harsh times! We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email)
             message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text1)
             sendMessage(service, 'me', message)
 
