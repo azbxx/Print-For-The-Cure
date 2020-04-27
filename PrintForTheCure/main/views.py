@@ -414,7 +414,7 @@ def confirmClaim(request):
             donor = Donor.objects.get(user = request.user)
             subject = "Request For PPE Claimed"
             message_text1 = "Your Request for PPE has been claimed by a donor!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nYour Donor's Name: %s\nDonor's Email: %s\n\nWe suggest contacting your donor directly regarding method of delivery for your request PPE. Donors typically ship directly to your given address, however alternate methods can be used if an agreement is reached with the donor.\n\nThank you for reaching out to donors during these harsh times! We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email)
-            message = makeMessage("printforthecure@gmail.com", request.user.email, subject, message_text1)
+            message = makeMessage("printforthecure@gmail.com", requestObj.email, subject, message_text1)
             sendMessage(service, 'me', message)
 
             base_url = '/thankyou/'  # 1 /products/
