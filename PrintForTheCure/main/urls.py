@@ -20,6 +20,7 @@ urlpatterns = [
     path('nearbyRequests/', views.nearbyRequests, name='nearby requests'),
     path('notLoggedIn/', views.notLoggedIn, name='not logged in'),
     path('confirmation/', views.confirmClaim, name='confirmation'),
+    path('confirmation1/', views.confirmClaim1, name='confirmation returns to mapview'),
     path('thankyou/', views.thankYou, name='thank you page'),
     path('register/terms', views.terms, name='terms page'),
     path('pp', views.pp, name='privacy policy'),

@@ -218,7 +218,7 @@
               <ul class="breadcrumb main-nav nav">
                 <li class="active"><a href="/" class="link-inpage">Home</a></li>
                 <li ><a href="/requestPPE" class="link-inpage">Request PPE</a></li>
-                <li ><a href="/nearbyRequests" class="link-inpage">Nearby PPE Requests</a></li>
+                <li ><a href="/nearbyRequests" class="link-inpage">Nearest Requests</a></li>
                 <li ><a href="/requestsVisual" class="link-inpage">PPE Requests Map</a></li>
               </ul>
             </div>
@@ -274,7 +274,6 @@
             <button style="margin-top:12px;" type="submit" class="btn-xs btn-default  btn-flat-solid">Claim AND/OR More Details</button>
           </form>
 
-          {% endfor %}
 
           <script>
            var typeShort = '{{ requestObj.typePPE }}'
@@ -290,6 +289,7 @@
            document.getElementById("type{{ requestObj.id }}").innerText = typeLong;
            document.getElementById("type2{{ requestObj.id }}").innerText = typeLong;
           </script>
+          {% endfor %}
 
           </div>
           </div>

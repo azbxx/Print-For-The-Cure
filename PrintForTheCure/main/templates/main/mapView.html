@@ -221,6 +221,13 @@
         top: 1.2%;
         right: 1%;
       }
+      .claimButton {
+        position:absolute;
+        margin-right: 1%;
+        margin-top: 1%;
+        top: 26%;
+        right: 1%;
+      }
     </style>
   </head>
   <body>
@@ -272,7 +279,7 @@
         });
       }
     </script>
-    <script id="url" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAdxXmm4kivKpUv9pOoZihNfk4GqmpWWA0&callback=initMap"></script>
+    
 
     {% for requestObj in allRequests %}
       <script>
@@ -286,10 +293,13 @@
       </form>
 
       <div class="form-popup" id="divID{{ requestObj.id }}">
-        <form class="form-container">
+        <div class="form-container">
           <h2 class="color-dark" style="margin-top:-0.75%;"><i style="color: seagreen;"class="fa fa-check"></i> Request Details</h2>
           <button type="button" class="btn-lg cancel closeButton" onclick="closeFormButton({{ requestObj.id }})"><i class="fa fa-close"></i></button>
           <hr />
+
+
+
           <p><span class="color-dark">Requester's Name:</span> {{ requestObj.fName }} {{ requestObj.lName }}</p>
           <p><span class="color-dark">Requester's Email:</span> {{ requestObj.email }}</p>
           <p><span class="color-dark">Requester's Address:</span> {{ requestObj.address }} {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
@@ -299,6 +309,12 @@
           <p><span class="color-dark">Latest Date for Delivery of requested PPE:</span> {{ requestObj.delivDate }}</p>
           <br />
           <p><span class="color-dark">Other Notes For the Patron:</span> {{ requestObj.notes }}</p>
+
+          <form action"confirmation" style="padding-bottom:1em;" method="POST">
+            {% csrf_token %}
+            <input type="hidden" name="requestObjId" value="{{ requestObj.id }}"></input>
+            <button style="margin-top:12px;" type="submit" class="btn-xs btn-default  btn-flat-solid">Claim Request</button>
+          </form>
 
           <script>
             function openForm(requestObjId) {
@@ -325,7 +341,7 @@
             }
            document.getElementById("type{{ requestObj.id }}").innerText = typeLong;
           </script>
-        </form>
+        </div>
         <script>
           closeForm()
         </script>

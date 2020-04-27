@@ -38,17 +38,138 @@
     <!-- black skin-->
     <!-- <link href="{% static 'assets/theme/css/skin-black.css' %}" rel="stylesheet"> -->
     <style>
-      .my-profile1 .my-pict1 {
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
+    /*Home Background Picture*/
+    .main-pict {
+      height: 600px;
+      position: relative;
+    }
+    .main-pict .header-content-fixed {
+      height: 600px;
+      background: url(https://www.bqf.org.uk/wp-content/uploads/2019/08/Membership-Banner.jpg) no-repeat center;
+      background-size: cover;
+      background-attachment: fixed;
+      text-align: center;
+      position: fixed;
+      z-index: 0;
+      width: 100%;
+    }
 
-        background-image: url(https://images.unsplash.com/photo-1585263560722-4f0345fa2aae?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1350&q=80);
-        position: absolute;
-        left: 0;
-        top: 0;
-        height: 100%;
+    @media (max-width: 1024px) {
+      .main-pict .header-content-fixed {
+        position: relative;
       }
+    }
+    /*.main-pict:hover .header-content-fixed:before {
+      background: rgba(255, 255, 255, 0.9);
+    }
+    .main-pict:hover .header-content-fixed:after {
+      background: rgba(255, 255, 255, 0.8);
+    }*/
+    .main-pict .whoim {
+      position: absolute;
+      width: 100%;
+      z-index: 3;
+      top: 100px;
+    }
+    .main-pict .name {
+      font-size: 60px;
+      margin-bottom: 20px;
+      font-weight: 700;
+      position: relative;
+      z-index: 3;
+      letter-spacing: 10px;
+    }
+
+    .login {
+
+      margin-bottom: 20px;
+      font-weight: 700;
+      position: relative;
+      z-index: 3;
+      letter-spacing: 10px;
+    }
+
+    @media (max-width: 1030px) {
+      .main-pict .name {
+        font-size: 3em;
+      }
+    }
+    .main-pict .job {
+      position: relative;
+      display: inline-block;
+      z-index: 3;
+      border-bottom: 1px solid #000000;
+      padding: 10px;
+      letter-spacing: 4px;
+    }
+
+    /*THE MOVEMENT 3D Printer Picture*/
+    .my-profile .printer-pict {
+      background-repeat: no-repeat;
+      background-position: center;
+      background-size: cover;
+
+      background-image: url('static/assets/theme/images/3dPrinter.jpg');
+      position: absolute;
+      left: 0;
+      top: 0;
+      height: 100%;
+    }
+    @media (max-width: 880px) {
+      .my-profile .printer-pict {
+        position: relative;
+        height: 300px;
+      }
+    }
+    .my-profile .printer-pict .overfly {
+      background: rgba(255, 255, 255, 0.35);
+      position: absolute;
+      width: 100%;
+      left: 0;
+      top: 0;
+      transition: all 0.8s ease 0s;
+      -webkit-transition: all 0.8s ease 0s;
+      -moz-transition: all 0.8s ease 0s;
+      -o-transition: all 0.8s ease 0s;
+      -ms-transition: all 0.8s ease 0s;
+      overflow: hidden;
+      height: 100%;
+    }
+    .my-profile .printer-pict .overfly .text-botttom {
+      position: absolute;
+      width: 100%;
+      transition: all 0.8s ease 0s;
+      -webkit-transition: all 0.8s ease 0s;
+      -moz-transition: all 0.8s ease 0s;
+      -o-transition: all 0.8s ease 0s;
+      -ms-transition: all 0.8s ease 0s;
+      bottom: 0;
+      right: 0;
+      padding: 40px;
+      text-align: right;
+    }
+    .my-profile .printer-pict .overfly:hover {
+      /*        background: transparent;
+                    .text-botttom{
+                      bottom: -100%;
+                    }*/
+
+    }
+    .my-profile .my-desc,
+    .my-profile .printer-pict {
+      width: 50%;
+    }
+    @media (max-width: 880px) {
+      .my-profile .my-desc,
+      .my-profile .printer-pict {
+        width: 100% !important;
+      }
+    }
+
+    /**/
+    .footer-pict {
+      background-image: url(https://www.bqf.org.uk/wp-content/uploads/2019/08/Membership-Banner.jpg);
+    }
     </style>
   </head>
 
@@ -58,12 +179,12 @@
     <div class="wrapper">
 
       <!-- Main Header -->
-      <header class="main-header" id="home">
+      <header class="main-pict main-header" id="home">
         <div class="content-table header-content-fixed ">
 
           <div class="v-content">
             <div class="container">
-              <h1 class=" color-dark name">Print For The Cure</h1>
+              <h1 style="font-size:750%;" class=" color-light name">Print For The Cure</h1>
               <div class="padding30 text-center">
                 {% if authenticated %}
                   <form style="padding-bottom:1em;" method="POST">
@@ -80,7 +201,7 @@
                 {% endif %}
                 <a href="#request" class="link-inpage buttonBlue btn btn-default btn-flat-solid btn-pill" style="margin-top:3em;">Request PPE</a>
               </div>
-              <a href="#catalog" class="move-to-next link-inpage"><i class="fa fa-4x fa-angle-double-down" ></i></a>
+              <a href="#about" class="move-to-next link-inpage"><i class="fa fa-4x fa-angle-double-down" ></i></a>
             </div>
           </div>
         </div>
@@ -102,7 +223,7 @@
                 <div class="col-md-8">
                   <ul class="breadcrumb main-nav nav">
                     <li class="active"><a href="#home" class="link-inpage">Home</a></li>
-                    <li ><a href="#about" class="link-inpage">About</a></li>
+                    <li ><a href="#about" class="link-inpage">The Movement</a></li>
                     <li ><a href="#catalog" class="link-inpage">Catalog</a></li>
                     <li ><a href="#request" class="link-inpage">Request PPE</a></li>
                     <li ><a href="#map" class="link-inpage">Requests Map</a></li>
@@ -128,46 +249,55 @@
 
       <section id="about" class="block-section">
         <div class="clearfix my-profile">
-          <div class="my-pict" >
+          <div class="printer-pict" >
             <div class="overfly">
               <div class="text-botttom">
 
               </div>
             </div>
           </div>
-          <div class="block-title">
-            <h1 class="text-uppercase color-dark text-bold no-margin">The Movement</h1>
 
-            <div class="title-icon"> <i class="fa fa-book"></i> </div>
+
+
+          <div class="bg-secondary block-title">
+            <div class="container">
+              <h2 class="text-uppercase color-dark text-bold no-margin">The Movement</h2>
+              <div class="title-icon"> <i class="fa fa-book"></i> </div>
+
+            </div>
           </div>
+
+
+
           <div class="my-desc">
-            <div class="bg-secondary clearfix">
+            <div style="background-color: white;" class="bg-secondary clearfix">
               <div class="inner-text">
-                <p><b style="font-size: 150%">The Problem: </b>PPE (Personal Protection Equipment) is critical to essential workers for safety, yet it is in critically low supply. Some PPE, such as face shields, face masks, mask comfort straps, and hand-less door openers can be easily produced at home.</p>
+                <p><b style="font-size: 150%">Print For The Cure </b>is a web platform aiming to mobilize all makers to combat the critical shortage of PPE (Personal Protective Equipment). Some PPE, such as face shields, mask comfort straps, and hand-less door openers can be easily produced at home. We connect makers/donors capable of producing PPE to essential workers/requesters in need.</p>
                 <p><b style="font-size: 150%">How It Works in 5 Easy Steps: </b>
                 <ol>
-                  <li>Doctors <a href="#request" class="link-inpage">submit requests</a> for PPE.</li>
-                  <li>Donors <a href="/register/" class="link-inpage">register</a> through the website.</li>
+                  <li>Essential Workers can <a href="#request" class="link-inpage">submit requests</a> for PPE.</li>
+                  <li>Donors must <a href="/register/" class="link-inpage">register</a> through the website.</li>
                   <li>Anyone can browse PPE requests on a <a href="#map" class="link-inpage">map</a>, and registered donors can view <a href="/nearbyRequests/" class="link-inpage">requests nearest to them</a>.</li>
-                  <li>Donors can claim requests, after which they are connected with their requester.</li>
-                  <li>The donor then should fulfill the request for PPE.</li>
+                  <li>Registered donors can claim requests, after which they are connected with their requester.</li>
+                  <li>Donors fulfill their claimed requests for PPE and arrange delivery with their requester.</li>
                 </ol>
                 <br />
                 <p>By using this platform, </p>
-                <b class="no-margin">Doctors can benefit by receiving PPE.</b> <br />
-                <b class="no-margin">Donors can help save the lives of their doctors and essential workers, and may receive monetary donations.</b> <br /><br />
-                <p class="no-margin">Be a part of the movement!</p>
+                <b class="no-margin">Essential workers can benefit by receiving critical Protective Equipment.</b> <br />
+                <b class="no-margin">Donors can help save the lives of their doctors & essential workers.</b> <br />
+                <b class="no-margin">Requesters are welcome to give monetary donations to their donors upon fulfillment of their request.</b> <br />
+                <br /><br />
+                <b style="font-size: 150%" class="no-margin">Be a part of our movement to mobilize all makers against Covid-19!</b>
               </div>
             </div>
             <div class="bg-dark clearfix">
               <div class="inner-text">
                 <p class="no-margin color-light ">
 
-                  <strong class="fix-width-100"><i class="fa fa-phone margin-right-5"></i> Phone</strong> : 123-456-7891<br/>
+                  <strong class="fix-width-100"><i class="fa fa-phone margin-right-5"></i> Phone</strong> : 858-366-3412<br/>
                   <strong class="fix-width-100"><i class="fa fa-envelope margin-right-5"></i> Email</strong> : printforthecure@gmail.com<br/>
 
                   <strong class="fix-width-100"><i class="fa fa-globe margin-right-5"></i> Website</strong> : printforthecure.com<br/>
-                  <strong class="fix-width-100"><i class="fa fa-location-arrow margin-right-5"></i> Address</strong> : 1234 Blah Ct, Blah City, CA<br/>
                 </p>
               </div>
             </div>
@@ -312,7 +442,7 @@
         </div><!--END CONTACT TITLE-->
 
         <!-- DOWNLOAD & PRVIEW BTN -->
-        <div class="parallax-bg bg2" >
+        <div class="parallax-bg footer-pict" >
           <div class="container">
             <div class="padding30 text-center">
               <a href="mailto:blah@gmail.com" class="btn btn-lg btn-primary btn-flat-solid btn-pill margin-top-25"><i class="fa fa-envelope"></i>  Email </a>
