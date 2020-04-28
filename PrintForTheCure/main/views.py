@@ -258,10 +258,13 @@ def map(request):
     if request.method == 'POST':
         if 'requestObjId' in request.POST.keys():
             print("hi")
-            base_url = '/confirmation1/'  # 1 /products/
-            query_string =  urlencode({'requestObjId': request.POST['requestObjId']})  # 2 category=42
-            url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
-            return HttpResponseRedirect(url)  # 4
+            if request.user.is_authenticated:
+                base_url = '/confirmation1/'  # 1 /products/
+                query_string =  urlencode({'requestObjId': request.POST['requestObjId']})  # 2 category=42
+                url = '{}?{}'.format(base_url, query_string)  # 3 /products/?category=42
+                return HttpResponseRedirect(url)  # 4
+            else:
+                return HttpResponseRedirect('/notLoggedIn/')
 
     template = loader.get_template('main/mapView.html')
     context = {     #all inputs for the html go in these brackets
