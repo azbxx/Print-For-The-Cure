@@ -45,7 +45,7 @@
     }
     .main-pict .header-content-fixed {
       height: 600px;
-      background: url(https://www.bqf.org.uk/wp-content/uploads/2019/08/Membership-Banner.jpg) no-repeat center;
+      background: url(https://images.pexels.com/photos/3881247/pexels-photo-3881247.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260) no-repeat center;
       background-size: cover;
       background-attachment: fixed;
       text-align: center;
@@ -114,6 +114,7 @@
       left: 0;
       top: 0;
       height: 100%;
+      z-index: 99;
     }
     @media (max-width: 880px) {
       .my-profile .printer-pict {
@@ -168,7 +169,7 @@
 
     /**/
     .footer-pict {
-      background-image: url(https://www.bqf.org.uk/wp-content/uploads/2019/08/Membership-Banner.jpg);
+      background-image: url(https://images.pexels.com/photos/3881247/pexels-photo-3881247.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260);
     }
     </style>
   </head>
@@ -249,17 +250,11 @@
 
       <section id="about" class="block-section">
         <div class="clearfix my-profile">
-          <div class="printer-pict" >
-            <div class="overfly">
-              <div class="text-botttom">
-
-              </div>
-            </div>
-          </div>
 
 
 
-          <div class="bg-secondary block-title">
+
+          <div style="z-index: 100" class="bg-secondary block-title">
             <div class="container">
               <h2 class="text-uppercase color-dark text-bold no-margin">The Movement</h2>
               <div class="title-icon"> <i class="fa fa-book"></i> </div>
@@ -269,8 +264,8 @@
 
 
 
-          <div class="my-desc">
-            <div style="background-color: white;" class="bg-secondary clearfix">
+          <div style="z-index: 1;" class="my-desc">
+            <div style="z-index: 1; background-color: white;" class="bg-secondary clearfix">
               <div class="inner-text">
                 <p><b style="font-size: 150%">Print For The Cure </b>is a web platform aiming to mobilize all makers to combat the critical shortage of PPE (Personal Protective Equipment). Some PPE, such as face shields, mask comfort straps, and hand-less door openers can be easily produced at home. We connect makers/donors capable of producing PPE to essential workers/requesters in need.</p>
                 <p><b style="font-size: 150%">How It Works in 5 Easy Steps: </b>
@@ -282,12 +277,14 @@
                   <li>Donors fulfill their claimed requests for PPE and arrange delivery with their requester.</li>
                 </ol>
                 <br />
-                <p>By using this platform, </p>
-                <b class="no-margin">Essential workers can benefit by receiving critical Protective Equipment.</b> <br />
-                <b class="no-margin">Donors can help save the lives of their doctors & essential workers.</b> <br />
-                <b class="no-margin">Requesters are welcome to give monetary donations to their donors upon fulfillment of their request.</b> <br />
-                <br /><br />
-                <b style="font-size: 150%" class="no-margin">Be a part of our movement to mobilize all makers against Covid-19!</b>
+                <p style="margin-bottom:-5px;">By using this platform, </p>
+                <ul>
+                  <li >Essential workers can benefit by receiving critical Protective Equipment.</li>
+                  <li >Donors can help save the lives of their doctors & essential workers.</li>
+                  <li >Requesters are welcome to give monetary donations to their donors upon fulfillment of their request.</li>
+                </ul>
+                <br />
+                <b style="font-size: 150%;">Be a part of the movement to mobilize makers against Covid-19!</b>
               </div>
             </div>
             <div class="bg-dark clearfix">
@@ -299,6 +296,13 @@
 
                   <strong class="fix-width-100"><i class="fa fa-globe margin-right-5"></i> Website</strong> : printforthecure.com<br/>
                 </p>
+              </div>
+            </div>
+          </div>
+          <div class="printer-pict" >
+            <div class="overfly">
+              <div class="text-botttom">
+
               </div>
             </div>
           </div>
@@ -445,7 +449,7 @@
         <div class="parallax-bg footer-pict" >
           <div class="container">
             <div class="padding30 text-center">
-              <a href="mailto:blah@gmail.com" class="btn btn-lg btn-primary btn-flat-solid btn-pill margin-top-25"><i class="fa fa-envelope"></i>  Email </a>
+              <a href="mailto:printforthecure@gmail.com" class="btn btn-lg btn-primary btn-flat-solid btn-pill margin-top-25"><i class="fa fa-envelope"></i>  Email </a>
 
             </div>
           </div>
@@ -462,12 +466,12 @@
           </div>
           <ul class="list-inline social-links text-center">
             <li>
-              <a href="#"  data-toggle="tooltip"  data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a>
+              <a href="https://www.facebook.com/Printforthecure-108356907527482/?modal=admin_todo_tour"  data-toggle="tooltip"  data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a>
             </li>
 
 
             <li>
-              <a href=""  data-toggle="tooltip"  data-placement="top" title="Instagram"><i class="fa fa-instagram"></i></a>
+              <a href="https://www.instagram.com/printforthecure/"  data-toggle="tooltip"  data-placement="top" title="Instagram"><i class="fa fa-instagram"></i></a>
             </li>
 
           </ul>

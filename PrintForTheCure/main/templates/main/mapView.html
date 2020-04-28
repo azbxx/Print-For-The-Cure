@@ -240,7 +240,7 @@
           <div class="row">
             <div class="col-md-3">
               <ul class="breadcrumb main-nav no-space">
-                <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li>
+                <!-- <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li> -->
               </ul>
             </div>
             <div class="col-md-6">
@@ -279,7 +279,7 @@
         });
       }
     </script>
-    
+    <script id="url" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAAetUTOB2h4dzuM1rlmWOdHY-ooSypC7I&callback=initMap"></script>
 
     {% for requestObj in allRequests %}
       <script>
@@ -292,7 +292,7 @@
         <input type="hidden" id="{{ requestObj.id }}" name="requestAddress" value="{{ requestObj.address }}"></input>
       </form>
 
-      <div class="form-popup" id="divID{{ requestObj.id }}">
+      <div style="overflow: auto;" class="form-popup" id="divID{{ requestObj.id }}">
         <div class="form-container">
           <h2 class="color-dark" style="margin-top:-0.75%;"><i style="color: seagreen;"class="fa fa-check"></i> Request Details</h2>
           <button type="button" class="btn-lg cancel closeButton" onclick="closeFormButton({{ requestObj.id }})"><i class="fa fa-close"></i></button>
