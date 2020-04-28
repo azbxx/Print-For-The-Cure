@@ -23,9 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '894aun=2tsm@&vhl3e!3#r091-5j!1pi*7$cltnn&gyl%yld-j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['35.193.222.7', '0.0.0.0']
 
 
 # Application definition
@@ -36,7 +34,6 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     # 'bootstrap3',    # If you use django-bootstrap3
     # 'crispy_forms',  # If you user django-crispy-forms
     # 'django_popup_view_field',
@@ -123,5 +120,5 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATIC_URL='/static/'
