@@ -128,7 +128,7 @@ def donorRegistration(request):
                 service = getService()
                 #Donor Email
                 subject = "PrintForTheCure Registration Details"
-                message_text = "Thank you for registing with PrintForTheCure! Now you can get started claiming and fulfilling PPE requests on printforthecure.com!\n\nYour Username: %s\n\nYour Password: %s" % (request.POST['username'], request.POST['password'])
+                message_text = "Thank you for registing with PrintForTheCure! Now you can get started claiming and fulfilling PPE requests on printforthecure.com!\n\nYour Username: %s" % (request.POST['username'])
                 message = makeMessage("printforthecure@gmail.com", request.POST['email'], subject, message_text)
                 sendMessage(service, 'me', message)
 
@@ -338,7 +338,7 @@ def nearbyRequests(request):
 
             destination += addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode + "|"
 
-    
+
     url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations=' + destination + '&key=' + key).format(origin, destination, key)
 
     response = urllib.request.urlopen(url)
@@ -347,9 +347,9 @@ def nearbyRequests(request):
     allDistances = []
     for item in (responseJSON.get("rows", "none")[0].get("elements", "none")):
         if (item.get("status", "none") != 'NOT_FOUND'):
-            distanceStr = item.get("distance", "none").get("text", "none")
-            distanceStrShort = distanceStr[0 : len(distanceStr)-3]
-            allDistances.append(int(float(distanceStrShort.replace(',', ''))))
+            distanceStr = item.get("distance", "none").get("value", "none")
+            print("hi" + str(distanceStr))
+            allDistances.append(distanceStr)
             #print(item.get("distance", "none").get("text", "none"))
 
     allUnclaimedRequests = []
