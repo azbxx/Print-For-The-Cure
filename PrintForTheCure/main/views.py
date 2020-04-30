@@ -24,6 +24,7 @@ from .models import Donor
 from .models import RequestModel
 from .gmail import *
 from .GoogleAPIKey import *
+import string
 
 # Create your views here.
 def home(request):
@@ -337,6 +338,7 @@ def nearbyRequests(request):
 
             destination += addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode + "|"
 
+    key="AIzaSyAAetUTOB2h4dzuM1rlmWOdHY-ooSypC7I"
     url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations=' + destination + '&key=' + key).format(origin, destination, key)
 
     response = urllib.request.urlopen(url)
@@ -345,8 +347,10 @@ def nearbyRequests(request):
     allDistances = []
     for item in (responseJSON.get("rows", "none")[0].get("elements", "none")):
         if (item.get("status", "none") != 'NOT_FOUND'):
-            allDistances.append(item.get("distance", "none").get("text", "none"))
-            print(item.get("distance", "none").get("text", "none"))
+            distanceStr = item.get("distance", "none").get("text", "none")
+            distanceStrShort = distanceStr[0 : len(distanceStr)-3]
+            allDistances.append(int(float(distanceStrShort.replace(',', ''))))
+            #print(item.get("distance", "none").get("text", "none"))
 
     allUnclaimedRequests = []
     for requestModel in RequestModel.objects.all():
@@ -361,6 +365,22 @@ def nearbyRequests(request):
             allDistances[j], allDistances[j-1] = allDistances[j-1], allDistances[j]
             allUnclaimedRequests[j], allUnclaimedRequests[j-1] = allUnclaimedRequests[j-1], allUnclaimedRequests[j]
             j -= 1
+
+    # # Traverse through 1 to len(arr)
+    # for i in range(1, len(allDistances)):
+    #
+    #     key = allDistances[i]
+    #
+    #     # Move elements of arr[0..i-1], that are
+    #     # greater than key, to one position ahead
+    #     # of their current position
+    #     j = i-1
+    #     while j >=0 and key < allDistances[j] :
+    #             allDistances[j+1] = allDistances[j]
+    #             j -= 1
+    #     allDistances[j+1] = key
+
+    print(allDistances)
 
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
