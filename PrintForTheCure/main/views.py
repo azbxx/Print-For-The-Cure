@@ -96,17 +96,16 @@ def donorRegistration(request):
         if 'returnHome' in request.POST.keys():
             return HttpResponseRedirect("/")
         elif request.POST['password'] == request.POST['passwordConfirm']:
-            try:
-                address = normalize_address({
-                'country_code': request.POST['country'],
-                'country_area': request.POST['state'],
-                'city': request.POST['city'],
-                'postal_code': request.POST['zipCode'],
-                'street_address': request.POST['address']})
-            except InvalidAddress as e:
-                print("failed")
-                print(e.errors)
-                failMessage += "Sorry, Address Validation failed. Please enter a valid address for delivery.\n"
+            # try:
+            #     address = normalize_address({
+            #     'country_code': request.POST['country'],
+            #     'country_area': request.POST['state'],
+            #     'city': request.POST['city'],
+            #     'postal_code': request.POST['zipCode']})
+            # except InvalidAddress as e:
+            #     print("failed")
+            #     print(e.errors)
+            #     failMessage += "Sorry, Address Validation failed. Please enter a valid address for delivery.\n"
             users = User.objects.all()
             usernames = []
             for user in users:
@@ -119,7 +118,7 @@ def donorRegistration(request):
                 newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
                 newUser.set_password(request.POST['password'])
                 newUser.save()
-                newDonor = Donor(user=newUser, address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
+                newDonor = Donor(user=newUser, address="", city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
                 newDonor.save()
 
                 user = authenticate(username=request.POST['username'], password=request.POST['password'])

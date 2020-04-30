@@ -94,7 +94,8 @@
 <h3 style="margin-top:40px;" class="color-dark">Request Details:</h3>
 <p><span class="color-dark">Requester's Name:</span> {{ requestObj.fName }} {{ requestObj.lName }}</p>
 <p><span class="color-dark">Requester's Email:</span> {{ requestObj.email }}</p>
-<p><span class="color-dark">Requester's Address:</span> {{ requestObj.address }} {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
+<p><span class="color-dark">Requester's Approximate Address:</span> {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
+<p style="font-size:80%;">The claimant will receive the full address for delivery</p>
 <br />
 <p><span class="color-dark">Type of PPE Requested:</span> <span id="type"></span></p>
 <p><span class="color-dark">Amount of PPE Requested:</span> {{ requestObj.numPPE }}</p>
