@@ -338,7 +338,7 @@ def nearbyRequests(request):
 
             destination += addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode + "|"
 
-    key="AIzaSyAAetUTOB2h4dzuM1rlmWOdHY-ooSypC7I"
+    
     url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations=' + destination + '&key=' + key).format(origin, destination, key)
 
     response = urllib.request.urlopen(url)

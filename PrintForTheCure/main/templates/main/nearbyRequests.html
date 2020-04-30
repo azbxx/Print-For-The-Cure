@@ -199,6 +199,10 @@
       .bg {
         background: rgba(20, 20, 20, 0.12) /* Green background with 30% opacity */
       }
+      .center {
+        margin: auto;
+        width: 50%;
+      }
     </style>
   </head>
   <body>
@@ -209,12 +213,12 @@
       <div class="menu-collapse collapse" id="menu-collapse">
         <div class="container">
           <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-2">
               <ul class="breadcrumb main-nav no-space">
                 <!-- <li class="link-inpage"><a href="" id="hireme-tab" class="link-inpage">donate</li> -->
               </ul>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-8 center">
               <ul class="breadcrumb main-nav nav">
                 <li class="active"><a href="/" class="link-inpage">Home</a></li>
                 <li ><a href="/requestPPE" class="link-inpage">Request PPE</a></li>
@@ -224,7 +228,7 @@
             </div>
             {% if authenticated %}
             {% else %}
-              <div class="col-md-3">
+              <div class="col-md-2">
                 <ul class="breadcrumb main-nav no-space">
                   <li>
                     <a href="/login/"  ><i class="fa fa-sign-in"></i>  Donor Login/Registration</a>
@@ -265,7 +269,8 @@
           <div class="col-md-6">
             <p><span class="color-dark">Request Details: </span>{{ requestObj.numPPE }}x <span id="type2{{ requestObj.id }}"></span></p>
             <p><span class="color-dark">PPE Latest Delivery Date:</span> {{ requestObj.delivDate }}</p>
-            <p><span class="color-dark">Delivery Location: </span>{{ requestObj.address }}, {{ requestObj.city }}, {{ requestObj.state }}, {{ requestObj.zipCode }}, {{ requestObj.country }}</p>
+            <p><span class="color-dark">Approximate Delivery Location: </span>{{ requestObj.city }}, {{ requestObj.state }}, {{ requestObj.zipCode }}, {{ requestObj.country }}</p>
+            <p style="font-size:80%;">Exact location will be released to claimant</p>
           </div>
 
           <form action"confirmation" style="padding-bottom:1em;" method="POST">
