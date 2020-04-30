@@ -1,5 +1,5 @@
 /* Copyright (c) 2009 Jordan Kasper
- * Licensed under the MIT (http://www.opensource.org/licenses/mit-license.php)
+ * Licensed under the MIT (https://www.opensource.org/licenses/mit-license.php)
  * Copyright notice and license must remain intact for legal use
  * 
  * Requires: jQuery 1.7+

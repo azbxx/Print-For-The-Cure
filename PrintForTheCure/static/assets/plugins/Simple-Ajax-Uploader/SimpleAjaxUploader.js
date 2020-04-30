@@ -29,7 +29,7 @@
 
     // Check for Safari -- it doesn't like multi file uploading. At all.
     // We do it up here so it only needs to be done once, no matter the # of uploaders
-    // http://stackoverflow.com/a/9851769/1091949
+    // https://stackoverflow.com/a/9851769/1091949
     isSafari = Object.prototype.toString.call( window.HTMLElement ).indexOf( 'Constructor' ) > 0,
 
     // Check whether XHR uploads are supported
@@ -269,7 +269,7 @@ ss.copyLayout = function( from, to ) {
 /**
 * Generates unique ID
 * Complies with RFC 4122 version 4
-* http://stackoverflow.com/a/2117523/1091949
+* https://stackoverflow.com/a/2117523/1091949
 */
 ss.getUID = function() {
     "use strict";
@@ -346,7 +346,7 @@ ss.removeClass = (function() {
 
 /**
 * Nulls out event handlers to prevent memory leaks in IE6/IE7
-* http://javascript.crockford.com/memory/leak.html
+* https://javascript.crockford.com/memory/leak.html
 * @param {Element} d
 * @return void
 */
@@ -778,7 +778,7 @@ ss.SimpleUpload.prototype = {
         this._input.name = this._opts.name;
 
         // Don't allow multiple file selection in Safari -- it has a nasty bug
-        // http://stackoverflow.com/q/7231054/1091949
+        // https://stackoverflow.com/q/7231054/1091949
         if ( XhrOk && !isSafari && this._opts.multiple ) {
             this._input.multiple = true;
         }

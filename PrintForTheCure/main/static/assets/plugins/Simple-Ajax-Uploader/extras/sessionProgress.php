@@ -11,7 +11,7 @@
 * Returns upload progress updates for browsers that don't support the HTML5 File API.
 * Falling back to this method allows for upload progress support across virtually all browsers.
 * Requires PHP 5.4+
-* Further documentation: http://php.net/manual/en/session.upload-progress.php
+* Further documentation: https://php.net/manual/en/session.upload-progress.php
 *
 */ 
 session_start();
