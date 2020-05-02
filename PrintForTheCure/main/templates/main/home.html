@@ -253,7 +253,7 @@
 
           <div style="z-index: 100" class="bg-secondary block-title">
             <div class="container">
-              <h2 class="text-uppercase color-dark text-bold no-margin">The Movement</h2>
+              <h1 class="text-uppercase color-dark text-bold no-margin">The Movement</h1>
               <div class="title-icon"> <i class="fa fa-book"></i> </div>
 
             </div>
@@ -331,21 +331,19 @@
       </section>
 
       <section id="request" class="block-section">
-        <div class=" shape-bottom">
-          <div class="bg-secondary block-title">
-            <div class="container">
-              <h2 class="text-uppercase color-dark text-bold no-margin">Are you an Essential Worker? Request For PPE!</h2>
-              <div class="title-icon"> <i class="fa fa-map-marker"></i> </div>
-              <div class="text-center" style="padding-top: 20px;">
-                <form style="padding-bottom:1em;" method="POST">
-                  <!-- Every <form> element needs a csrf_token as a security precaution. -->
-                  {% csrf_token %}
-                  <!-- I use the hidden input element to send along the information that
-                    we are logging out. -->
-                  <input type="hidden" name="submitRequest"></input>
-                  <button class="btn btn-default btn-flat-solid btn-pill">Fill out a Form For PPE</button>
-                </form>
-              </div>
+        <div class="bg-secondary block-title">
+          <div class="container">
+            <h2 class="text-uppercase color-dark text-bold no-margin">Are you an Essential Worker? Request For PPE!</h2>
+            <div class="title-icon"> <i class="fa fa-map-marker"></i> </div>
+            <div class="text-center" style="padding-top: 20px;">
+              <form style="padding-bottom:1em;" method="POST">
+                <!-- Every <form> element needs a csrf_token as a security precaution. -->
+                {% csrf_token %}
+                <!-- I use the hidden input element to send along the information that
+                  we are logging out. -->
+                <input type="hidden" name="submitRequest"></input>
+                <button class="btn btn-default btn-flat-solid btn-pill">Fill out a Form For PPE</button>
+              </form>
             </div>
           </div>
         </div>
@@ -429,6 +427,61 @@
 
           <div class="white-space-50"></div>
       </section><!-- END SERVICES-->
+
+      <section id="meetTheTeam" class="block-section">
+        <div class=" shape-bottom">
+          <div class="bg-secondary block-title">
+            <div class="container">
+              <h1 class="text-uppercase color-dark text-bold no-margin">Meet The Team</h1>
+              <div class="title-icon"> <i class="fa fa-envelope-o"></i> </div>
+            </div>
+          </div>
+        </div>
+        <div class="bg-dark clearfix">
+          <div class="row">
+            <div class="col-md-4" style="margin: auto;" align="center">
+              <h2 class="text-uppercase color-light">Michael Zeng</h2>
+              <h5 class="text-uppercase color-light" style="margin-top:-12px;">Director and Backend Programmer</h5>
+              <img src="{% static 'assets/theme/images/Michael.png' %}" alt="Michael Zeng" style="width:300px;height:300px;">
+              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">Hi I'm Michael, from San Diego CA! I am passionate about robotics, a maker and 3D printing enthusiast, CAD designer, coder, and programmed the backend for Print For The Cure. I help with managing the overall project as the original founder.
+              </p>
+            </div>
+            <div class="col-md-4" style="margin: auto;" align="center">
+              <h2 class="text-uppercase color-light">Subash Shibu</h2>
+              <h5 class="text-uppercase color-light" style="margin-top:-12px;">Frontend Programmer</h5>
+              <img src="{% static 'assets/theme/images/Subash.jpg' %}" alt="Michael Zeng" style="width:300px;height:300px;">
+              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">I am Subash, a junior at Dublin High School. I programmed the front-end as well as helped market our platform.
+              </p>
+            </div>
+            <div class="col-md-4" style="margin: auto;" align="center">
+              <h2 class="text-uppercase color-light">Ashwin Baluja</h2>
+              <h5 class="text-uppercase color-light" style="margin-top:-12px;">Webmaster</h5>
+            </div>
+          </div>
+          <div>
+            <div class="col-md-2" style="margin: auto;" align="center">
+            </div>
+            <div class="col-md-4" style="margin: auto;" align="center">
+              <h2 class="text-uppercase color-light">Nicholas Liu</h2>
+              <h5 class="text-uppercase color-light" style="margin-top:-12px;">Social Media Marketing</h5>
+              <img src="{% static 'assets/theme/images/Nicholas.jpg' %}" alt="Michael Zeng" style="width:300px;height:300px;">
+              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">Nicholas Liu is a rising junior attending The Bishop's School. He’s spent his past several weeks assembling and delivering face shields to hospitals. In his free time, Nicholas enjoys playing tennis, building robots, and taking nice strolls through the park.
+              </p>
+
+            </div>
+            <div class="col-md-4" style="margin: auto;" align="center">
+              <h2 class="text-uppercase color-light">Drew Kessler</h2>
+              <h5 class="text-uppercase color-light" style="margin-top:-12px;">Outreach</h5>
+              <img src="{% static 'assets/theme/images/Drew.jpg' %}" alt="Michael Zeng" style="width:300px;height:300px;">
+              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">I'm Andrew Kessler, a junior at The Bishop's School in CA. My academic interests include bioinformatics and quantitative finance. Towards the latter, I helped develop a factor-based regression application for asset management. As for hobbies, I like to play lacrosse and solve puzzles. I hope that I will be able to do my part in fighting SARS-Cov-2 through PrintForTheCure.
+              </p>
+              <br />
+            </div>
+            <div class="col-md-2" style="margin: auto;" align="center">
+            </div>
+          </div>
+        </div>
+      </section>
 
       <!--CONTACT-->
       <section id="contact" class="block-section">

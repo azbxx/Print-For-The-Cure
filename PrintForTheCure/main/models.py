@@ -22,6 +22,7 @@ class RequestModel(models.Model):
     typePPE = models.CharField(max_length=255)
     typeHandle = models.CharField(max_length=255)
     address = models.TextField()
+    organization = models.TextField()
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=2)
     country = models.CharField(max_length=100)
