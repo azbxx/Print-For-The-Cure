@@ -28,6 +28,7 @@ import string
 
 # Create your views here.
 def home(request):
+    getClaimRate(request)
     print(request.user.is_authenticated)
     if request.method == 'POST':
         if 'login' in request.POST.keys():
@@ -414,7 +415,7 @@ def confirmClaim(request):
     if request.method == 'POST':
         if 'yes' in request.POST.keys():
 
-            requestObj.status = 1
+            requestObj.status = 2
             requestObj.save()
 
             service = getService()
@@ -525,3 +526,15 @@ def test(request):
 
 def status(request):
     return JsonResponse({'online':'true'})
+
+def getClaimRate(request):
+    totalRequests = 0.0
+    claimedRequests = 0.0
+    for requestModel in RequestModel.objects.all():
+        if requestModel.status == 1:
+            totalRequests += 1
+        if requestModel.status == 2:
+            claimedRequests += 1
+
+    claimRate = claimedRequests/totalRequests
+    print("Claimrate (not including pending requests): " + str(claimRate))
