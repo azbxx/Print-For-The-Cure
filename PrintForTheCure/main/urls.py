@@ -27,6 +27,7 @@ urlpatterns = [
     path('requestPPE/terms', views.terms, name='terms page'),
 
     path('requestDetails/', views.requestDetails, name='details page for request from nearbyRequests.html'),
+    path('statusCheck/', views.status, name='status check'), 
 
     #url(r'^django_popup_view_field/', include('django_popup_view_field.urls', namespace="django_popup_view_field")),
 

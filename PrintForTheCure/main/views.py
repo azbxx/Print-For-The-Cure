@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, JsonResponse
 from django.http import HttpResponseRedirect
 from django.urls import reverse
 from urllib.parse import urlencode
@@ -522,3 +522,6 @@ def test(request):
     template = loader.get_template('main/fileName.html')
     context = {}
     return HttpResponse(template.render(context, request))
+
+def status(request):
+    return JsonResponse({'online':'true'})
