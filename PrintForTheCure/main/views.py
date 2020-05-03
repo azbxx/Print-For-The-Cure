@@ -203,6 +203,7 @@ def doctorRequest(request):
             validationStatus += "Please ensure all fields are filled out."
         if validated:
             print("Address Validation Succeeded")
+
             newRequest = RequestModel(id=RequestModel.objects.latest('orderDate').id + random.randrange(1, 100, 1), status=0, fName=request.POST['fName'], lName=request.POST['lName'], email=request.POST['email'], organization=request.POST['organization'], numPPE=request.POST['numPPE'], typePPE=request.POST['typePPE'], typeHandle=request.POST['typeHandle'], address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], delivDate=datetime.date(int(request.POST['year']), int(request.POST['month']), int(request.POST['day'])) , orderDate=timezone.now(), notes=request.POST['otherNotes'])
             print(request.POST['typePPE'])
             newRequest.save()
@@ -246,9 +247,10 @@ def map(request):
     addresses = []
     counter = 0
     for requestModel in RequestModel.objects.all():
-        if timezone.now().date() > requestModel.delivDate + datetime.timedelta(days=1):
+        if timezone.now().date() > requestModel.delivDate + datetime.timedelta(days=1) and requestModel.status == 0:
             print("Deleting RequestModel (date passed): " + str(requestModel.delivDate))
-            requestModel.status = 1;
+            requestModel.status = 1
+            requestModel.save()
         if requestModel.status == 0:
             address = requestModel.address + " " + requestModel.city + " " + requestModel.state + " " + requestModel.zipCode
             addressId = "address" + str(counter)
@@ -285,6 +287,11 @@ def requestPopup(request):
 
 def nearbyRequests(request):
     # print(request.user.is_authenticated)
+    for requestModel in RequestModel.objects.all():
+        if timezone.now().date() > requestModel.delivDate + datetime.timedelta(days=1) and requestModel.status == 0:
+            print("Deleting RequestModel (date passed): " + str(requestModel.delivDate))
+            requestModel.status = 1
+            requestModel.save()
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/notLoggedIn/")
     if request.method == 'POST':
@@ -461,7 +468,7 @@ def confirmClaim1(request):
     if request.method == 'POST':
         if 'yes' in request.POST.keys():
 
-            requestObj.status = 1
+            requestObj.status = 2
             requestObj.save()
 
             service = getService()
