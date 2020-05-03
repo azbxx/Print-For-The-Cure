@@ -200,7 +200,10 @@ def doctorRequest(request):
             validationStatus += "Sorry, Address Validation failed. Please enter a valid address for delivery.\n"
         if (len(request.POST['fName']) < 1) or (len(request.POST['lName']) < 1) or (len(request.POST['email']) < 1):
             validated = False
-            validationStatus += "Please ensure all fields are filled out."
+            validationStatus += "Please ensure all fields are filled out. "
+        if timezone.now().date() > datetime.date(int(request.POST['year']), int(request.POST['month']), int(request.POST['day'])):
+            validated = False
+            validationStatus += "Please set the delivery date later. "
         if validated:
             print("Address Validation Succeeded")
 
