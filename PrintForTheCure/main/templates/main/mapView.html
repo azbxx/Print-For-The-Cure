@@ -303,7 +303,7 @@
           <p><span class="color-dark">Requester's Name:</span> {{ requestObj.fName }} {{ requestObj.lName }}</p>
           <p><span class="color-dark">Requester's Email:</span> {{ requestObj.email }}</p>
           <p><span class="color-dark">Requester's Organization:</span> {{ requestObj.organization }}</p>
-          <p><span class="color-dark">Requester's Apprixomate Location:</span> {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
+          <p><span class="color-dark">Requester's Approximate Location:</span> {{ requestObj.city }} {{ requestObj.state }} {{ requestObj.zipCode }} {{ requestObj.country }}</p>
           <p style="font-size:80%;">Exact location will be released to claimant</p>
           <br />
           <p><span class="color-dark">Type of PPE Requested:</span> <span id="type{{ requestObj.id }}"></span></p>
@@ -355,6 +355,7 @@
 
         geocoder.geocode( { 'address': inputBox.value}, function(results, status) {
           if (status == 'OK') {
+            console.log(results[0].geometry.location);
             map.setCenter(results[0].geometry.location);
             var marker = new google.maps.Marker({
                 map: map,
