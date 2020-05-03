@@ -254,6 +254,22 @@ def map(request):
             print("Deleting RequestModel (date passed): " + str(requestModel.delivDate))
             requestModel.status = 1
             requestModel.save()
+
+            service = getService()
+            subject = "Request For PPE Expired"
+            ppeType = ""
+            if "shield" in requestModel.typePPE:
+                ppeType = "3D Printed Face Shields"
+            elif "strap" in requestModel.typePPE:
+                ppeType = "Face Mask Comfort Strap"
+            elif "handle" in requestModel.typePPE:
+                ppeType = "Touch-less Door Handle; %s (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)" % requestModel.typeHandle
+            elif "opener" in requestModel.typePPE:
+                ppeType = "Personal Touchless Door Opener"
+            message_text = "We are sorry to notify you that your request for PPE has expired without being claimed. Your request Details:\n\n\nRequester's Name: %s %s\nRequester's Email: %s\nPPE Delivery Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nAs the website is just launching, we are gathering more donors to help ensure our essential workers can get the PPE they need. Please request again on https://printforthecure.com and we will do our best to help you next time. Thank you for your understading.\n\nPlease contact us at printforthecure@gmail.com with any questions." % (requestModel.fName, requestModel.lName, requestModel.email, requestModel.address, requestModel.city, requestModel.state, requestModel.zipCode, requestModel.country, ppeType, requestModel.numPPE, requestModel.delivDate, requestModel.notes)
+            message = makeMessage("printforthecure@gmail.com", requestModel.email, subject, message_text)
+            sendMessage(service, 'me', message)
+
         if requestModel.status == 0:
             address = requestModel.address + " " + requestModel.city + " " + requestModel.state + " " + requestModel.zipCode
             addressId = "address" + str(counter)
@@ -295,6 +311,22 @@ def nearbyRequests(request):
             print("Deleting RequestModel (date passed): " + str(requestModel.delivDate))
             requestModel.status = 1
             requestModel.save()
+
+            service = getService()
+            subject = "Request For PPE Expired"
+            ppeType = ""
+            if "shield" in requestModel.typePPE:
+                ppeType = "3D Printed Face Shields"
+            elif "strap" in requestModel.typePPE:
+                ppeType = "Face Mask Comfort Strap"
+            elif "handle" in requestModel.typePPE:
+                ppeType = "Touch-less Door Handle; %s (Link: https://www.materialise.com/en/hands-free-door-opener/technical-information)" % requestModel.typeHandle
+            elif "opener" in requestModel.typePPE:
+                ppeType = "Personal Touchless Door Opener"
+            message_text = "We are sorry to notify you that your request for PPE has expired without being claimed. Your request Details:\n\n\nRequester's Name: %s %s\nRequester's Email: %s\nPPE Delivery Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nAs the website is just launching, we are gathering more donors to help ensure our essential workers can get the PPE they need. Please request again on https://printforthecure.com and we will do our best to help you next time. Thank you for your understading.\n\nPlease contact us at printforthecure@gmail.com with any questions." % (requestModel.fName, requestModel.lName, requestModel.email, requestModel.address, requestModel.city, requestModel.state, requestModel.zipCode, requestModel.country, ppeType, requestModel.numPPE, requestModel.delivDate, requestModel.notes)
+            message = makeMessage("printforthecure@gmail.com", requestModel.email, subject, message_text)
+            sendMessage(service, 'me', message)
+            
     if not request.user.is_authenticated:
         return HttpResponseRedirect("/notLoggedIn/")
     if request.method == 'POST':
@@ -447,7 +479,7 @@ def confirmClaim(request):
             #Doctor Email
             donor = Donor.objects.get(user = request.user)
             subject = "Request For PPE Claimed"
-            message_text1 = "Your Request for PPE has been claimed by a donor!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nRequester's Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nYour Donor's Name: %s\nDonor's Email: %s\n\nWe suggest contacting your donor directly regarding method of delivery for your request PPE. Donors typically ship directly to your given address, however alternate methods can be used if an agreement is reached with the donor.\n\nIt is truly from the generosity of donors that many doctors and essential workers can receive help during these time. We engourage you to send a very nice note, a gift, or even a monetary donation to keep your donor's spirits high, and to help them continue to do good. We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email)
+            message_text1 = "Your Request for PPE has been claimed by a donor!\n\nRequest Details: \nRequester's Name: %s %s\nRequester's Email: %s\nPPE Delivery Address: %s %s %s %s %s\n\nType of PPE Requested: %s\nAmount of PPE Requested: %d\nLatest Date for Delivery of requested PPE: %s\n\nOther Notes For the Donor: %s\n\nYour Donor's Name: %s\nDonor's Email: %s\n\nWe suggest contacting your donor directly regarding method of delivery for your request PPE. Donors typically ship directly to your given address, however alternate methods can be used if an agreement is reached with the donor.\n\nIt is truly from the generosity of donors that many doctors and essential workers can receive help during these time. We engourage you to send a very nice note, a gift, or even a monetary donation to keep your donor's spirits high, and to help them continue to do good. We hope our platform serves you well! : )" % (requestObj.fName, requestObj.lName, requestObj.email, requestObj.address, requestObj.city, requestObj.state, requestObj.zipCode, requestObj.country, ppeType, requestObj.numPPE, requestObj.delivDate, requestObj.notes, request.user.get_full_name(), request.user.email)
             message = makeMessage("printforthecure@gmail.com", requestObj.email, subject, message_text1)
             sendMessage(service, 'me', message)
 
@@ -538,13 +570,13 @@ def status(request):
     return JsonResponse({'online':'true'})
 
 def getClaimRate(request):
-    totalRequests = 0.0
-    claimedRequests = 0.0
+    totalRequestedPPE = 0.0
+    claimedRequestedPPE = 0.0
     for requestModel in RequestModel.objects.all():
         if requestModel.status == 1:
-            totalRequests += 1
+            totalRequestedPPE += requestModel.numPPE
         if requestModel.status == 2:
-            claimedRequests += 1
+            claimedRequestedPPE += requestModel.numPPE
 
-    claimRate = claimedRequests/totalRequests
+    claimRate = claimedRequestedPPE/totalRequestedPPE
     print("Claimrate (not including pending requests): " + str(claimRate))
