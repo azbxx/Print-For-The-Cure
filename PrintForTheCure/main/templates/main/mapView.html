@@ -289,6 +289,8 @@
       <form method="POST">
         <!-- Every <form> element needs a csrf_token as a security precaution. -->
         {% csrf_token %}
+        <input type="hidden" id="lat{{ requestObj.id }}" name = "requestLat" value="{{ requestObj.lat }}"></input>
+        <input type="hidden" id="lng{{ requestObj.id }}" name = "requestLng" value="{{ requestObj.lng }}"></input>
         <input type="hidden" id="{{ requestObj.id }}" name="requestAddress" value="{{ requestObj.address }}"></input>
       </form>
 
@@ -350,28 +352,51 @@
       </div>
 
       <script>
-        var inputBox = document.getElementById("{{ requestObj.id }}");
-        console.log(inputBox.value)
+        var addressInput = document.getElementById("{{ requestObj.id }}");
+        var latInput = document.getElementById("lat{{ requestObj.id }}");
+        var lngInput = document.getElementById("lng{{ requestObj.id }}");
+        console.log(addressInput.value)
+        console.log(latInput.value)
+        console.log(lngInput.value)
+        var floatLatInput = parseFloat(latInput.value);
+        var floatLngInput = parseFloat(lngInput.value);
 
-        geocoder.geocode( { 'address': inputBox.value}, function(results, status) {
-          if (status == 'OK') {
-            console.log(results[0].geometry.location);
-            map.setCenter(results[0].geometry.location);
-            var marker = new google.maps.Marker({
-                map: map,
-                position: results[0].geometry.location,
-                title: 'Click to See Request Details',
-            });
-            marker.addListener('click', function() {
-              map.setZoom(10);
-              map.setCenter(marker.getPosition());
-              openForm('{{ requestObj.id }}')
-              // document.getElementById("markerClick").value = marker.getPosition();
-            });
-          } else {
-              alert('Geocode was not successful for the following reason: ' + status);
-          }
-        });
+        if ((floatLatInput == 0.0) && (floatLngInput == 0.0)) {
+          console.log("defualt coords: " + latInput.value + ", " + lngInput.value)
+          geocoder.geocode( { 'address': addressInput.value}, function(results, status) {
+            if (status == 'OK') {
+              console.log(results[0].geometry.location);
+              map.setCenter(results[0].geometry.location);
+              var marker = new google.maps.Marker({
+                  map: map,
+                  position: results[0].geometry.location,
+                  title: 'Click to See Request Details',
+              });
+              marker.addListener('click', function() {
+                map.setZoom(10);
+                map.setCenter(marker.getPosition());
+                openForm('{{ requestObj.id }}')
+                // document.getElementById("markerClick").value = marker.getPosition();
+              });
+            } else {
+                alert('Geocode was not successful for the following reason: ' + status);
+            }
+          });
+        }
+        else {
+          var pos = {lat: floatLatInput, lng: floatLngInput}
+          var marker = new google.maps.Marker({
+              map: map,
+              position: pos,
+              title: 'Click to See Request Details',
+          });
+          marker.addListener('click', function() {
+            map.setZoom(10);
+            map.setCenter(marker.getPosition());
+            openForm('{{ requestObj.id }}')
+            // document.getElementById("markerClick").value = marker.getPosition();
+          });
+        }
       </script>
     {% endfor %}
     <!-- <form id="markerForm" style="padding-bottom:1em;" method="POST">
