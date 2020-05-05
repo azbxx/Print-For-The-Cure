@@ -29,6 +29,7 @@
 
     <!-- Themes styles-->
     <link href="{% static 'assets/theme/css/style.css' %}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <!-- black skin-->
     <!-- <link href="{% static 'assets/theme/css/skin-black.css' %}" rel="stylesheet"> -->
     <style>
@@ -254,7 +255,7 @@
           <div style="z-index: 100" class="bg-secondary block-title">
             <div class="container">
               <h1 class="text-uppercase color-dark text-bold no-margin">The Movement</h1>
-              <div class="title-icon"> <i class="fa fa-book"></i> </div>
+              <div class="title-icon"> <i class="fa fa-heartbeat"></i> </div>
 
             </div>
           </div>
@@ -309,12 +310,46 @@
       </section>
 
 
+
+      <section id="stats" class="block-section">
+        <div class="container-medium "></div>
+
+        <div class="block-title">
+          <div class="row">
+            <div class="col-md-6">
+              <h1 style="margin:5%; font-size:825%; color: rgb(0, 201, 219);" class="text-uppercase color-dark text-bold no-margin">{{ claimRate }}%</h1>
+              <p style="font-size:200%; margin-top:-6%; margin-bottom:-4%;"class="text-uppercase color-dark text-bold no-margin">Probability</p>
+            </div>
+
+            <div class="col-md-6">
+              <h1 style="margin:5%; font-size:825%; color: rgb(0, 201, 219);" class="text-uppercase color-dark text-bold no-margin">{{ claimedPPE }}+</h1>
+
+              <!-- <p style="font-size:200%; margin-top:-6%; margin-bottom:-4%;"class="text-uppercase color-dark text-bold no-margin">prob</p> -->
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-6">
+              <h2 style="margin:10%;" class="text-uppercase color-dark text-bold no-margin">Your Request For PPE Will Be Claimed</h2>
+            </div>
+
+            <div class="col-md-6">
+              <h2 style="margin:10%;" class="text-uppercase color-dark text-bold no-margin">Pieces of PPE Produced and Delivered</h2>
+            </div>
+          </div>
+
+        </div>
+
+
+      </section>
+
+
+
       <section id="map" class="block-section">
         <div class=" shape-bottom">
           <div class="bg-secondary block-title">
             <div class="container">
               <h2 class="text-uppercase color-dark text-bold no-margin">See a Map of Global PPE Requests</h2>
-              <div class="title-icon"> <i class="fa fa-map-marker"></i> </div>
+              <div class="title-icon"> <i class="fa fa-location-arrow"></i> </div>
               <div class="text-center" style="padding-top: 20px;">
                 <form style="padding-bottom:1em;" method="POST">
                   <!-- Every <form> element needs a csrf_token as a security precaution. -->
@@ -433,7 +468,7 @@
           <div class="bg-secondary block-title">
             <div class="container">
               <h1 class="text-uppercase color-dark text-bold no-margin">Meet The Team</h1>
-              <div class="title-icon"> <i class="fa fa-envelope-o"></i> </div>
+              <div class="title-icon"> <i class="fa fa-address-book-o"></i> </div>
             </div>
           </div>
         </div>
@@ -443,7 +478,7 @@
               <h2 class="text-uppercase color-light">Michael Zeng</h2>
               <h5 class="text-uppercase color-light" style="margin-top:-12px;">Founder and Backend Programmer</h5>
               <img src="{% static 'assets/theme/images/Michael.png' %}" alt="Michael Zeng" style="width:300px;height:300px;">
-              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">Hi I'm Michael, from San Diego CA! I help manage the project and program the back-end. Seeing the inefficiencies of personally creating and delivering shields to an overwhelming demand, I founded the project with a goal of removing the bottle-neck of a single distribution center. Your support can make this idea a reality!
+              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">Hi I'm Michael, from San Diego CA! I help manage the project and program the back-end. I started 3D printing and delivering face shields with my robotics team "The Clueless" FTC, and seeing the inefficiencies of personally creating and delivering shields to an overwhelming demand, I founded the project with a goal of removing the bottle-neck of a single distribution center. Your support can make this idea a reality!
               </p>
             </div>
             <div class="col-md-4" style="margin: auto;" align="center">
@@ -468,7 +503,7 @@
               <h2 class="text-uppercase color-light">Nicholas Liu</h2>
               <h5 class="text-uppercase color-light" style="margin-top:-12px;">Social Media Marketing</h5>
               <img src="{% static 'assets/theme/images/Nicholas.jpg' %}" alt="Michael Zeng" style="width:300px;height:300px;">
-              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">I'm Nicholas Liu, a rising junior attending The Bishop's School. I've spent my past several weeks assembling and delivering face shields to hospitals. In my free time, I enjoy playing tennis, building robots, and taking nice strolls through the park.
+              <p class="color-light" style="font-size:120%; padding-right:4.5%; padding-left:4.5%; padding-top:3%;">I'm Nicholas Liu, a rising junior attending The Bishop's School. I've spent my past several weeks assembling and delivering face shields to hospitals with my robotics FTC team "The Clueless" #11212. In my free time, I enjoy playing tennis, building robots, and taking nice strolls through the park.
               </p>
 
             </div>

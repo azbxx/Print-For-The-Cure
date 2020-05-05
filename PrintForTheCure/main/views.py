@@ -28,7 +28,15 @@ import string
 
 # Create your views here.
 def home(request):
-    getClaimRate(request)
+    claimRate = getClaimRate(request)
+
+    claimedPPE = 0
+    for requestModel in RequestModel.objects.all():
+        if requestModel.status == 2:
+            claimedPPE += requestModel.numPPE
+
+    print("claimedPPE: " + str(claimedPPE))
+
     print(request.user.is_authenticated)
     if request.method == 'POST':
         if 'login' in request.POST.keys():
@@ -52,7 +60,9 @@ def home(request):
 
     template = loader.get_template('main/home.html')
     context = {     #all inputs for the html go in these brackets
-        'authenticated': request.user.is_authenticated
+        'authenticated': request.user.is_authenticated,
+        'claimRate': claimRate,
+        'claimedPPE': claimedPPE,
     }
     return HttpResponse(template.render(context, request))
 
@@ -570,13 +580,31 @@ def status(request):
     return JsonResponse({'online':'true'})
 
 def getClaimRate(request):
-    totalRequestedPPE = 0.0
-    claimedRequestedPPE = 0.0
+    #determine rate from # PPE
+    # totalRequestedPPE = 0.0
+    # claimedRequestedPPE = 0.0
+    # for requestModel in RequestModel.objects.all():
+    #     if requestModel.status == 1:
+    #         totalRequestedPPE += requestModel.numPPE
+    #     if requestModel.status == 2:
+    #         claimedRequestedPPE += requestModel.numPPE
+    #
+    # claimRate = claimedRequestedPPE/totalRequestedPPE
+
+    #determine rate from # requests
+    totalRequests = 0.0
+    claimedRequests = 0.0
     for requestModel in RequestModel.objects.all():
         if requestModel.status == 1:
-            totalRequestedPPE += requestModel.numPPE
+            totalRequests += 1
         if requestModel.status == 2:
-            claimedRequestedPPE += requestModel.numPPE
+            claimedRequests += 1
 
-    claimRate = claimedRequestedPPE/totalRequestedPPE
+    claimRate = claimedRequests/totalRequests
+
+
     print("Claimrate (not including pending requests): " + str(claimRate))
+    claimRate = int(claimRate * 100)
+    claimRateStr = str(claimRate)
+    print(claimRateStr)
+    return claimRateStr
