@@ -588,6 +588,7 @@ def getClaimRate(request):
     #         totalRequestedPPE += requestModel.numPPE
     #     if requestModel.status == 2:
     #         claimedRequestedPPE += requestModel.numPPE
+    #         totalRequestedPPE += requestModel.numPPE
     #
     # claimRate = claimedRequestedPPE/totalRequestedPPE
 
