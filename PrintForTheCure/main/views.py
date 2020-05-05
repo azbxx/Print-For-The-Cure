@@ -599,6 +599,7 @@ def getClaimRate(request):
             totalRequests += 1
         if requestModel.status == 2:
             claimedRequests += 1
+            totalRequests += 1
 
     claimRate = claimedRequests/totalRequests
 
