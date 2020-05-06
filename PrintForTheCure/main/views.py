@@ -25,6 +25,7 @@ from .models import RequestModel
 from .gmail import *
 from .GoogleAPIKey import *
 import string
+import numpy as geek
 
 # Create your views here.
 def home(request):
@@ -34,6 +35,8 @@ def home(request):
     for requestModel in RequestModel.objects.all():
         if requestModel.status == 2:
             claimedPPE += requestModel.numPPE
+
+    claimedPPE = claimedPPE - geek.mod(claimedPPE, 10)
 
     print("claimedPPE: " + str(claimedPPE))
 
