@@ -18,7 +18,7 @@ from i18naddress import InvalidAddress, normalize_address
 import googlemaps
 import json
 import urllib.request
-
+import urllib.parse
 import random
 from .models import Donor
 from .models import RequestModel
@@ -377,7 +377,7 @@ def nearbyRequests(request):
     origin = addressFormatted + cityFormatted + donor.state + "+" + donor.zipCode
     print(origin)
 
-    destination = ""
+    destination = []
     for requestModel in RequestModel.objects.all():
         if requestModel.status == 0:
 
@@ -393,10 +393,11 @@ def nearbyRequests(request):
                 addressFormatted += word
                 addressFormatted += "+"
 
-            destination += addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode + "|"
+            destination.append(addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode)
+    destination = "|".join(destination)
 
-
-    url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations=' + destination + '&key=' + key).format(origin, destination, key)
+    key = "AIzaSyAAetUTOB2h4dzuM1rlmWOdHY-ooSypC7I"
+    url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations={}' + '&key={}').format(urllib.parse.quote(origin, safe=""), urllib.parse.quote(destination, safe=""), key)
 
     response = urllib.request.urlopen(url)
     responseJSON = json.loads(response.read())
