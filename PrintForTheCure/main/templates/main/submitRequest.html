@@ -67,10 +67,33 @@
               <input type="text" class="form-control form-flat" name="fName" />
             </div>
 
-            <div class="form-group">
+            <div id="lName" class="form-group">
               <label for="lName">Last Name</label>
-              <input type="text" class="form-control form-flat" name="lName" />
+              <input id="lNameInput" type="text" class="form-control form-flat" name="lName" />
             </div>
+            <script>
+              document.getElementById("lName").style.display = "block";
+            </script>
+
+            <div class="form-group">
+              <input onchange="checkAnon()" type="checkbox" id="anon" name="anon" value="true">
+              <label style="font-size:80%" for="anon">Keep your last name anonymous?</label>
+            </div>
+            <script>
+              function checkAnon() {
+                var boolean = document.getElementById("anon").value;
+                console.log("check anonymous: " + boolean)
+                if (boolean == "true") {
+                  document.getElementById("lName").style.display = "none";
+                  document.getElementById("anon").value = "false";
+                  document.getElementById("lNameInput").value = "Anonymous Last Name";
+                }
+                else {
+                  document.getElementById("lName").style.display = "block";
+                  document.getElementById("anon").value = "true";
+                }
+              }
+            </script>
 
             <div class="form-group">
               <label for="email">Email</label>
