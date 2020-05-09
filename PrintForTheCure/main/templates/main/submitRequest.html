@@ -86,7 +86,7 @@
                 if (boolean == "true") {
                   document.getElementById("lName").style.display = "none";
                   document.getElementById("anon").value = "false";
-                  document.getElementById("lNameInput").value = "Anonymous Last Name";
+                  document.getElementById("lNameInput").value = " ";
                 }
                 else {
                   document.getElementById("lName").style.display = "block";
@@ -382,13 +382,200 @@
                 else {
                   document.getElementById("typeHandle").style.display = "none";
                 }
+
+
+
+                var select = document.getElementById("num");
+                if (type == "shield") {
+                  var initialLen = select.length;
+                  for (i = 0; i < initialLen; i++) {
+                    select.remove(0);
+                    console.log("hi");
+                  }
+                  for (i = 2; i<51; i++) {
+                    var opt = document.createElement('option');
+                    opt.text = i.toString();
+                    opt.value = i.toString();
+                    select.add(opt, select.length);
+                  }
+                  var opt = document.createElement('option');
+                  opt.text = "75";
+                  opt.value ="75";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "100";
+                  opt.value ="100";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "125";
+                  opt.value ="125";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "150";
+                  opt.value ="150";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "175";
+                  opt.value ="175";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "200";
+                  opt.value ="200";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "225";
+                  opt.value ="225";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "250";
+                  opt.value ="250";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "300";
+                  opt.value ="300";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "400";
+                  opt.value ="400";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "500";
+                  opt.value ="500";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "550";
+                  opt.value ="550";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "600";
+                  opt.value ="600";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "650";
+                  opt.value ="650";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "700";
+                  opt.value ="700";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "750";
+                  opt.value ="750";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "800";
+                  opt.value ="800";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "850";
+                  opt.value ="850";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "900";
+                  opt.value ="900";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "950";
+                  opt.value ="950";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1000";
+                  opt.value ="1000";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1100";
+                  opt.value ="1100";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1200";
+                  opt.value ="1200";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1300";
+                  opt.value ="1300";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1400";
+                  opt.value ="1400";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1500";
+                  opt.value ="1500";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1600";
+                  opt.value ="1600";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1700";
+                  opt.value ="1700";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1800";
+                  opt.value ="1800";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "1900";
+                  opt.value ="1900";
+                  select.add(opt, select.length);
+                  var opt = document.createElement('option');
+                  opt.text = "2000";
+                  opt.value ="2000";
+                  select.add(opt, select.length);
+                }
+                else {
+
+                }
+                if (type == "strap") {
+                  for (i = 2; i<201; i++) {
+                    var opt = document.createElement('option');
+                    opt.text = i.toString();
+                    opt.value = i.toString();
+                    select.add(opt, select.length);
+                  }
+                }
+                else {
+
+                }
+                if (type == "opener") {
+                  var initialLen = select.length;
+                  for (i = 0; i < initialLen; i++) {
+                    select.remove(0);
+                    console.log("hi");
+                  }
+                  for (i = 2; i<51; i++) {
+                    var opt = document.createElement('option');
+                    opt.text = i.toString();
+                    opt.value = i.toString();
+                    select.add(opt, select.length);
+                  }
+                }
+                else {
+
+                }
+                if (type == "handle") {
+                  var initialLen = select.length;
+                  for (i = 0; i < initialLen; i++) {
+                    select.remove(0);
+                    console.log("hi");
+                  }
+                  for (i = 2; i<16; i++) {
+                    var opt = document.createElement('option');
+                    opt.text = i.toString();
+                    opt.value = i.toString();
+                    select.add(opt, select.length);
+                  }
+                }
+                else {
+
+                }
               }
             </script>
 
             <div class="form-group">
               <label for="numPPE">Amount of Specified Personal Protection Equipment You Need:</label>
               <p style="font-size:90%; margin-top: -12px; margin-bottom: -2px;">Quantity is limited to ensure donors are able to fulfill. To request more, please submit multiple requests.</p>
-              <select class="form-control form-flat" name="numPPE">
+              <select id="num" class="form-control form-flat" name="numPPE">
                 <option value="2">2</option>
                 <option value="3">3</option>
                 <option value="4">4</option>
