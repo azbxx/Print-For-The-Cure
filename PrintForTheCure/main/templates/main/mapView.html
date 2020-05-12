@@ -279,7 +279,7 @@
         });
       }
     </script>
-    
+
 
     {% for requestObj in allRequests %}
       <script>
@@ -312,7 +312,7 @@
           <p><span class="color-dark">Amount of PPE Requested:</span> {{ requestObj.numPPE }}</p>
           <p><span class="color-dark">Latest Date for Delivery of requested PPE:</span> {{ requestObj.delivDate }}</p>
           <br />
-          <p><span class="color-dark">Other Notes For the Patron:</span> {{ requestObj.notes }}</p>
+          <p><span class="color-dark">Other Notes For the Donor:</span> {{ requestObj.notes }}</p>
 
           <form action"confirmation" style="padding-bottom:1em;" method="POST">
             {% csrf_token %}
