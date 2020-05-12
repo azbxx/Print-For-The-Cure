@@ -18,6 +18,7 @@ class RequestModel(models.Model):
     fName = models.CharField(max_length=100)
     lName = models.CharField(max_length=100)
     email = models.CharField(max_length=255)
+    phone = models.CharField(max_length=12)
     numPPE = models.IntegerField(default=0)
     typePPE = models.CharField(max_length=255)
     typeHandle = models.CharField(max_length=255)
