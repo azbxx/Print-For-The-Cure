@@ -25,3 +25,4 @@ def getStats():
     obj = Stats.objects.get_or_create(getId=0)
     obj.claimRate = claimRate
     obj.claims = claimedPPEMod
+    obj.save()
