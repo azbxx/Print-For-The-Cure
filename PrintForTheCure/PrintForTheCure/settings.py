@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     # 'crispy_forms',  # If you user django-crispy-forms
     # 'django_popup_view_field',
     'main.apps.MainConfig',
+    'django_crontab'
 ]
 
 DJANGO_POPUP_VIEW_FIELD_TEMPLATE_PACK = 'bootstrap4'
@@ -78,8 +79,12 @@ WSGI_APPLICATION = 'PrintForTheCure.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'django',
+        'USER': 'django',
+        'PASSWORD': os.getenv('DB_PASSWORD'),
+        'HOST': 'localhost',
+        'PORT': '3306'
     }
 }
 
@@ -122,3 +127,7 @@ USE_TZ = True
 
 
 STATIC_URL='/static/'
+
+CRONJOBS = [
+    ('0 * * * *', 'PrintForTheCUre.cron.getStats')
+]

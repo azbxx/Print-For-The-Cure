@@ -12,6 +12,8 @@ class Donor(models.Model):
     country = models.CharField(max_length=100, default='')
     zipCode = models.CharField(max_length=10, default='')
     registrationDate = models.DateTimeField('date registered')
+    lat = models.FloatField(default = 0.0)
+    lng = models.FloatField(default = 0.0)
 
 class RequestModel(models.Model):
     status = models.IntegerField(default=0)     #0 = unclaimed, 1 = claimed
@@ -23,8 +25,8 @@ class RequestModel(models.Model):
     typePPE = models.CharField(max_length=255)
     typeHandle = models.CharField(max_length=255)
     address = models.TextField()
-    lat = models.FloatField(default = 0.0)
-    lng = models.FloatField(default = 0.0)
+    lat = models.FloatField(default=0.0)
+    lng = models.FloatField(default=0.0)
     organization = models.TextField()
     city = models.CharField(max_length=255)
     state = models.CharField(max_length=2)
@@ -36,3 +38,8 @@ class RequestModel(models.Model):
 
     def __str__(self):
         return self.email
+
+class Stats(models.Model):
+    claimrate = models.FloatField()
+    claims = models.IntegerField()
+    getId = models.IntegerField(default=0)

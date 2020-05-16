@@ -5,6 +5,7 @@ from django.urls import reverse
 from urllib.parse import urlencode
 from django.template import loader
 # Custom imports added
+from django.db import transaction
 # Need timezone for date/time published
 from django.utils import timezone
 import datetime
@@ -13,7 +14,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 # Google library for address validations (used in doctorRequest)
 from i18naddress import InvalidAddress, normalize_address
-
+import math
 # Google Distance Matrix API Imports
 import googlemaps
 import json
@@ -22,24 +23,17 @@ import urllib.parse
 import random
 from .models import Donor
 from .models import RequestModel
+from .models import Stats
+import os
+
 from .gmail import *
 from .GoogleAPIKey import *
 import string
-import numpy as geek
+import numpy as np
 
 # Create your views here.
 def home(request):
-    claimRate = getClaimRate(request)
-
-    claimedPPE = 0
-    for requestModel in RequestModel.objects.all():
-        if requestModel.status == 2:
-            claimedPPE += requestModel.numPPE
-
-    claimedPPE = claimedPPE - geek.mod(claimedPPE, 10)
-
-    print("claimedPPE: " + str(claimedPPE))
-
+    statsobj = Stats.objects.get(getId=0)
     print(request.user.is_authenticated)
     if request.method == 'POST':
         if 'login' in request.POST.keys():
@@ -64,8 +58,8 @@ def home(request):
     template = loader.get_template('main/home.html')
     context = {     #all inputs for the html go in these brackets
         'authenticated': request.user.is_authenticated,
-        'claimRate': claimRate,
-        'claimedPPE': claimedPPE,
+        'claimRate': statsobj.claimRate,
+        'claimedPPE': statsobj.claims,
     }
     return HttpResponse(template.render(context, request))
 
@@ -105,6 +99,7 @@ def catalogueHandle(request):
     context = {}
     return HttpResponse(template.render(context, request))
 
+@transaction.atomic
 def donorRegistration(request):
     failMessage = ""
     if request.method == 'POST':
@@ -133,7 +128,7 @@ def donorRegistration(request):
                 newUser = User(username=request.POST['username'], password=request.POST['password'], email=request.POST['email'], first_name=request.POST['fName'], last_name=request.POST['lName'])
                 newUser.set_password(request.POST['password'])
                 newUser.save()
-                newDonor = Donor(user=newUser, address="", city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
+                newDonor = Donor(user=newUser, address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
                 newDonor.save()
 
                 user = authenticate(username=request.POST['username'], password=request.POST['password'])
@@ -191,6 +186,7 @@ def donorLogin(request):
     }
     return HttpResponse(template.render(context, request))
 
+@transaction.atomic
 def doctorRequest(request):
     validationStatus = ""
     if request.method == 'POST':
@@ -307,9 +303,11 @@ def map(request):
         'authenticated': request.user.is_authenticated,
         'allRequests': allUnclaimedRequests,
         'addresses': addresses,
+        'key' : os.getenv("GOOGLE_CLIENT_API")
     }
     return HttpResponse(template.render(context, request))
 
+@transaction.atomic
 def requestPopup(request):
     template = loader.get_template('main/requestPopup.html')
     context = {     #all inputs for the html go in these brackets
@@ -376,29 +374,12 @@ def nearbyRequests(request):
 
     origin = addressFormatted + cityFormatted + donor.state + "+" + donor.zipCode
     print(origin)
+    key = os.getenv("GOOGLE_SERVER_API")
 
     destination = []
-    allDistances = []
-    numDestinations = 1
-    numApiCalls = 1
+
+    reqlist = []
     for requestModel in RequestModel.objects.all():
-        print("mod result" + str(geek.mod(numDestinations, 25)))
-        if numDestinations > 25 and geek.mod(numDestinations, 25) == 1:
-            print(str(numDestinations) + " " + str(geek.mod(numDestinations, 25)) + " reached 25 limit for destinations")
-            numApiCalls = 2
-            destination = "|".join(destination)
-            url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations={}' + '&key={}').format(urllib.parse.quote(origin, safe=""), urllib.parse.quote(destination, safe=""), key)
-            response = urllib.request.urlopen(url)
-            responseJSON = json.loads(response.read())
-
-            for item in (responseJSON.get("rows", "none")[0].get("elements", "none")):
-                if (item.get("status", "none") != 'NOT_FOUND'):
-                    distanceStr = item.get("distance", "none").get("value", "none")
-                    print("hi" + str(distanceStr))
-                    allDistances.append(distanceStr)
-                    #print(item.get("distance", "none").get("text", "none"))
-            destination = []
-
         if requestModel.status == 0:
 
             addressList = requestModel.address.split()
@@ -412,41 +393,44 @@ def nearbyRequests(request):
             for word in cityList:
                 addressFormatted += word
                 addressFormatted += "+"
+            reqlist.append([addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode, requestModel])
 
-            destination.append(addressFormatted + cityFormatted + requestModel.state + "+" + requestModel.zipCode)
-        numDestinations = numDestinations + 1
+    def dist(origin, destination):
+        lat1, lon1 = origin
+        lat2, lon2 = destination
+        radius = 6371 # km
+        dlat = math.radians(lat2-lat1)
+        dlon = math.radians(lon2-lon1)
+        a = math.sin(dlat/2) * math.sin(dlat/2) + math.cos(math.radians(lat1)) \
+            * math.cos(math.radians(lat2)) * math.sin(dlon/2) * math.sin(dlon/2)
+        c = 2 * math.atan2(math.sqrt(a), math.sqrt(1-a))
+        d = radius * c
+        return d
 
-    destination = "|".join(destination)
+    for req in reqlist:
+        req.append(dist((donor.lat, donor.lng), (req[1].lat, req[1].lng)))
+
+    reqlist.sort(key=lambda x: x[3])
+
+    destinations = [x[0] for x in reqlist[:10]]
+    destinationStr = "|".join(destinations)
+
+    key = "AIzaSyAAetUTOB2h4dzuM1rlmWOdHY-ooSypC7I"
     url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations={}' + '&key={}').format(urllib.parse.quote(origin, safe=""), urllib.parse.quote(destination, safe=""), key)
+
     response = urllib.request.urlopen(url)
     responseJSON = json.loads(response.read())
 
+    n = 0
     for item in (responseJSON.get("rows", "none")[0].get("elements", "none")):
         if (item.get("status", "none") != 'NOT_FOUND'):
-            distanceStr = item.get("distance", "none").get("value", "none")
-            print("hi" + str(distanceStr))
-            allDistances.append(distanceStr)
-            #print(item.get("distance", "none").get("text", "none"))
-
-    allUnclaimedRequests = []
-    for requestModel in RequestModel.objects.all():
-        if requestModel.status == 0:
-            allUnclaimedRequests.append(requestModel)
-
-    #Insertion Sorting
-    #Sort the distances, then rearrange allUnclaimedRequests
-    for i in range(1, len(allDistances)):
-        j = i
-        while j>=1 and allDistances[j] < allDistances[j-1]:
-            allDistances[j], allDistances[j-1] = allDistances[j-1], allDistances[j]
-            allUnclaimedRequests[j], allUnclaimedRequests[j-1] = allUnclaimedRequests[j-1], allUnclaimedRequests[j]
-            j -= 1
-
-    print(allDistances)
+            distance = item.get("distance", "none").get("value", "none")
+            reqlist[n][2] = distance
+        n += 1
 
     template = loader.get_template('main/nearbyRequests.html')
     context = {     #all inputs for the html go in these brackets
-        'allRequests': allUnclaimedRequests,
+        'allRequests': [x[1] for x in reqlist],
         'authenticated': request.user.is_authenticated,
     }
     return HttpResponse(template.render(context, request))
@@ -467,6 +451,7 @@ def notLoggedIn(request):
     }
     return HttpResponse(template.render(context, request))
 
+@transaction.atomic
 def confirmClaim(request):
     requestModelId = request.GET.get('requestObjId')  # 5
     print(requestModelId)
@@ -513,6 +498,7 @@ def confirmClaim(request):
     }
     return HttpResponse(template.render(context, request))
 
+@transaction.atomic
 def confirmClaim1(request):
     requestModelId = request.GET.get('requestObjId')  # 5
     print(requestModelId)
@@ -586,35 +572,3 @@ def test(request):
 
 def status(request):
     return JsonResponse({'online':'true'})
-
-def getClaimRate(request):
-    #determine rate from # PPE
-    # totalRequestedPPE = 0.0
-    # claimedRequestedPPE = 0.0
-    # for requestModel in RequestModel.objects.all():
-    #     if requestModel.status == 1:
-    #         totalRequestedPPE += requestModel.numPPE
-    #     if requestModel.status == 2:
-    #         claimedRequestedPPE += requestModel.numPPE
-    #         totalRequestedPPE += requestModel.numPPE
-    #
-    # claimRate = claimedRequestedPPE/totalRequestedPPE
-
-    #determine rate from # requests
-    totalRequests = 0.0
-    claimedRequests = 0.0
-    for requestModel in RequestModel.objects.all():
-        if requestModel.status == 1:
-            totalRequests += 1
-        if requestModel.status == 2:
-            claimedRequests += 1
-            totalRequests += 1
-
-    claimRate = claimedRequests/totalRequests
-
-
-    print("Claimrate (not including pending requests): " + str(claimRate))
-    claimRate = int(claimRate * 100)
-    claimRateStr = str(claimRate)
-    print(claimRateStr)
-    return claimRateStr
