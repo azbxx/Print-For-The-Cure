@@ -58,7 +58,7 @@ def home(request):
     template = loader.get_template('main/home.html')
     context = {     #all inputs for the html go in these brackets
         'authenticated': request.user.is_authenticated,
-        'claimRate': statsobj.claimRate,
+        'claimRate': statsobj.claimrate,
         'claimedPPE': statsobj.claims,
     }
     return HttpResponse(template.render(context, request))
@@ -410,13 +410,14 @@ def nearbyRequests(request):
     for req in reqlist:
         req.append(dist((donor.lat, donor.lng), (req[1].lat, req[1].lng)))
 
-    reqlist.sort(key=lambda x: x[3])
+    reqlist.sort(key=lambda x: x[2])
 
     destinations = [x[0] for x in reqlist[:10]]
     destinationStr = "|".join(destinations)
-
+    print(destinationStr)
+    print(destinations)
     key = "AIzaSyAAetUTOB2h4dzuM1rlmWOdHY-ooSypC7I"
-    url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations={}' + '&key={}').format(urllib.parse.quote(origin, safe=""), urllib.parse.quote(destination, safe=""), key)
+    url = ('https://maps.googleapis.com/maps/api/distancematrix/json' + '?origins={}' + '&destinations={}' + '&key={}').format(urllib.parse.quote(origin, safe=""), urllib.parse.quote(destinationStr, safe=""), key)
 
     response = urllib.request.urlopen(url)
     responseJSON = json.loads(response.read())

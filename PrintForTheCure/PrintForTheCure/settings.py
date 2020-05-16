@@ -23,6 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '894aun=2tsm@&vhl3e!3#r091-5j!1pi*7$cltnn&gyl%yld-j'
 
 # SECURITY WARNING: don't run with debug turned on in production!
+DEBUG=True
 ALLOWED_HOSTS = ['35.193.222.7', '0.0.0.0']
 
 
@@ -84,7 +85,8 @@ DATABASES = {
         'USER': 'django',
         'PASSWORD': os.getenv('DB_PASSWORD'),
         'HOST': 'localhost',
-        'PORT': '3306'
+        'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'}
     }
 }
 
@@ -129,5 +131,5 @@ USE_TZ = True
 STATIC_URL='/static/'
 
 CRONJOBS = [
-    ('0 * * * *', 'PrintForTheCUre.cron.getStats')
+    ('0 * * * *', 'main.cron.getStats')
 ]
