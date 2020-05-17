@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     # 'crispy_forms',  # If you user django-crispy-forms
     # 'django_popup_view_field',
     'main.apps.MainConfig',
-    'django_crontab'
+    'django_crontab',
+     'django_extensions'
 ]
 
 DJANGO_POPUP_VIEW_FIELD_TEMPLATE_PACK = 'bootstrap4'
