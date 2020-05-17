@@ -21,6 +21,7 @@ import json
 import urllib.request
 import urllib.parse
 import random
+import requests
 from .models import Donor
 from .models import RequestModel
 from .models import Stats
@@ -129,8 +130,27 @@ def donorRegistration(request):
                 newUser.set_password(request.POST['password'])
                 newUser.save()
                 newDonor = Donor(user=newUser, address=request.POST['address'], city=request.POST['city'], state=request.POST['state'], country=request.POST['country'], zipCode=request.POST['zipCode'], registrationDate=timezone.now())
-                newDonor.save()
 
+                newDonor.save()
+                addressList = newDonor.address.split()
+                addressFormatted = ""
+                for word in addressList:
+                    addressFormatted += word
+                    addressFormatted += "+"
+
+                cityList = newDonor.city.split()
+                cityFormatted = ""
+                for word in cityList:
+                    addressFormatted += word
+                    addressFormatted += "+"
+
+                addr = addressFormatted + cityFormatted + newDonor.state + "+" + newDonor.zipCode
+                key = os.getenv("GOOGLE_SERVER_API")
+                reqres = requests.get("https://maps.googleapis.com/maps/api/geocode/json?address={}&key={}".format(addr, key))
+                loc = reqres.json()['results'][0]['geometry']['location']
+                newDonor.lat = loc['lat']
+                newDonor.lng = loc['lng']
+                newDonor.save()
                 user = authenticate(username=request.POST['username'], password=request.POST['password'])
                 login(request, user)
 
